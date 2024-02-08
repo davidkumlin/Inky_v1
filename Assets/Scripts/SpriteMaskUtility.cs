@@ -2,6 +2,7 @@ using UnityEngine;
 
 public static class SpriteMaskUtility
 {
+    //Version 08/02 V1
     public static bool IsPointInsideSpriteMask(Vector2 point, Texture2D maskTexture, SpriteMask spriteMask)
     {
         if (maskTexture == null || spriteMask == null)

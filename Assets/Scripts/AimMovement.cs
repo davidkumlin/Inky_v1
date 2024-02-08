@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class AimMovement : MonoBehaviour
 {
+    //Version 08/02 V2
     // Controlls over aim movement
     private CustomInput input = null;
     private Vector2 moveVector = Vector2.zero;
@@ -151,7 +152,7 @@ public class AimMovement : MonoBehaviour
         {
             // Use movement input from left stick if OnWall is true
             Vector2 aimMoveVector = input.Player.Movement.ReadValue<Vector2>();
-            desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance;
+            desiredPosition = (Vector2)playerRb.position + aimMoveVector * maxDistance;
         }
         else
         {
@@ -172,6 +173,7 @@ public class AimMovement : MonoBehaviour
 
         Animate();
     }
+
 
 
     private void Animate()

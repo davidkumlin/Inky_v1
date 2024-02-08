@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PaintableObject : MonoBehaviour
 {
+    //Version 08/02 V1
     public SpriteMask spriteMask;
     public Texture2D maskTexture;
     [SerializeField] public Collider2D paintSpace;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //Version 08/02 V2
     private CustomInput input = null;
     public Vector2 moveVector { get; private set; } = Vector2.zero;
     [SerializeField] private Rigidbody2D rb;
@@ -65,7 +66,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (!OnWall)
         {
+            // Move the player normally
             rb.velocity = moveVector * moveSpeed;
+        }
+        else
+        {
+            // Only move the player along the Y-axis while on the wall
+            rb.velocity = new Vector2(0, moveVector.y * moveSpeed);
         }
     }
 
@@ -105,17 +112,27 @@ public class PlayerMovement : MonoBehaviour
                 return;
             }
 
-            // Example: Check if any of the paintable objects have the aim inside the sprite mask
+            bool aimInsideMask = false;
             foreach (PaintableObject po in paintableObjectsList)
             {
-                if (!po.IsAimInsideSpriteMask(aimMovement.CurrentAim))
+                if (po.IsAimInsideSpriteMask(aimMovement.CurrentAim))
                 {
-                    continue;
+                    aimInsideMask = true;
+                    break;
                 }
+            }
+
+            if (aimInsideMask)
+            {
                 OnWall = !OnWall;
                 GameManager.Instance.OnWall = OnWall;
                 if (OnWall)
                 {
+                    // Set the player's position to match the aim's X-axis position
+                    Vector3 newPosition = transform.position;
+                    newPosition.x = aimMovement.CurrentAim.x;
+                    transform.position = newPosition;
+
                     if (playerSpriteRenderer != null)
                         playerSpriteRenderer.enabled = false;
                     rb.velocity = Vector2.zero;
