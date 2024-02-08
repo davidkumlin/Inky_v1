@@ -73,3 +73,12 @@
 [LOG] SoundI::release                          : iwerks1_V1 (000001BA515C76C8)
 [LOG] SoundI::release                          :     iwerks1_V1 (000001BA2E2011B8)
 [LOG] SoundI::release                          :     iwerks1_V1 (000001BA515C6288)
+[LOG] Thread::callback                         : FMOD Studio bank load thread finished.
+[LOG] Thread::callback                         : FMOD Studio sample load thread finished.
+[LOG] LiveUpdate::release                      : 
+[LOG] LiveUpdate::reset                        : Reset connection (reason Disconnected)
+[LOG] Thread::callback                         : FMOD stream thread finished.
+[LOG] Thread::callback                         : FMOD mixer thread finished.
+[LOG] SystemI::close                           : Closed.
+[LOG] Thread::callback                         : FMOD nonblocking thread (0) finished.
+[LOG] Thread::callback                         : FMOD file thread finished.

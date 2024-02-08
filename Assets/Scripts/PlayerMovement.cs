@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             // Only move the player along the Y-axis while on the wall
-            rb.velocity = new Vector2(0, moveVector.y * moveSpeed);
+            rb.velocity = new Vector2(moveVector.x * moveSpeed, 0);
         }
     }
 
