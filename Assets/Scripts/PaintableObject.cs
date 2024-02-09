@@ -146,7 +146,7 @@ public class PaintableObject : MonoBehaviour
 
             // Debugging whether the aim is inside the mask
             Debug.Log("PO-Is aim inside sprite mask? " + isInside);
-
+            //gör denna till hoppa av o på väggjäveln!!!!
             return isInside;
         }
 
