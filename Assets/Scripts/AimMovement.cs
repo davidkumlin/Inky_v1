@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class AimMovement : MonoBehaviour
 {
-    //Version 08/02 V2
+    //Version 09/02 V3
     // Controlls over aim movement
     private CustomInput input = null;
     private Vector2 moveVector = Vector2.zero;
@@ -33,13 +33,21 @@ public class AimMovement : MonoBehaviour
     private PlayerMovement playerMovement; // Reference to PlayerMovement script
     private bool OnWall;
 
+    private List<PaintableObject> paintableObjectsList;
+    // New field to store the current PaintableObject the aim is inside
+    private PaintableObject currentPaintableObject;
+
+    // Variable to check if the aim is inside any sprite mask
+    bool aimInsideMask = false;
+
+
+
 
     private void Awake()
     {
         input = new CustomInput();
         spriteRenderer = GetComponent<SpriteRenderer>();
         aimAnimator = GetComponent<Animator>();
-        // Get the PlayerMovement component from the player GameObject
         playerMovement = GetComponentInParent<PlayerMovement>();
     }
     private void Start()
@@ -53,6 +61,10 @@ public class AimMovement : MonoBehaviour
             Debug.LogError("Player or Aim Rigidbody2D reference not assigned in the inspector.");
         }
 
+        // Get all PaintableObject scripts in the scene
+        PaintableObject[] allPaintableObjects = FindObjectsOfType<PaintableObject>();
+        paintableObjectsList = new List<PaintableObject>(allPaintableObjects);
+        
         // Disable the Collider2D on the player
         Collider2D playerCollider = GetComponent<Collider2D>();
         if (playerCollider != null)
@@ -90,6 +102,10 @@ public class AimMovement : MonoBehaviour
                 aimAnimator.SetBool("OnWallBool", false);
             }
         }
+        // Variable to check if the aim is inside any sprite mask
+        //Debug.Log("Am/Update" + aimInsideMask);
+        
+
     }
     public void SetPlayerMovement(PlayerMovement pm)
     {
@@ -148,31 +164,67 @@ public class AimMovement : MonoBehaviour
 
         Vector2 desiredPosition;
 
-        if (playerMovement != null && playerMovement.OnWall)
+        
+        
+        foreach (PaintableObject po in paintableObjectsList)
         {
-            Vector2 aimMoveVector = input.Player.Movement.ReadValue<Vector2>();
-            desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance;
+            if (po.IsAimInsideSpriteMask(CurrentAim))
+            {
+                aimInsideMask = true;
+                //Debug.Log("AM-Aim is inside sprite mask of " + po.gameObject.name);
+                break;
+            }
+            else 
+            {
+                aimInsideMask = false;
+               // Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
+            }
+        }
+       
+        if (currentPaintableObject != null && currentPaintableObject.IsInPaintSpace)
+        {
+            // If inside a paintable object's paint space, limit movement within the painted area
+            desiredPosition = LimitMovementWithinPaintedArea(aimRb.position, aimInsideMask);
         }
         else
         {
-            Vector2 playerMoveVector = input.Player.Aim.ReadValue<Vector2>();
-            desiredPosition = (Vector2)playerRb.position + playerMoveVector * maxDistance;
+            // If outside or not on a wall, use the default movement logic
+            if (playerMovement != null && playerMovement.OnWall)
+            {
+                Vector2 aimMoveVector = input.Player.Movement.ReadValue<Vector2>();
+                desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance;
+            }
+            else
+            {
+                Vector2 playerMoveVector = input.Player.Aim.ReadValue<Vector2>();
+                desiredPosition = (Vector2)playerRb.position + playerMoveVector * maxDistance;
+            }
         }
 
-        float distanceFromPlayer = Vector2.Distance(playerRb.position, desiredPosition);
-
-        if (distanceFromPlayer > maxDistance)
-        {
-            Vector2 direction = (desiredPosition - (Vector2)playerRb.position).normalized;
-            desiredPosition = (Vector2)playerRb.position + direction * maxDistance;
-        }
-
+        // Move the aim to the desired position
         aimRb.MovePosition(Vector2.Lerp(aimRb.position, desiredPosition, smoothing * Time.fixedDeltaTime * aimspeed));
         CurrentAim = aimRb.position;
 
         Animate();
     }
 
+    private Vector2 LimitMovementWithinPaintedArea(Vector2 currentPos, bool aimInsideMask)
+    {
+        Vector2 clampedPosition = currentPos;
+
+        if (aimInsideMask && playerMovement.OnWall)
+        {
+            // If the aim is inside any sprite mask and the player is on a wall,
+            // limit movement within the painted area based on the sprite mask bounds
+            if (currentPaintableObject != null)
+            {
+                clampedPosition.x = Mathf.Clamp(clampedPosition.x, currentPaintableObject.SpriteMaskBounds.min.x, currentPaintableObject.SpriteMaskBounds.max.x);
+                clampedPosition.y = Mathf.Clamp(clampedPosition.y, currentPaintableObject.SpriteMaskBounds.min.y, currentPaintableObject.SpriteMaskBounds.max.y);
+            }
+        }
+
+        return clampedPosition;
+    }
 
     private void Animate()
     {
@@ -188,8 +240,34 @@ public class AimMovement : MonoBehaviour
             spriteRenderer.sprite = idleCrosshair;
         }
 
+    }
+   
 
-
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Paintable"))
+        {
+            // Check if the entering collider is a paintable object
+            PaintableObject paintableObject = other.GetComponent<PaintableObject>();
+            if (paintableObject != null)
+            {
+                // If it is, set it as the current paintable object
+                currentPaintableObject = paintableObject;
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Paintable"))
+        {
+            // Check if the exiting collider is the current paintable object
+            PaintableObject paintableObject = other.GetComponent<PaintableObject>();
+            if (paintableObject != null && paintableObject == currentPaintableObject)
+            {
+                // If it is, reset the current paintable object
+                currentPaintableObject = null;
+            }
+        }
     }
 
     private void OnAimPerformed(InputAction.CallbackContext value)
@@ -217,4 +295,5 @@ public class AimMovement : MonoBehaviour
             moveVector = value.ReadValue<Vector2>();
         }
     }
+
 }

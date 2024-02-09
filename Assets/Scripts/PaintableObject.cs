@@ -12,7 +12,8 @@ public class PaintableObject : MonoBehaviour
     // Public property to check if the player is in the paint space
     public bool IsInPaintSpace { get; private set; }
 
-
+    // Public property to get the bounds of the sprite mask
+    public Bounds SpriteMaskBounds { get; private set; }
 
     public bool FullyPaintedObject { get; private set; } = false;
 
@@ -50,9 +51,28 @@ public class PaintableObject : MonoBehaviour
         //Debug.Log("PO-" + IsInPaintSpace);
 
     }
+
     void Update()
     {
 
+    }
+    void OnDrawGizmosSelected()
+    {
+        if (spriteMask != null)
+        {
+            // Draw the bounds of the sprite mask
+            Bounds bounds = spriteMask.sprite.bounds;
+            Vector3 min = bounds.min;
+            Vector3 max = bounds.max;
+            Vector3 center = bounds.center;
+            Vector3 size = bounds.size;
+
+            // Draw lines representing the bounds
+            Debug.DrawLine(min, new Vector3(min.x, max.y, min.z), Color.red); // Bottom-left to top-left
+            Debug.DrawLine(min, new Vector3(max.x, min.y, min.z), Color.red); // Bottom-left to bottom-right
+            Debug.DrawLine(max, new Vector3(max.x, min.y, min.z), Color.red); // Bottom-right to top-right
+            Debug.DrawLine(max, new Vector3(min.x, max.y, min.z), Color.red); // Top-right to top-left
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -112,14 +132,20 @@ public class PaintableObject : MonoBehaviour
             float alphaThreshold = 0.1f; // Adjust the threshold to consider only colored pixels
             bool isInside = pixelColor.a > alphaThreshold;
 
-            //Debug.Log("Is Aim Inside Sprite Mask: " + isInside); 
+            if (isInside)
+            {
+                // Calculate the bounds of the sprite mask
+                SpriteMaskBounds = spriteMask.sprite.bounds;
+            }
+
+            // Debugging whether the aim is inside the mask
+           //Debug.Log("Is aim inside sprite mask? " + isInside);
 
             return isInside;
         }
 
-        // If the pixel is outside the mask's bounds, consider it outside the sprite mask
-        //Debug.Log("Aim Position Outside Sprite Mask Bounds"); 
         return false;
     }
+
 
 }

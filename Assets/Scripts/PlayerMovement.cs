@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public bool Alerted { get; private set; } = false;
 
     private List<PaintableObject> paintableObjectsList;
+    private bool aimInsideMask = false;
 
     private bool canToggleOnWall = true;
 
@@ -33,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
     {
         GameManager.OnWallChanged += OnWallStatus;
 
+
+        // Get all PaintableObject scripts in the scene
         PaintableObject[] allPaintableObjects = FindObjectsOfType<PaintableObject>();
         paintableObjectsList = new List<PaintableObject>(allPaintableObjects);
 
@@ -56,6 +59,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
+        foreach (PaintableObject po in paintableObjectsList)
+        {
+            if (po.IsAimInsideSpriteMask(aimMovement.CurrentAim))
+            {
+                aimInsideMask = true;
+                //Debug.Log("PM-Aim is inside sprite mask of " + po.gameObject.name);
+                break;
+            }
+            else
+            {
+                aimInsideMask = false;
+                // Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
+            }
+        }
+
         if (mainCamera != null)
         {
             Vector3 cameraPosition = mainCamera.transform.position;
@@ -102,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
         moveVector = Vector2.zero;
     }
 
+  
     private void OnWallStarted(InputAction.CallbackContext value)
     {
         if (canToggleOnWall)
@@ -112,15 +132,7 @@ public class PlayerMovement : MonoBehaviour
                 return;
             }
 
-            bool aimInsideMask = false;
-            foreach (PaintableObject po in paintableObjectsList)
-            {
-                if (po.IsAimInsideSpriteMask(aimMovement.CurrentAim))
-                {
-                    aimInsideMask = true;
-                    break;
-                }
-            }
+          
 
             if (aimInsideMask)
             {
