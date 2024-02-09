@@ -8,6 +8,8 @@ public class PaintableObject : MonoBehaviour
     public SpriteMask spriteMask;
     public Texture2D maskTexture;
     [SerializeField] public Collider2D paintSpace;
+  
+
 
     // Public property to check if the player is in the paint space
     public bool IsInPaintSpace { get; private set; }
@@ -51,7 +53,7 @@ public class PaintableObject : MonoBehaviour
         //Debug.Log("PO-" + IsInPaintSpace);
 
     }
-
+   
     void Update()
     {
         OnDrawGizmosSelected();

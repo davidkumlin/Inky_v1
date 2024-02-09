@@ -64,7 +64,7 @@ public class AimMovement : MonoBehaviour
         // Get all PaintableObject scripts in the scene
         PaintableObject[] allPaintableObjects = FindObjectsOfType<PaintableObject>();
         paintableObjectsList = new List<PaintableObject>(allPaintableObjects);
-        
+
         // Disable the Collider2D on the player
         Collider2D playerCollider = GetComponent<Collider2D>();
         if (playerCollider != null)
@@ -104,7 +104,7 @@ public class AimMovement : MonoBehaviour
         }
         // Variable to check if the aim is inside any sprite mask
         //Debug.Log("Am/Update" + aimInsideMask);
-        
+
 
     }
     public void SetPlayerMovement(PlayerMovement pm)
@@ -164,8 +164,8 @@ public class AimMovement : MonoBehaviour
 
         Vector2 desiredPosition;
 
-        
-        
+
+
         foreach (PaintableObject po in paintableObjectsList)
         {
             if (po.IsAimInsideSpriteMask(CurrentAim))
@@ -174,13 +174,13 @@ public class AimMovement : MonoBehaviour
                 //Debug.Log("AM-Aim is inside sprite mask of " + po.gameObject.name);
                 break;
             }
-            else 
+            else
             {
                 aimInsideMask = false;
-               // Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
+                // Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
             }
         }
-       
+
         if (currentPaintableObject != null && currentPaintableObject.IsInPaintSpace)
         {
             // If inside a paintable object's paint space, limit movement within the painted area
@@ -241,7 +241,7 @@ public class AimMovement : MonoBehaviour
         }
 
     }
-   
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
