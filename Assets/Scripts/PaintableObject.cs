@@ -54,7 +54,7 @@ public class PaintableObject : MonoBehaviour
 
     void Update()
     {
-
+        OnDrawGizmosSelected();
     }
     void OnDrawGizmosSelected()
     {
@@ -69,9 +69,9 @@ public class PaintableObject : MonoBehaviour
 
             // Draw lines representing the bounds
             Debug.DrawLine(min, new Vector3(min.x, max.y, min.z), Color.red); // Bottom-left to top-left
-            Debug.DrawLine(min, new Vector3(max.x, min.y, min.z), Color.red); // Bottom-left to bottom-right
-            Debug.DrawLine(max, new Vector3(max.x, min.y, min.z), Color.red); // Bottom-right to top-right
-            Debug.DrawLine(max, new Vector3(min.x, max.y, min.z), Color.red); // Top-right to top-left
+            Debug.DrawLine(min, new Vector3(max.x, min.y, min.z), Color.cyan); // Bottom-left to bottom-right
+            Debug.DrawLine(max, new Vector3(max.x, min.y, min.z), Color.green); // Bottom-right to top-right
+            Debug.DrawLine(max, new Vector3(min.x, max.y, min.z), Color.yellow); // Top-right to top-left
         }
     }
 
@@ -116,9 +116,12 @@ public class PaintableObject : MonoBehaviour
         // Convert the world point to local space
         Vector2 localPoint = transform.InverseTransformPoint(aimPos);
 
+        // Calculate the bounds of the sprite mask in local space
+        Bounds spriteMaskLocalBounds = spriteMask.sprite.bounds;
+
         // Convert local point to texture coordinates
-        float textureX = (localPoint.x + spriteMask.sprite.bounds.size.x / 2) / spriteMask.sprite.bounds.size.x;
-        float textureY = (localPoint.y + spriteMask.sprite.bounds.size.y / 2) / spriteMask.sprite.bounds.size.y;
+        float textureX = (localPoint.x + spriteMaskLocalBounds.size.x / 2) / spriteMaskLocalBounds.size.x;
+        float textureY = (localPoint.y + spriteMaskLocalBounds.size.y / 2) / spriteMaskLocalBounds.size.y;
 
         // Convert texture coordinates to pixel coordinates
         int pixelX = Mathf.FloorToInt(textureX * maskTexture.width);
@@ -132,20 +135,23 @@ public class PaintableObject : MonoBehaviour
             float alphaThreshold = 0.1f; // Adjust the threshold to consider only colored pixels
             bool isInside = pixelColor.a > alphaThreshold;
 
+            // If the pixel is inside the mask, update the bounds
             if (isInside)
             {
-                // Calculate the bounds of the sprite mask
-                SpriteMaskBounds = spriteMask.sprite.bounds;
+                // Define the bounds based on the condition
+                spriteMaskLocalBounds = new Bounds(localPoint, Vector3.zero);
             }
 
             // Debugging whether the aim is inside the mask
-           //Debug.Log("Is aim inside sprite mask? " + isInside);
+            Debug.Log("PO-Is aim inside sprite mask? " + isInside);
 
             return isInside;
         }
 
         return false;
     }
+
+
 
 
 }
