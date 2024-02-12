@@ -55,6 +55,8 @@ public class PlayerMovement : MonoBehaviour
     private void OnWallStatus(bool OnWall)
     {
         this.OnWall = OnWall;
+        Debug.Log("PM" + OnWall);
+
     }
 
     private void FixedUpdate()

@@ -66,10 +66,10 @@ public class AimMovement : MonoBehaviour
         paintableObjectsList = new List<PaintableObject>(allPaintableObjects);
 
         // Disable the Collider2D on the player
-        Collider2D playerCollider = GetComponent<Collider2D>();
-        if (playerCollider != null)
+        Collider2D aimCollider = GetComponent<Collider2D>();
+        if (aimCollider != null)
         {
-            playerCollider.enabled = false;
+            aimCollider.enabled = false;
         }
 
         // Calculate the initial offset between player and aim
@@ -81,6 +81,18 @@ public class AimMovement : MonoBehaviour
     void OnWallStatus(bool OnWall)
     {
         this.OnWall = OnWall;
+        Debug.Log("AM" + OnWall);
+        if (OnWall == true)
+        {
+            Collider2D aimCollider = GetComponent<Collider2D>();
+           aimCollider.enabled = true;
+        }
+        else
+        {
+            Collider2D aimCollider = GetComponent<Collider2D>();
+            aimCollider.enabled = false;
+            
+        }
     }
     private void Update()
     {
@@ -104,7 +116,7 @@ public class AimMovement : MonoBehaviour
         }
         // Variable to check if the aim is inside any sprite mask
         //Debug.Log("Am/Update" + aimInsideMask);
-
+        //Debug.Log(currentPaintableObject);
 
     }
     public void SetPlayerMovement(PlayerMovement pm)
@@ -154,7 +166,6 @@ public class AimMovement : MonoBehaviour
     }
 
 
-
     private void FixedUpdate()
     {
         if (playerRb == null || aimRb == null)
@@ -164,41 +175,39 @@ public class AimMovement : MonoBehaviour
 
         Vector2 desiredPosition;
 
-
-
         foreach (PaintableObject po in paintableObjectsList)
         {
             if (po.IsAimInsideSpriteMask(CurrentAim))
             {
                 aimInsideMask = true;
-                //Debug.Log("AM-Aim is inside sprite mask of " + po.gameObject.name);
                 break;
             }
             else
             {
                 aimInsideMask = false;
-                // Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
             }
         }
+        Vector2 aimMoveVector = Vector2.zero; // Define aimMoveVector outside of the if-else blocks
 
-        if (currentPaintableObject != null && currentPaintableObject.IsInPaintSpace)
+        if (currentPaintableObject != null && currentPaintableObject.OnWallArea != null)
         {
             // If inside a paintable object's paint space, limit movement within the painted area
-            desiredPosition = LimitMovementWithinPaintedArea(aimRb.position, aimInsideMask);
+            desiredPosition = LimitMovementWithinOnWallArea(aimRb.position, aimMoveVector);
+            // Other code...
+        }
+        else if (playerMovement != null && playerMovement.OnWall)
+        {
+            // If on a wall, calculate movement based on the left stick (Movement)
+            aimMoveVector = input.Player.Movement.ReadValue<Vector2>();
+            desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance;
+           // Debug.Log("Calculated Movement based on Left Stick: " + desiredPosition);
         }
         else
         {
-            // If outside or not on a wall, use the default movement logic
-            if (playerMovement != null && playerMovement.OnWall)
-            {
-                Vector2 aimMoveVector = input.Player.Movement.ReadValue<Vector2>();
-                desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance;
-            }
-            else
-            {
-                Vector2 playerMoveVector = input.Player.Aim.ReadValue<Vector2>();
-                desiredPosition = (Vector2)playerRb.position + playerMoveVector * maxDistance;
-            }
+            // If outside or not on a wall, use the default movement logic with the right stick (Aim)
+            Vector2 playerMoveVector = input.Player.Aim.ReadValue<Vector2>();
+            desiredPosition = (Vector2)playerRb.position + playerMoveVector * maxDistance;
+            // Other code...
         }
 
         // Move the aim to the desired position
@@ -208,23 +217,71 @@ public class AimMovement : MonoBehaviour
         Animate();
     }
 
-    private Vector2 LimitMovementWithinPaintedArea(Vector2 currentPos, bool aimInsideMask)
-    {
-        Vector2 clampedPosition = currentPos;
 
-        if (aimInsideMask && playerMovement.OnWall)
+
+   private Vector2 LimitMovementWithinOnWallArea(Vector2 currentPos, Vector2 aimMoveVector)
+{
+    Vector2 clampedPosition = currentPos;
+
+    if (currentPaintableObject != null && currentPaintableObject.OnWallArea != null)
+    {
+        // Get the polygon path of the OnWallArea collider
+        Vector2[] localPolygonPath = currentPaintableObject.OnWallArea.GetPath(0);
+        
+        // Convert the local polygon points to world space
+        Vector2[] worldSpacePolygonPath = new Vector2[localPolygonPath.Length];
+        for (int i = 0; i < localPolygonPath.Length; i++)
         {
-            // If the aim is inside any sprite mask and the player is on a wall,
-            // limit movement within the painted area based on the sprite mask bounds
-            if (currentPaintableObject != null)
+            worldSpacePolygonPath[i] = currentPaintableObject.OnWallArea.transform.TransformPoint(localPolygonPath[i]);
+        }
+
+        // Check if the aimRb position is inside the OnWallArea polygon collider
+        bool insidePolygon = IsInsidePolygon(currentPos, worldSpacePolygonPath);
+
+        // Debug if the aimRb is inside or outside the OnWallArea
+        Debug.Log("Is aim inside OnWallArea: " + insidePolygon);
+
+        // If the aim is inside the OnWallArea, limit movement within it
+        if (insidePolygon)
+                clampedPosition += aimMoveVector;
+
+        {
+            clampedPosition.x = Mathf.Clamp(clampedPosition.x, currentPaintableObject.OnWallArea.bounds.min.x, currentPaintableObject.OnWallArea.bounds.max.x);
+            clampedPosition.y = Mathf.Clamp(clampedPosition.y, currentPaintableObject.OnWallArea.bounds.min.y, currentPaintableObject.OnWallArea.bounds.max.y);
+        }
+    }
+
+    return clampedPosition;
+}
+
+
+
+
+
+    // Helper method to check if a point is inside a polygon
+    private bool IsInsidePolygon(Vector2 point, Vector2[] polygon)
+    {
+        bool inside = false;
+        int j = polygon.Length - 1;
+        for (int i = 0; i < polygon.Length; j = i++)
+        {
+           // Debug.Log("Polygon Points: " + polygon[i] + ", " + polygon[j]);
+            // Check if the point is inside the current edge of the polygon
+            if (((polygon[i].y <= point.y && point.y < polygon[j].y) || (polygon[j].y <= point.y && point.y < polygon[i].y)) &&
+                (point.x < (polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x))
             {
-                clampedPosition.x = Mathf.Clamp(clampedPosition.x, currentPaintableObject.SpriteMaskBounds.min.x, currentPaintableObject.SpriteMaskBounds.max.x);
-                clampedPosition.y = Mathf.Clamp(clampedPosition.y, currentPaintableObject.SpriteMaskBounds.min.y, currentPaintableObject.SpriteMaskBounds.max.y);
+                inside = !inside;
             }
         }
 
-        return clampedPosition;
+        // Log the final result of the inside check
+       Debug.Log("Point Inside Polygon: " + inside);
+
+        return inside;
     }
+
+
+
 
     private void Animate()
     {
@@ -245,28 +302,22 @@ public class AimMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Paintable"))
+        PaintableObject paintableObject = other.GetComponent<PaintableObject>();
+        if (paintableObject != null)
         {
-            // Check if the entering collider is a paintable object
-            PaintableObject paintableObject = other.GetComponent<PaintableObject>();
-            if (paintableObject != null)
-            {
-                // If it is, set it as the current paintable object
-                currentPaintableObject = paintableObject;
-            }
+            // If the entering collider is a paintable object, set it as the current paintable object
+            currentPaintableObject = paintableObject;
+            Debug.Log("am" + currentPaintableObject);
         }
     }
+
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Paintable"))
+        PaintableObject paintableObject = other.GetComponent<PaintableObject>();
+        if (paintableObject != null && paintableObject == currentPaintableObject)
         {
-            // Check if the exiting collider is the current paintable object
-            PaintableObject paintableObject = other.GetComponent<PaintableObject>();
-            if (paintableObject != null && paintableObject == currentPaintableObject)
-            {
-                // If it is, reset the current paintable object
-                currentPaintableObject = null;
-            }
+            // If the exiting collider is the current paintable object, reset the current paintable object
+            currentPaintableObject = null;
         }
     }
 

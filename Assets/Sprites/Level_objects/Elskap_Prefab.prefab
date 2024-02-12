@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 1734498197122541075}
   - component: {fileID: 1734498197122541076}
   - component: {fileID: 1734498197122541074}
+  - component: {fileID: 8298492032413562041}
   m_Layer: 0
   m_Name: Elskap_Prefab
   m_TagString: Untagged
@@ -117,9 +118,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1734498196932591666}
-  - {fileID: 1734498197930380934}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1734498197122541072
 MonoBehaviour:
@@ -133,7 +133,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 173366d3a0c771641bf61f9d6ce4296f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteMask: {fileID: 0}
+  maskTexture: {fileID: 0}
   paintSpace: {fileID: 1734498197122541075}
+  OnWallArea: {fileID: 0}
 --- !u!61 &1734498197122541075
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -263,45 +266,13 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 0
---- !u!1 &1734498197930380937
-GameObject:
+--- !u!60 &8298492032413562041
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1734498197930380934}
-  - component: {fileID: 1734498197930380933}
-  m_Layer: 0
-  m_Name: Collider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1734498197930380934
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734498197930380937}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.03, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1734498197122541077}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1734498197930380933
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734498197930380937}
+  m_GameObject: {fileID: 1734498197122541079}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -311,13 +282,28 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10, y: 10}
+    newSize: {x: 10, y: 10}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 7.96, y: 6.46}
-  m_EdgeRadius: 0.33
+  m_Points:
+    m_Paths:
+    - - {x: -1.9, y: 3.8899999}
+      - {x: -3.72, y: 4.17}
+      - {x: -4.14, y: 3.87}
+      - {x: -4.0299997, y: 2.44}
+      - {x: -4.04, y: 0.14999999}
+      - {x: -4.23, y: -4.33}
+      - {x: -4.14, y: -4.52}
+      - {x: -2.01, y: -4.43}
+      - {x: 2.34, y: -4.42}
+      - {x: 4.42, y: -4.39}
+      - {x: 4.4, y: -1.9399999}
+      - {x: 4.12, y: 0.12}
+      - {x: 4.15, y: 1.99}
+      - {x: 4.2, y: 3.6499999}
+      - {x: 3.9399998, y: 4.22}
+  m_UseDelaunayMesh: 0
