@@ -9,11 +9,17 @@ public class Animation_body : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Animator bodyAnimator;
 
-    public GameObject idleFront; // Assign your idle sprite in the Inspector
-    public GameObject RB_Arm; // Assign your north-east facing sprite in the Inspector
-    public GameObject RF_Arm; // Assign your south-east facing sprite in the Inspector
-    public GameObject LF_Arm; // Assign your south-west facing sprite in the Inspector
-    public GameObject LB_Arm; // Assign your north-west facing sprite in the Inspector
+    [SerializeField] private GameObject idleFront; // Assign your idle sprite in the Inspector
+    [SerializeField] private GameObject RB_Arm; // Assign your north-east facing sprite in the Inspector
+    [SerializeField] private GameObject RF_Arm; // Assign your south-east facing sprite in the Inspector
+    [SerializeField] private GameObject LF_Arm; // Assign your south-west facing sprite in the Inspector
+    [SerializeField] private GameObject LB_Arm; // Assign your north-west facing sprite in the Inspector
+
+    [SerializeField] private GameObject IK_idle;
+    [SerializeField] private GameObject IK_RB;
+    [SerializeField] private GameObject IK_RF;
+    [SerializeField] private GameObject IK_LF;
+    [SerializeField] private GameObject IK_LB;
 
     private GameObject _IK = null;
     private float speed;
@@ -60,16 +66,8 @@ public class Animation_body : MonoBehaviour
         // Only perform the search if the _IK is null
         if (_IK == null)
         {
-            _IK = GameObject.Find("_IK_idle_front_hand");
-            if (_IK == null)
-            {
-                Debug.LogError("GameObject with name '_IK_idle_front_hand' not found.");
-                return;
-            }
-            else
-            {
-                Debug.Log("GameObject found: " + _IK.name);
-            }
+            _IK = IK_idle;
+            
         }
 
         if (aimMovement != null && aimMovement.CurrentAim != null)
@@ -77,7 +75,8 @@ public class Animation_body : MonoBehaviour
             currentAim = aimMovement.CurrentAim;
             _IK.transform.position = Vector2.Lerp(_IK.transform.position, currentAim, step);
         }
-
+        //Debug.Log(_IK.name);
+        //Debug.Log(currentAim);
         Animate();
     }
 
@@ -114,7 +113,7 @@ public class Animation_body : MonoBehaviour
                 LB_Arm.SetActive(false);
                 idleFront.SetActive(false);
 
-                _IK = RB_Arm.transform.Find("_IK_RB_Hand").gameObject; // Find the child GameObject named "_IK_RB_Hand"
+                _IK = IK_RB;
             }
             else if (moveVector.x > 0 && moveVector.y < 0)
             {
@@ -125,7 +124,7 @@ public class Animation_body : MonoBehaviour
                 LB_Arm.SetActive(false);
                 idleFront.SetActive(false);
 
-                _IK = RB_Arm.transform.Find("_IK_RF_Hand").gameObject;
+                _IK = IK_RF;
             }
             else if (moveVector.x < 0 && moveVector.y < 0)
             {
@@ -136,6 +135,7 @@ public class Animation_body : MonoBehaviour
                 LB_Arm.SetActive(false);
                 idleFront.SetActive(false);
 
+                _IK = IK_LF;
             }
             else if (moveVector.x < 0 && moveVector.y > 0)
             {
@@ -145,6 +145,8 @@ public class Animation_body : MonoBehaviour
                 LF_Arm.SetActive(false);
                 LB_Arm.SetActive(true);
                 idleFront.SetActive(false);
+
+                _IK = IK_LB;
             }
             else
             {
@@ -154,17 +156,8 @@ public class Animation_body : MonoBehaviour
                 RB_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
                 LB_Arm.SetActive(false);
-                // Check if idlefront has the child object
-                Transform childIK = idleFront.transform.Find("_IK_idle_front_hand");
-                if (childIK != null)
-                {
-                    _IK = childIK.gameObject;
-                }
-                else
-                {
-                    Debug.LogError("_IK_idle_front_hand child object not found in idleFront.");
-                }
 
+                _IK = IK_idle;
             }
         }
         else

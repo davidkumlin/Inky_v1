@@ -37,8 +37,7 @@ public class AimMovement : MonoBehaviour
     // New field to store the current PaintableObject the aim is inside
     private PaintableObject currentPaintableObject;
 
-    // Variable to check if the aim is inside any sprite mask
-    bool aimInsideMask = false;
+   
 
 
 
@@ -175,18 +174,7 @@ public class AimMovement : MonoBehaviour
 
         Vector2 desiredPosition;
 
-        foreach (PaintableObject po in paintableObjectsList)
-        {
-            if (po.IsAimInsideSpriteMask(CurrentAim))
-            {
-                aimInsideMask = true;
-                break;
-            }
-            else
-            {
-                aimInsideMask = false;
-            }
-        }
+        
         Vector2 aimMoveVector = Vector2.zero; // Define aimMoveVector outside of the if-else blocks
 
         if (currentPaintableObject != null && currentPaintableObject.OnWallArea != null)
