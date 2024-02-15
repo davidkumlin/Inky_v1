@@ -22,7 +22,7 @@ public class Animation_body : MonoBehaviour
     [SerializeField] private GameObject IK_LB;
 
     private GameObject _IK = null;
-    private float speed;
+    private float speed = 1f;
     private Vector2 currentAim;
     private bool OnWall;
 
@@ -67,7 +67,7 @@ public class Animation_body : MonoBehaviour
         if (_IK == null)
         {
             _IK = IK_idle;
-            
+            Debug.Log("Initialized _IK to IK_idle");
         }
 
         if (aimMovement != null && aimMovement.CurrentAim != null)
@@ -75,8 +75,9 @@ public class Animation_body : MonoBehaviour
             currentAim = aimMovement.CurrentAim;
             _IK.transform.position = Vector2.Lerp(_IK.transform.position, currentAim, step);
         }
-        //Debug.Log(_IK.name);
-        //Debug.Log(currentAim);
+        // Debug logs for debugging purposes
+        Debug.Log("IK Name: " + _IK.name);
+        Debug.Log("Current Aim: " + currentAim);
         Animate();
     }
 
