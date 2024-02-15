@@ -11,7 +11,7 @@ public class PaintableObject : MonoBehaviour
     public SpriteMask spriteMask;
     public Texture2D maskTexture;
     [SerializeField] public Collider2D paintSpace;
-    [SerializeField] public PolygonCollider2D OnWallArea;
+   
 
     
 
@@ -59,49 +59,20 @@ public class PaintableObject : MonoBehaviour
     }
 
 
-    void OnDrawGizmosSelected()
-    {
-        if (OnWallArea != null)
-        {
-            Matrix4x4 oldMatrix = Gizmos.matrix;
-            Gizmos.matrix = transform.localToWorldMatrix;
 
-            // Set the color of the gizmo lines
-            Color gizmoColor = Color.red;
-
-            // Draw the edges of the OnWallArea collider with thicker lines
-            for (int pathIndex = 0; pathIndex < OnWallArea.pathCount; pathIndex++)
-            {
-                Vector2[] path = OnWallArea.GetPath(pathIndex);
-                for (int i = 0; i < path.Length - 1; i++)
-                {
-                    Vector3 startPoint = new Vector3(path[i].x, path[i].y, 0f);
-                    Vector3 endPoint = new Vector3(path[i + 1].x, path[i + 1].y, 0f);
-                    Gizmos.color = gizmoColor;
-                    Gizmos.DrawLine(startPoint, endPoint);
-                }
-                // Draw a line between the last and first points to close the path
-                Vector3 lastPoint = new Vector3(path[path.Length - 1].x, path[path.Length - 1].y, 0f);
-                Vector3 firstPoint = new Vector3(path[0].x, path[0].y, 0f);
-                Gizmos.DrawLine(lastPoint, firstPoint);
-            }
-
-            Gizmos.matrix = oldMatrix;
-        }
-    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Debug.Log("Entered Trigger: " + other.gameObject.name);
+        Debug.Log("Entered Trigger: " + other.gameObject.name);
 
         // Check if the entering collider is either the player or the paintSpace
         if (other.CompareTag("Player") || other == paintSpace)
         {
             // Set IsInPaintSpace to true when the player enters the paintSpace collider
             IsInPaintSpace = true;
-            //Debug.Log("PO-paintspace" + IsInPaintSpace);           
+            Debug.Log("PO-paintspace" + IsInPaintSpace);
         }
-        
+
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -113,12 +84,12 @@ public class PaintableObject : MonoBehaviour
         {
             // Set IsInPaintSpace to false when the player exits the paintSpace collider
             IsInPaintSpace = false;
-            //Debug.Log("PO-paintspace" + IsInPaintSpace);
+           Debug.Log("PO-paintspace NOT" + IsInPaintSpace);
         }
-        
+
     }
 
-    
+
 
 
     public bool IsAimInsideSpriteMask(Vector2 aimPos)
@@ -179,7 +150,7 @@ public class PaintableObject : MonoBehaviour
                 pointList.Add(pointList[0]);
 
                 edgecollider.SetPoints(pointList);
-                edgecollider.edgeRadius = .5f;
+                edgecollider.edgeRadius = .2f;
             }
 #if UNITY_EDITOR
             EditorUtility.SetDirty(gameObject);

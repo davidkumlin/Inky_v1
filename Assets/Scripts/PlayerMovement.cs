@@ -20,8 +20,9 @@ public class PlayerMovement : MonoBehaviour
     public bool Alerted { get; private set; } = false;
 
     private List<PaintableObject> paintableObjectsList;
+    private PaintableObject paintableObject;
     private bool aimInsideMask = false;
-
+    private bool isInPaintSpace = false;
     private bool canToggleOnWall = true;
 
     private void Awake()
@@ -61,21 +62,29 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        if (paintableObject != null)
+        {
+            
+            isInPaintSpace = paintableObject.IsInPaintSpace;
+            Debug.Log("PM body" + isInPaintSpace);
+        }
+
         foreach (PaintableObject po in paintableObjectsList)
         {
             if (po.IsAimInsideSpriteMask(aimMovement.CurrentAim))
             {
                 aimInsideMask = true;
-                //Debug.Log("PM-Aim is inside sprite mask of " + po.gameObject.name);
+               // Debug.Log("PM-Aim is inside sprite mask of " + po.gameObject.name);
                 break;
             }
             else
             {
                 aimInsideMask = false;
-                // Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
+                //Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
             }
         }
+
+        
 
         if (mainCamera != null)
         {
@@ -133,33 +142,33 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogWarning("No PaintableObject scripts found in the scene.");
                 return;
             }
-
-          
-
-            if (aimInsideMask)
-            {
-                OnWall = !OnWall;
-                GameManager.Instance.OnWall = OnWall;
-                if (OnWall)
+            
+                // Now use isInPaintSpace in your condition
+                if (aimInsideMask && isInPaintSpace)
                 {
-                    // Set the player's position to match the aim's X-axis position
-                    Vector3 newPosition = transform.position;
-                    newPosition.x = aimMovement.CurrentAim.x;
-                    transform.position = newPosition;
+                    
+                    OnWall = !OnWall;
+                    GameManager.Instance.OnWall = OnWall;
+                    if (OnWall)
+                    {
+                        // Set the player's position to match the aim's X-axis position
+                        Vector3 newPosition = transform.position;
+                        newPosition.x = aimMovement.CurrentAim.x;
+                        transform.position = newPosition;
 
-                    if (playerSpriteRenderer != null)
-                        playerSpriteRenderer.enabled = false;
-                    rb.velocity = Vector2.zero;
+                        if (playerSpriteRenderer != null)
+                            playerSpriteRenderer.enabled = false;
+                        rb.velocity = Vector2.zero;
+                    }
+                    else
+                    {
+                        if (playerSpriteRenderer != null)
+                            playerSpriteRenderer.enabled = true;
+                    }
+                    StartCoroutine(ToggleCooldown());
+                    return;
                 }
-                else
-                {
-                    if (playerSpriteRenderer != null)
-                        playerSpriteRenderer.enabled = true;
-                }
-                StartCoroutine(ToggleCooldown());
-                return;
-            }
-
+            
             Debug.Log("Cannot set OnWall: Aim is not inside the sprite mask of any PaintableObject.");
         }
     }

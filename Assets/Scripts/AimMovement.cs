@@ -177,24 +177,20 @@ public class AimMovement : MonoBehaviour
         
         Vector2 aimMoveVector = Vector2.zero; // Define aimMoveVector outside of the if-else blocks
 
-        if (currentPaintableObject != null && currentPaintableObject.OnWallArea != null)
-        {
-            // If inside a paintable object's paint space, limit movement within the painted area
-            desiredPosition = LimitMovementWithinOnWallArea(aimRb.position, aimMoveVector);
-            // Other code...
-        }
-        else if (playerMovement != null && playerMovement.OnWall)
+        if (playerMovement != null && playerMovement.OnWall)
         {
             // If on a wall, calculate movement based on the left stick (Movement)
             aimMoveVector = input.Player.Movement.ReadValue<Vector2>();
             desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance;
-           // Debug.Log("Calculated Movement based on Left Stick: " + desiredPosition);
+            Debug.Log("Calculated Movement based on Left Stick: " + desiredPosition);
         }
         else
         {
             // If outside or not on a wall, use the default movement logic with the right stick (Aim)
             Vector2 playerMoveVector = input.Player.Aim.ReadValue<Vector2>();
             desiredPosition = (Vector2)playerRb.position + playerMoveVector * maxDistance;
+
+            //Debug.Log("AM" + CurrentAim);
             // Other code...
         }
 
@@ -202,71 +198,11 @@ public class AimMovement : MonoBehaviour
         aimRb.MovePosition(Vector2.Lerp(aimRb.position, desiredPosition, smoothing * Time.fixedDeltaTime * aimspeed));
         CurrentAim = aimRb.position;
 
+       
         Animate();
     }
 
-
-
-   private Vector2 LimitMovementWithinOnWallArea(Vector2 currentPos, Vector2 aimMoveVector)
-{
-    Vector2 clampedPosition = currentPos;
-
-    if (currentPaintableObject != null && currentPaintableObject.OnWallArea != null)
-    {
-        // Get the polygon path of the OnWallArea collider
-        Vector2[] localPolygonPath = currentPaintableObject.OnWallArea.GetPath(0);
-        
-        // Convert the local polygon points to world space
-        Vector2[] worldSpacePolygonPath = new Vector2[localPolygonPath.Length];
-        for (int i = 0; i < localPolygonPath.Length; i++)
-        {
-            worldSpacePolygonPath[i] = currentPaintableObject.OnWallArea.transform.TransformPoint(localPolygonPath[i]);
-        }
-
-        // Check if the aimRb position is inside the OnWallArea polygon collider
-        bool insidePolygon = IsInsidePolygon(currentPos, worldSpacePolygonPath);
-
-        // Debug if the aimRb is inside or outside the OnWallArea
-        Debug.Log("Is aim inside OnWallArea: " + insidePolygon);
-
-        // If the aim is inside the OnWallArea, limit movement within it
-        if (insidePolygon)
-                clampedPosition += aimMoveVector;
-
-        {
-            clampedPosition.x = Mathf.Clamp(clampedPosition.x, currentPaintableObject.OnWallArea.bounds.min.x, currentPaintableObject.OnWallArea.bounds.max.x);
-            clampedPosition.y = Mathf.Clamp(clampedPosition.y, currentPaintableObject.OnWallArea.bounds.min.y, currentPaintableObject.OnWallArea.bounds.max.y);
-        }
-    }
-
-    return clampedPosition;
-}
-
-
-
-
-
-    // Helper method to check if a point is inside a polygon
-    private bool IsInsidePolygon(Vector2 point, Vector2[] polygon)
-    {
-        bool inside = false;
-        int j = polygon.Length - 1;
-        for (int i = 0; i < polygon.Length; j = i++)
-        {
-           // Debug.Log("Polygon Points: " + polygon[i] + ", " + polygon[j]);
-            // Check if the point is inside the current edge of the polygon
-            if (((polygon[i].y <= point.y && point.y < polygon[j].y) || (polygon[j].y <= point.y && point.y < polygon[i].y)) &&
-                (point.x < (polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x))
-            {
-                inside = !inside;
-            }
-        }
-
-        // Log the final result of the inside check
-       Debug.Log("Point Inside Polygon: " + inside);
-
-        return inside;
-    }
+   
 
 
 
