@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public bool Alerted { get; private set; } = false;
 
     private List<PaintableObject> paintableObjectsList;
-    private PaintableObject paintableObject;
+    public PaintableObject paintableObject;
     private bool aimInsideMask = false;
     private bool isInPaintSpace = false;
     private bool canToggleOnWall = true;
@@ -62,11 +62,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (paintableObject != null)
+        if (paintableObject)
         {
             
             isInPaintSpace = paintableObject.IsInPaintSpace;
             Debug.Log("PM body" + isInPaintSpace);
+        }
+        else
+        {
+            isInPaintSpace = false;
         }
 
         foreach (PaintableObject po in paintableObjectsList)

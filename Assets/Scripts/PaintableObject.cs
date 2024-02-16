@@ -71,6 +71,7 @@ public class PaintableObject : MonoBehaviour
             // Set IsInPaintSpace to true when the player enters the paintSpace collider
             IsInPaintSpace = true;
             Debug.Log("PO-paintspace" + IsInPaintSpace);
+            other.gameObject.GetComponent<PlayerMovement>().paintableObject = this;
         }
 
     }
@@ -85,6 +86,8 @@ public class PaintableObject : MonoBehaviour
             // Set IsInPaintSpace to false when the player exits the paintSpace collider
             IsInPaintSpace = false;
            Debug.Log("PO-paintspace NOT" + IsInPaintSpace);
+
+           
         }
 
     }

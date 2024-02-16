@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Animation_body : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class Animation_body : MonoBehaviour
     private AimMovement aimMovement;
     private SpriteRenderer spriteRenderer;
     private Animator bodyAnimator;
-
+    public UnityEvent myevent;
     [SerializeField] private GameObject idleFront; // Assign your idle sprite in the Inspector
     [SerializeField] private GameObject RB_Arm; // Assign your north-east facing sprite in the Inspector
     [SerializeField] private GameObject RF_Arm; // Assign your south-east facing sprite in the Inspector
@@ -22,7 +23,7 @@ public class Animation_body : MonoBehaviour
     [SerializeField] private GameObject IK_LB;
 
     private GameObject _IK = null;
-    private float speed = 1f;
+    private float speed = 2f;
     private Vector2 currentAim;
     private bool OnWall;
 
