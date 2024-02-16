@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
         {
             
             isInPaintSpace = paintableObject.IsInPaintSpace;
-            Debug.Log("PM body" + isInPaintSpace);
+            //Debug.Log("PM body" + isInPaintSpace);
         }
         else
         {

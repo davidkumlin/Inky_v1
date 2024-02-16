@@ -4,23 +4,105 @@ using UnityEngine;
 
 public class En_Bee : Enemy
 {
-    public string test2;
+    [SerializeField] SpriteRenderer gfx;
+    [SerializeField] Sprite N_sprite; // North
+    [SerializeField] Sprite E_sprite; // East
+    [SerializeField] Sprite S_sprite; // South
+    [SerializeField] Sprite W_sprite; // West
 
-    protected override void Attack()
-    {
-        Debug.Log("Attack");
-    }
+    [SerializeField] SpriteRenderer reactionFX; // Reaction sprite
+    [SerializeField] Sprite react_chase;
+    [SerializeField] Sprite react_confused;
+    public Transform unitPos;
 
     protected override void Start()
     {
         speed = 10;
-        Debug.Log("bee start");
+        originalSpeed = speed; // Store the original speed
+        health = 50;
         base.Start();
+        PatrolUnit = true;
+        GuardUnit = false;
+        Chasebool = false;
+        if (PatrolUnit)
+        {
+            Debug.Log("Bee is Patrolunit");
+        }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void FixedUpdate()
     {
-        Chase();
+        //Debug.Log(speed);
+        // Update sprite based on movement direction
+        UpdateSprite();
+        UpdateReaction();
+    }
+
+    protected override void Chase()
+    {
+        // Call the base Chase method from the Enemy class
+        base.Chase();
+        speed = 15;
+       
+
+    }
+    protected override void Attack()
+    {
+        //Debug.Log("Bee_Attack");
+    }
+    private void UpdateReaction()
+    {
+        Sprite fxSprite = null;
+
+        // Assign sprite based on conditions
+        if (Chasebool)
+        {
+            fxSprite = react_chase;
+            Debug.Log("Updating reaction to chase");
+        }
+        else
+        {
+            fxSprite = null; // No reaction sprite if not chasing
+        }
+
+        // Set the reaction sprite
+        reactionFX.sprite = fxSprite;
+    }
+
+    private void UpdateSprite()
+    {
+        // Get the velocity of the unit
+        Vector2 velocity = unitRb.velocity;
+
+        // Determine the magnitude of the X and Y components
+        float xMagnitude = Mathf.Abs(velocity.x);
+        float yMagnitude = Mathf.Abs(velocity.y);
+
+        // Set the default sprite
+        Sprite newSprite = null;
+
+        // Check if the movement is primarily in the north or south direction
+        if (yMagnitude > xMagnitude)
+        {
+            if (velocity.y > 0)
+                newSprite = N_sprite; // North
+            else
+                newSprite = S_sprite; // South
+        }
+        // Otherwise, check if the movement is primarily in the east or west direction
+        else if (xMagnitude > yMagnitude)
+        {
+            if (velocity.x > 0)
+                newSprite = E_sprite; // East
+            else
+                newSprite = W_sprite; // West
+        }
+
+        // Set the sprite
+        if (newSprite != null)
+        {
+            // Assuming your En_Bee class has a SpriteRenderer component
+            gfx.sprite = newSprite;
+        }
     }
 }
-

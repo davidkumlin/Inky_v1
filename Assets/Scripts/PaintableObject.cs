@@ -63,14 +63,14 @@ public class PaintableObject : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Entered Trigger: " + other.gameObject.name);
+        //Debug.Log("Entered Trigger: " + other.gameObject.name);
 
         // Check if the entering collider is either the player or the paintSpace
         if (other.CompareTag("Player") || other == paintSpace)
         {
             // Set IsInPaintSpace to true when the player enters the paintSpace collider
             IsInPaintSpace = true;
-            Debug.Log("PO-paintspace" + IsInPaintSpace);
+            //Debug.Log("PO-paintspace" + IsInPaintSpace);
             other.gameObject.GetComponent<PlayerMovement>().paintableObject = this;
         }
 
@@ -85,7 +85,7 @@ public class PaintableObject : MonoBehaviour
         {
             // Set IsInPaintSpace to false when the player exits the paintSpace collider
             IsInPaintSpace = false;
-           Debug.Log("PO-paintspace NOT" + IsInPaintSpace);
+           //Debug.Log("PO-paintspace NOT" + IsInPaintSpace);
 
            
         }
