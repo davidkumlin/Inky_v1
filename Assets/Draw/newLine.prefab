@@ -49,7 +49,7 @@ MonoBehaviour:
   _renderer: {fileID: 1805787267634719971}
   _collider: {fileID: 1572085484437494436}
   _particleSystem: {fileID: 5836339947121350392, guid: e0884e38da5123a4b90fb04ef90c2dcd, type: 3}
-  lineWidth: 0.7
+  lineWidth: 0.3
 --- !u!120 &1805787267634719971
 LineRenderer:
   serializedVersion: 2

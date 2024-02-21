@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 50
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -506,7 +506,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      printa_hands_14: -166530003
+      printa_hands_11: 1860216680
       printa_hands_0: 2077579866
       printa_hands_6: -473134439
       printa_hands_13: -1982849383
@@ -518,12 +518,12 @@ TextureImporter:
       printa_hands_2: -996000232
       printa_hands_5: 265993470
       printa_hands_16: 1629722760
+      printa_hands_8: 2095811762
       printa_hands_17: 523836374
       printa_hands_4: -702713296
       printa_hands_1: -1934221366
-      printa_hands_8: 2095811762
       printa_hands_3: -2091847231
-      printa_hands_11: 1860216680
+      printa_hands_14: -166530003
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

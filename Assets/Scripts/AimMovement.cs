@@ -13,9 +13,10 @@ public class AimMovement : MonoBehaviour
     [SerializeField] Rigidbody2D playerRb; // Reference to the player's Rigidbody2D
     public Vector2 CurrentAim; // Make currentAim accessible and assignable outside the script
     private Vector2 lastValidPosition; // Store the last valid position of the aim
-
-
-
+    private Vector2 startingLocalPosition;
+    private Vector2 IK_pos;
+    private Vector2 lastIKPosition;
+    private Animation_body aniBody;
     //Controlls over the feeling
     [SerializeField] private float maxDistance = 5f; // Maximum distance the aim can move away from the body
     [SerializeField] public float smoothing = 0.1f; // Smoothing factor
@@ -48,12 +49,23 @@ public class AimMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         aimAnimator = GetComponent<Animator>();
         playerMovement = GetComponentInParent<PlayerMovement>();
+        aniBody = GetComponentInParent<Animation_body>();
     }
     private void Start()
     {
+        if (aniBody != null && aniBody._IK_pos != null)
+        {
+            // Set IK_pos using the local position of _IK
+            IK_pos = aniBody._IK_pos;
+        }
+        else
+        {
+            Debug.LogError("IK transform or Animation_body component is missing!");
+        }
 
-
-        GameManager.OnWallChanged += OnWallStatus;
+       
+    GameManager.OnWallChanged += OnWallStatus;
+        startingLocalPosition = aimRb.transform.localPosition;
 
         if (playerRb == null || aimRb == null)
         {
@@ -174,7 +186,7 @@ public class AimMovement : MonoBehaviour
 
         Vector2 desiredPosition;
 
-        
+
         Vector2 aimMoveVector = Vector2.zero; // Define aimMoveVector outside of the if-else blocks
 
         if (playerMovement != null && playerMovement.OnWall)
@@ -182,14 +194,14 @@ public class AimMovement : MonoBehaviour
             // If on a wall, calculate movement based on the left stick (Movement)
             aimMoveVector = input.Player.Movement.ReadValue<Vector2>();
             desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance;
-            Debug.Log("Calculated Movement based on Left Stick: " + desiredPosition);
+           // Debug.Log("Calculated Movement based on Left Stick: " + desiredPosition);
         }
         else
         {
             // If outside or not on a wall, use the default movement logic with the right stick (Aim)
             Vector2 playerMoveVector = input.Player.Aim.ReadValue<Vector2>();
             desiredPosition = (Vector2)playerRb.position + playerMoveVector * maxDistance;
-
+            aimMoveVector = aimRb.transform.localPosition;
             //Debug.Log("AM" + CurrentAim);
             // Other code...
         }
@@ -198,12 +210,18 @@ public class AimMovement : MonoBehaviour
         aimRb.MovePosition(Vector2.Lerp(aimRb.position, desiredPosition, smoothing * Time.fixedDeltaTime * aimspeed));
         CurrentAim = aimRb.position;
 
-       
+
         Animate();
     }
 
-   
 
+
+
+    // Method to update the last position of the IK target
+    public void UpdateLastIKPosition(Vector2 position)
+    {
+        lastIKPosition = position;
+    }
 
 
 

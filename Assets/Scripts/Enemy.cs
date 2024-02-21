@@ -82,7 +82,7 @@ public abstract class Enemy : MonoBehaviour
                 Debug.DrawLine(transform.position, hit.point, Color.red);
 
                 // Print the name of the collider hit
-                Debug.Log("Hit collider: " + hit.collider.name);
+                //Debug.Log("Hit collider: " + hit.collider.name);
             }
         
             //Debug.Log("Layer mask value: " + LayerMask.GetMask("Obstacle"));

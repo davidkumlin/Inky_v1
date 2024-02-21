@@ -10,10 +10,16 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 moveVector { get; private set; } = Vector2.zero;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private Vector3 cameraOffset;
+
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private AimMovement aimMovement;
     [SerializeField] public float maxDistance = 5f;
     [SerializeField] private SpriteRenderer playerSpriteRenderer;
+    
+
+    
+
     //For the ON WALL mechanics
     public bool OnWall { get; private set; } = false;
     public bool InHiding { get; private set; } = false;
@@ -34,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         GameManager.OnWallChanged += OnWallStatus;
-
+        mainCamera = Camera.main;
 
         // Get all PaintableObject scripts in the scene
         PaintableObject[] allPaintableObjects = FindObjectsOfType<PaintableObject>();
@@ -92,9 +98,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (mainCamera != null)
         {
-            Vector3 cameraPosition = mainCamera.transform.position;
-            cameraPosition.x = transform.position.x;
-            cameraPosition.y = transform.position.y;
+            Vector3 cameraPosition = transform.position + cameraOffset;
+            cameraPosition.z = mainCamera.transform.position.z; // Keep the same z position as the camera
             mainCamera.transform.position = cameraPosition;
         }
 
