@@ -8,7 +8,7 @@ public abstract class Enemy : MonoBehaviour
     protected float originalSpeed;
     protected float health;
     PlayerMovement playref = null;
-    
+    [SerializeField] private GameObject inky;
     [SerializeField] Transform player;
     public Rigidbody2D unitRb;
 
@@ -20,17 +20,20 @@ public abstract class Enemy : MonoBehaviour
     protected bool PatrolUnit;
     protected bool GuardUnit;
 
-    [SerializeField] private float lineOfSightDistance = 25f; // Maximum distance of line of sight
-    [SerializeField] private Color lineOfSightColor = Color.red; // Color of line of sight gizmo
+    private float DistanceToPlayer; // how far away is the player
+    [SerializeField] private float ChaseDistance = 10f;
 
     protected bool OnWall;
     protected bool Chasebool;
-    
+    protected bool Confusedbool;
 
+    private bool shouldIgnoreCollisions = false;
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        GameManager.OnWallChanged += OnWallStatus;
+
         originalSpeed = speed; // Store the original speed
 
         GameObject playerObject = GameObject.FindWithTag("Player");
@@ -59,61 +62,41 @@ public abstract class Enemy : MonoBehaviour
     }
     void Update()
     {
-        
+      
 
-        // Check for line of sight if not on wall
-        if (!OnWall)
+        Vector2 directionToPlayer = playref.transform.position - transform.position;
+        DistanceToPlayer = directionToPlayer.magnitude; // Calculate distance to player
+        //Debug.Log(DistanceToPlayer); // Log the distance for debugging purposes
+        Debug.DrawRay(transform.position, directionToPlayer.normalized * DistanceToPlayer, Color.red); // Draw a debug ray
+
+        // Check if the distance to the player is within the chase distance
+        if (DistanceToPlayer < ChaseDistance)
         {
-            // Define the direction towards the player
-            Vector2 directionToPlayer = playref.transform.position - transform.position;
-
-            // Cast a ray towards the player
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, lineOfSightDistance, LayerMask.GetMask("Obstacle"));
-            if (hit.collider != null)
+            if (!Confusedbool)
             {
-                // Check if the hit collider is the "Bee" collider
-                if (hit.collider.name == "Bee")
-                {
-                    // Ignore collisions with the "Bee" collider
-                    Physics2D.IgnoreCollision(hit.collider, GetComponent<Collider2D>());
-                }
-
-                // Debug the hit point
-                Debug.DrawLine(transform.position, hit.point, Color.red);
-
-                // Print the name of the collider hit
-                //Debug.Log("Hit collider: " + hit.collider.name);
+                Chase();
             }
-        
-            //Debug.Log("Layer mask value: " + LayerMask.GetMask("Obstacle"));
-            // Draw the line of sight gizmo
-            Debug.DrawLine(transform.position, transform.position + (Vector3)directionToPlayer.normalized * lineOfSightDistance, lineOfSightColor);
+            
 
-            // Check if the ray hits the player
-            if (hit.collider != null && hit.collider.CompareTag("Player"))
-            {
-                // Check if the player is within range
-                if (Vector2.Distance(playref.transform.position, transform.position) < lineOfSightDistance)
-                {
-                    Chase();
-                }
-               
-            }
-            else
-            {
-                Patrol();
-                //Debug.Log("Patroling");
-            }
+        }
+        else
+        {
+            // If the player is out of range, continue patrolling
+            Patrol();
         }
     }
-        private void OnWallStatus(bool OnWall)
+
+    private void OnWallStatus(bool OnWall)
     {
         this.OnWall = OnWall;
-        Debug.Log("EM" + OnWall);
+        Debug.Log("ENemy " + OnWall);
 
     }
     protected virtual void Patrol()
     {
+        Confusedbool = false;
+        speed = originalSpeed;
+
         if (patrolpath == null)
         {
             Debug.LogError("En_patrolpath component not found on unitPath GameObject.");
@@ -149,13 +132,48 @@ public abstract class Enemy : MonoBehaviour
 
             // Move the bee towards the player using velocity
             unitRb.velocity = directionToPlayer * speed;
+            if (DistanceToPlayer < 3)
+            {
+                if (!OnWall)
+                {
+                    Attack();
+                }
+                
+            }
+            else if (OnWall)
+            {
+                Confused();
+            }
         }
 
 
-        Attack();
+
     }
 
-    protected abstract void Attack();
+    protected virtual void Attack()
+    {
+
+    }
+
+    protected virtual void Confused()
+    {
+        Chasebool = false;
+        Confusedbool = true;
+        Vector2 directionToPlayer = (playref.transform.position - transform.position).normalized;
+        unitRb.velocity = -directionToPlayer * speed;
+        if (DistanceToPlayer > ChaseDistance)
+        {
+           ToggleCooldown();
+           Patrol();
+        }
+
+
+    }
+
+    private IEnumerator ToggleCooldown()
+    {
+        yield return new WaitForSeconds(2f);
+    }
 }
 
 

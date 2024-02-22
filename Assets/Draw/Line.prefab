@@ -50,7 +50,7 @@ MonoBehaviour:
   _renderer: {fileID: 5154054897287760296}
   _collider: {fileID: 0}
   _particleSystem: {fileID: 0}
-  lineWidth: 1
+  lineWidth: 13.3
 --- !u!120 &5154054897287760296
 LineRenderer:
   serializedVersion: 2

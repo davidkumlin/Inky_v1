@@ -27,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
 
     private List<PaintableObject> paintableObjectsList;
     public PaintableObject paintableObject;
+    public PaintableObject ActiveWall;
+
     private bool aimInsideMask = false;
     private bool isInPaintSpace = false;
     private bool canToggleOnWall = true;
@@ -62,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnWallStatus(bool OnWall)
     {
         this.OnWall = OnWall;
-        Debug.Log("PM" + OnWall);
+        //Debug.Log("PM" + OnWall);
 
     }
 
@@ -84,7 +86,9 @@ public class PlayerMovement : MonoBehaviour
             if (po.IsAimInsideSpriteMask(aimMovement.CurrentAim))
             {
                 aimInsideMask = true;
-               // Debug.Log("PM-Aim is inside sprite mask of " + po.gameObject.name);
+                //Debug.Log("PM-Aim is inside sprite mask of " + po.gameObject.name);
+                ActiveWall = po;
+                Debug.Log(ActiveWall + po.name);
                 break;
             }
             else

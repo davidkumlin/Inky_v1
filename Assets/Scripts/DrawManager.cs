@@ -10,6 +10,7 @@ public class DrawManager : MonoBehaviour
     public const float RESOLUTION = .1f;
     private GameObject currentLine;
     private AimMovement aimMovement;
+    private PlayerMovement playerMovement;
     //private PaintableObject paintableObject; // Reference to the PaintableObject script
     private List<PaintableObject> paintableObjects = new List<PaintableObject>(); // List to store all PaintableObject instances
     private CustomInput input;
@@ -19,10 +20,12 @@ public class DrawManager : MonoBehaviour
     //bool isInsideMask = paintableObject.IsAimInsideSpriteMask(aimPosition, spriteMask);
     // Public bool to track if spraying is active
     public bool ActiveSpray { get; private set; } = false;
+    public float sDamage;
 
     void Start()
     {
         aimMovement = FindObjectOfType<AimMovement>();
+        playerMovement = FindObjectOfType<PlayerMovement>();
         // paintableObject = FindObjectOfType<PaintableObject>(); // Assign the PaintableObject reference
         // Find all PaintableObject instances in the scene and add them to the list
         PaintableObject[] allPaintableObjects = FindObjectsOfType<PaintableObject>();
@@ -41,6 +44,7 @@ public class DrawManager : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(sDamage);
         if (aimMovement != null && input.Player.Spray.ReadValue<float>() > 0.1f)
         {
             Vector2 aimPos = aimMovement.CurrentAim;
@@ -64,6 +68,7 @@ public class DrawManager : MonoBehaviour
                     currentLine.GetComponent<Line>().SetPosition(aimPos);
                     // Set ActiveSpray to true when spraying starts
                     ActiveSpray = true;
+                    SprayDamage();
                 }
                 else
                 {
@@ -81,10 +86,37 @@ public class DrawManager : MonoBehaviour
         }
     }
 
+    void SprayDamage()
+    {
+        Line.lineDamage = sDamage;
+
+        // Check if aimMovement is not null
+        if (playerMovement != null)
+        {
+            // Access the currentPaintableObject from the playerMovement
+            PaintableObject paintableObject = playerMovement.ActiveWall.GetComponent<PaintableObject>();
+
+
+            // Check if paintableObject is not null
+            if (paintableObject != null)
+            {
+                // Apply damage to the paintableObject
+                playerMovement.ActiveWall.TakeDamage(Line.lineDamage);
+            }
+            else
+            {
+                Debug.LogWarning("No current paintable object set!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("AimMovement script or GameObject reference not set!");
+        }
+    }
 
 
 
-    private void OnSprayStarted(InputAction.CallbackContext context)
+private void OnSprayStarted(InputAction.CallbackContext context)
     {
         // Ensure there is no existing current line when starting a new one
         if (currentLine != null)

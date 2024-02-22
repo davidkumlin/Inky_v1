@@ -36,7 +36,7 @@ public class AimMovement : MonoBehaviour
 
     private List<PaintableObject> paintableObjectsList;
     // New field to store the current PaintableObject the aim is inside
-    private PaintableObject currentPaintableObject;
+    public PaintableObject currentPaintableObject;
 
    
 
@@ -92,7 +92,7 @@ public class AimMovement : MonoBehaviour
     void OnWallStatus(bool OnWall)
     {
         this.OnWall = OnWall;
-        Debug.Log("AM" + OnWall);
+        //Debug.Log("AM" + OnWall);
         if (OnWall == true)
         {
             Collider2D aimCollider = GetComponent<Collider2D>();
@@ -127,7 +127,7 @@ public class AimMovement : MonoBehaviour
         }
         // Variable to check if the aim is inside any sprite mask
         //Debug.Log("Am/Update" + aimInsideMask);
-        //Debug.Log(currentPaintableObject);
+       // Debug.Log(currentPaintableObject);
 
     }
     public void SetPlayerMovement(PlayerMovement pm)
@@ -242,7 +242,7 @@ public class AimMovement : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter2D(Collider2D other)
+   /* private void OnTriggerEnter2D(Collider2D other)
     {
         PaintableObject paintableObject = other.GetComponent<PaintableObject>();
         if (paintableObject != null)
@@ -262,7 +262,7 @@ public class AimMovement : MonoBehaviour
             currentPaintableObject = null;
         }
     }
-
+   */
     private void OnAimPerformed(InputAction.CallbackContext value)
     {
         // Read the raw value of the right stick if not on the wall

@@ -11,9 +11,13 @@ public class PaintableObject : MonoBehaviour
     public SpriteMask spriteMask;
     public Texture2D maskTexture;
     [SerializeField] public Collider2D paintSpace;
-   
+    [SerializeField] private float PaintHP;
+    [SerializeField] public bool fullyBombed = false;
+    private GameObject self;
 
-    
+
+
+
 
     // Public property to check if the player is in the paint space
     public bool IsInPaintSpace { get; private set; }
@@ -25,7 +29,7 @@ public class PaintableObject : MonoBehaviour
 
     void Start()
     {
-
+        
         // Find all PaintableObject scripts at runtime
         PaintableObject[] paintableObjects = FindObjectsOfType<PaintableObject>();
 
@@ -61,6 +65,19 @@ public class PaintableObject : MonoBehaviour
 
 
 
+
+    public void TakeDamage(float lineDamage)
+    {
+        Debug.Log(PaintHP);
+        PaintHP -= Line.lineDamage; // Subtract the line width (damage) from PaintHP
+        if (PaintHP <= 0) // Check if PaintHP is less than or equal to zero
+        {
+            PaintHP = 0; // Ensure HP doesn't go negative
+            fullyBombed = true; // Set fullyBombed to true
+            Debug.Log("fullyBombed!");
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         //Debug.Log("Entered Trigger: " + other.gameObject.name);
@@ -72,6 +89,8 @@ public class PaintableObject : MonoBehaviour
             IsInPaintSpace = true;
             //Debug.Log("PO-paintspace" + IsInPaintSpace);
             other.gameObject.GetComponent<PlayerMovement>().paintableObject = this;
+            
+            
         }
 
     }

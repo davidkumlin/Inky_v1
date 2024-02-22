@@ -24,7 +24,7 @@ public class Animation_body : MonoBehaviour
 
     private GameObject _IK = null;
     public Vector2 _IK_pos;
-    private float speed = 2f;
+    private float speed = 3f;
     private Vector2 currentAim;
     private bool OnWall;
 
@@ -65,7 +65,7 @@ public class Animation_body : MonoBehaviour
     void OnWallStatus(bool OnWall)
     {
         this.OnWall = OnWall;
-        Debug.Log("AM" + OnWall);
+        //Debug.Log("AM" + OnWall);
        
     }
     private void FixedUpdate()
@@ -86,7 +86,7 @@ public class Animation_body : MonoBehaviour
         }
         else
         {
-            Debug.Log("playerMovement component found");
+           // Debug.Log("playerMovement component found");
         }
 
         if (aimMovement != null && aimMovement.CurrentAim != null)

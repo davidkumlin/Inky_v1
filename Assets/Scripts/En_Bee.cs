@@ -17,13 +17,15 @@ public class En_Bee : Enemy
 
     protected override void Start()
     {
-        speed = 10;
+
+        speed = 7;
         originalSpeed = speed; // Store the original speed
         health = 50;
         base.Start();
         PatrolUnit = true;
         GuardUnit = false;
         Chasebool = false;
+        Confusedbool = false;
         if (PatrolUnit)
         {
             Debug.Log("Bee is Patrolunit");
@@ -42,13 +44,19 @@ public class En_Bee : Enemy
     {
         // Call the base Chase method from the Enemy class
         base.Chase();
-        speed = 15;
-       
+        speed = 11;
+
 
     }
     protected override void Attack()
     {
-        //Debug.Log("Bee_Attack");
+        base.Attack();
+        Debug.Log("Bee_Attack");
+    }
+    protected override void Confused()
+    {
+        base.Confused();
+        speed = 2;
     }
     private void UpdateReaction()
     {
@@ -58,7 +66,12 @@ public class En_Bee : Enemy
         if (Chasebool)
         {
             fxSprite = react_chase;
-            Debug.Log("Updating reaction to chase");
+            //Debug.Log("Updating reaction to chase");
+        }
+        else if (Confusedbool)
+        {
+            fxSprite = react_confused;
+            Debug.Log("Updating reaction to confused");
         }
         else
         {

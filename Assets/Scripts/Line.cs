@@ -7,26 +7,32 @@ public class Line : MonoBehaviour
     [SerializeField] private LineRenderer _renderer;
     [SerializeField] private EdgeCollider2D _collider;
     [SerializeField] private ParticleSystem _particleSystem;
-    [SerializeField] private float lineWidth = 0.1f; // Adjust the default width as needed
+    [SerializeField] public float lineWidth = 1; // Default line width
+    public static float lineDamage; // Static variable to hold the line width
 
     private List<Vector2> _points = new List<Vector2>();
 
-   
+
     void Start()
     {
+        lineWidth = lineDamage;
+
         _collider.transform.position -= transform.position;
 
         // Set the initial width of the LineRenderer
         _renderer.startWidth = lineWidth;
         _renderer.endWidth = lineWidth;
 
+        
+        
     }
 
     void Update()
     {
-       
+        Debug.Log(lineDamage);
     }
 
+    
     public void SetPosition(Vector2 pos)
     {
 
