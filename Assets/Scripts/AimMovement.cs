@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Animations;
 
 public class AimMovement : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class AimMovement : MonoBehaviour
     [SerializeField] public float aimspeed = 5f; // Movement speed
 
     private Vector2 initialOffset; // Initial offset between player and aim
+    PositionConstraint aimPositionConstraint;
 
     //FX controlls
     private SpriteRenderer spriteRenderer;
@@ -50,6 +52,7 @@ public class AimMovement : MonoBehaviour
         aimAnimator = GetComponent<Animator>();
         playerMovement = GetComponentInParent<PlayerMovement>();
         aniBody = GetComponentInParent<Animation_body>();
+        aimPositionConstraint = GetComponent<PositionConstraint>();
     }
     private void Start()
     {
@@ -96,7 +99,8 @@ public class AimMovement : MonoBehaviour
         if (OnWall == true)
         {
             Collider2D aimCollider = GetComponent<Collider2D>();
-           aimCollider.enabled = true;
+            aimCollider.enabled = true;
+            
         }
         else
         {
@@ -117,12 +121,14 @@ public class AimMovement : MonoBehaviour
                 // If OnWall is true, set the animator trigger
                 aimAnimator.SetTrigger("OnWall");
                 aimAnimator.SetBool("OnWallBool", true);
+                aimPositionConstraint.constraintActive = true;
             }
             if (OnWall == false)
             {
                 // If OnWall is true, set the animator trigger
                 aimAnimator.SetTrigger("OnWall");
                 aimAnimator.SetBool("OnWallBool", false);
+                aimPositionConstraint.constraintActive = false;
             }
         }
         // Variable to check if the aim is inside any sprite mask

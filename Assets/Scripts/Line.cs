@@ -29,7 +29,7 @@ public class Line : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(lineDamage);
+      //  Debug.Log(lineDamage);
     }
 
     

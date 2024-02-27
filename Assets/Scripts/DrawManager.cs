@@ -24,6 +24,7 @@ public class DrawManager : MonoBehaviour
 
     void Start()
     {
+        
         aimMovement = FindObjectOfType<AimMovement>();
         playerMovement = FindObjectOfType<PlayerMovement>();
         // paintableObject = FindObjectOfType<PaintableObject>(); // Assign the PaintableObject reference
@@ -44,7 +45,7 @@ public class DrawManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(sDamage);
+       // Debug.Log(sDamage);
         if (aimMovement != null && input.Player.Spray.ReadValue<float>() > 0.1f)
         {
             Vector2 aimPos = aimMovement.CurrentAim;
