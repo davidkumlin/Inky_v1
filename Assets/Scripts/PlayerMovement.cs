@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine.Animations;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -22,8 +23,8 @@ public class PlayerMovement : MonoBehaviour
 
     //For the ON WALL mechanics
     public bool OnWall { get; private set; } = false;
-    public bool InHiding { get; private set; } = false;
-    public bool Alerted { get; private set; } = false;
+   
+    public PositionConstraint PlayerPositionConstraint;
 
     private List<PaintableObject> paintableObjectsList;
     public PaintableObject paintableObject;
@@ -37,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     {
         input = new CustomInput();
         aimMovement = GetComponentInChildren<AimMovement>();
+        PlayerPositionConstraint = GetComponent<PositionConstraint>();
     }
 
     private void Start()
@@ -79,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             isInPaintSpace = false;
+
         }
 
         foreach (PaintableObject po in paintableObjectsList)
@@ -88,12 +91,13 @@ public class PlayerMovement : MonoBehaviour
                 aimInsideMask = true;
                 //Debug.Log("PM-Aim is inside sprite mask of " + po.gameObject.name);
                 ActiveWall = po;
-                Debug.Log(ActiveWall + po.name);
+                //Debug.Log(ActiveWall + po.name);
                 break;
             }
             else
             {
                 aimInsideMask = false;
+                
                 //Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
             }
         }
@@ -111,11 +115,16 @@ public class PlayerMovement : MonoBehaviour
         {
             // Move the player normally
             rb.velocity = moveVector * moveSpeed;
+            PlayerPositionConstraint.constraintActive = false;
         }
         else
         {
             // Only move the player along the Y-axis while on the wall
             rb.velocity = new Vector2(moveVector.x * moveSpeed, 0);
+            
+
+
+
         }
     }
 
@@ -168,16 +177,11 @@ public class PlayerMovement : MonoBehaviour
                         Vector3 newPosition = transform.position;
                         newPosition.x = aimMovement.CurrentAim.x;
                         transform.position = newPosition;
-
-                        if (playerSpriteRenderer != null)
-                            playerSpriteRenderer.enabled = false;
-                        rb.velocity = Vector2.zero;
+                       
+                   
+                    rb.velocity = Vector2.zero;
                     }
-                    else
-                    {
-                        if (playerSpriteRenderer != null)
-                            playerSpriteRenderer.enabled = true;
-                    }
+                  
                     StartCoroutine(ToggleCooldown());
                     return;
                 }

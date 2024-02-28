@@ -26,6 +26,7 @@ public class En_Bee : Enemy
         GuardUnit = false;
         Chasebool = false;
         Confusedbool = false;
+        ChaseCall = false;
         if (PatrolUnit)
         {
             Debug.Log("Bee is Patrolunit");
@@ -45,7 +46,7 @@ public class En_Bee : Enemy
         // Call the base Chase method from the Enemy class
         base.Chase();
         speed = 11;
-
+        ChaseCall = true;
 
     }
     protected override void Attack()
@@ -56,7 +57,7 @@ public class En_Bee : Enemy
     protected override void Confused()
     {
         base.Confused();
-        speed = 2;
+        Chasebool = true;
     }
     private void UpdateReaction()
     {
@@ -66,9 +67,13 @@ public class En_Bee : Enemy
         if (Chasebool)
         {
             fxSprite = react_chase;
-            //Debug.Log("Updating reaction to chase");
+            Debug.Log("Updating reaction to chase");
         }
-        else if (Confusedbool)
+        else
+        {
+            fxSprite = null; // No reaction sprite if not chasing
+        }
+        if (Confusedbool)
         {
             fxSprite = react_confused;
             Debug.Log("Updating reaction to confused");

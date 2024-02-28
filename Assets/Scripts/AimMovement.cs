@@ -22,6 +22,7 @@ public class AimMovement : MonoBehaviour
     [SerializeField] private float maxDistance = 5f; // Maximum distance the aim can move away from the body
     [SerializeField] public float smoothing = 0.1f; // Smoothing factor
     [SerializeField] public float aimspeed = 5f; // Movement speed
+    public float OnWallSpeed = 1000f;
 
     private Vector2 initialOffset; // Initial offset between player and aim
     PositionConstraint aimPositionConstraint;
@@ -100,15 +101,30 @@ public class AimMovement : MonoBehaviour
         {
             Collider2D aimCollider = GetComponent<Collider2D>();
             aimCollider.enabled = true;
-            
+            aimPositionConstraint.constraintActive = true;
+            StartCoroutine(DisableConstraintWithDelay(0.5f)); // Adjust the delay as needed
+
         }
         else
         {
             Collider2D aimCollider = GetComponent<Collider2D>();
             aimCollider.enabled = false;
-            
+            aimPositionConstraint.constraintActive = false;
+           // playerMovement.transform.SetParent(null);
+
         }
     }
+
+    private IEnumerator DisableConstraintWithDelay(float delay)
+    {
+     
+        yield return new WaitForSeconds(delay);
+        //playerMovement.transform.SetParent(this.transform);
+    
+        aimPositionConstraint.constraintActive = false;
+
+    }
+
     private void Update()
     {
         if (playerMovement != null)
@@ -121,14 +137,21 @@ public class AimMovement : MonoBehaviour
                 // If OnWall is true, set the animator trigger
                 aimAnimator.SetTrigger("OnWall");
                 aimAnimator.SetBool("OnWallBool", true);
-                aimPositionConstraint.constraintActive = true;
+                //if distance to the player on the x is further away than 2,aimPositionConstraint.constraintActive = true; 
+                float distanceX = Mathf.Abs(playerMovement.transform.position.x - transform.position.x);
+
+                // Check if distance is further away than 2 units
+                if (distanceX > 2)
+                {
+                    
+                }
             }
             if (OnWall == false)
             {
                 // If OnWall is true, set the animator trigger
                 aimAnimator.SetTrigger("OnWall");
                 aimAnimator.SetBool("OnWallBool", false);
-                aimPositionConstraint.constraintActive = false;
+                
             }
         }
         // Variable to check if the aim is inside any sprite mask
@@ -199,7 +222,7 @@ public class AimMovement : MonoBehaviour
         {
             // If on a wall, calculate movement based on the left stick (Movement)
             aimMoveVector = input.Player.Movement.ReadValue<Vector2>();
-            desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance;
+            desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance * smoothing * Time.fixedDeltaTime * OnWallSpeed;
            // Debug.Log("Calculated Movement based on Left Stick: " + desiredPosition);
         }
         else
@@ -220,17 +243,11 @@ public class AimMovement : MonoBehaviour
         Animate();
     }
 
-
-
-
     // Method to update the last position of the IK target
     public void UpdateLastIKPosition(Vector2 position)
     {
         lastIKPosition = position;
     }
-
-
-
     private void Animate()
     {
         IsDrawing = drawManager.ActiveSpray;
@@ -247,28 +264,6 @@ public class AimMovement : MonoBehaviour
 
     }
 
-
-   /* private void OnTriggerEnter2D(Collider2D other)
-    {
-        PaintableObject paintableObject = other.GetComponent<PaintableObject>();
-        if (paintableObject != null)
-        {
-            // If the entering collider is a paintable object, set it as the current paintable object
-            currentPaintableObject = paintableObject;
-            Debug.Log("am" + currentPaintableObject);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        PaintableObject paintableObject = other.GetComponent<PaintableObject>();
-        if (paintableObject != null && paintableObject == currentPaintableObject)
-        {
-            // If the exiting collider is the current paintable object, reset the current paintable object
-            currentPaintableObject = null;
-        }
-    }
-   */
     private void OnAimPerformed(InputAction.CallbackContext value)
     {
         // Read the raw value of the right stick if not on the wall

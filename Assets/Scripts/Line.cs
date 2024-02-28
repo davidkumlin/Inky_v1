@@ -16,7 +16,7 @@ public class Line : MonoBehaviour
     void Start()
     {
         lineWidth = lineDamage;
-
+        
         _collider.transform.position -= transform.position;
 
         // Set the initial width of the LineRenderer

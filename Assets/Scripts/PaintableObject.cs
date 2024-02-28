@@ -68,7 +68,7 @@ public class PaintableObject : MonoBehaviour
 
     public void TakeDamage(float lineDamage)
     {
-        Debug.Log(PaintHP);
+       // Debug.Log(PaintHP);
         PaintHP -= Line.lineDamage; // Subtract the line width (damage) from PaintHP
         if (PaintHP <= 0) // Check if PaintHP is less than or equal to zero
         {

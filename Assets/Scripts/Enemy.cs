@@ -22,12 +22,15 @@ public abstract class Enemy : MonoBehaviour
 
     private float DistanceToPlayer; // how far away is the player
     [SerializeField] private float ChaseDistance = 10f;
+    [SerializeField] private float resetDistance = 5f;
 
     protected bool OnWall;
     protected bool Chasebool;
     protected bool Confusedbool;
 
     private bool shouldIgnoreCollisions = false;
+
+    public bool ChaseCall;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -89,7 +92,7 @@ public abstract class Enemy : MonoBehaviour
     private void OnWallStatus(bool OnWall)
     {
         this.OnWall = OnWall;
-        Debug.Log("ENemy " + OnWall);
+        //Debug.Log("ENemy " + OnWall);
 
     }
     protected virtual void Patrol()
@@ -122,8 +125,7 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void Chase()
     {
         //Debug.Log("EN_chasing");
-
-        Chasebool = true;
+        
         // Your existing implementation of Chase method
         if (playref != null)
         {
@@ -132,7 +134,7 @@ public abstract class Enemy : MonoBehaviour
 
             // Move the bee towards the player using velocity
             unitRb.velocity = directionToPlayer * speed;
-            if (DistanceToPlayer < 3)
+            if (DistanceToPlayer < 2)
             {
                 if (!OnWall)
                 {
@@ -140,7 +142,7 @@ public abstract class Enemy : MonoBehaviour
                 }
                 
             }
-            else if (OnWall)
+            if (OnWall)
             {
                 Confused();
             }
@@ -157,16 +159,36 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Confused()
     {
+        speed = 2;
         Chasebool = false;
         Confusedbool = true;
-        Vector2 directionToPlayer = (playref.transform.position - transform.position).normalized;
-        unitRb.velocity = -directionToPlayer * speed;
-        if (DistanceToPlayer > ChaseDistance)
+        // Get the next patrol point based on the current index
+        En_patrolpath.PathPoint nextPoint = patrolpath.GetNextPathPoint(currentIndex);
+
+        // Calculate direction towards the next patrol point
+        Vector2 direction = (nextPoint.Position - (Vector2)transform.position).normalized;
+
+        // Move the enemy towards the next patrol point
+        unitRb.velocity = direction * speed;
+
+        // Check if the enemy is very close to the next patrol point
+        if (Vector2.Distance(transform.position, nextPoint.Position) < 1f)
         {
-           ToggleCooldown();
-           Patrol();
+            // Update the current index to move to the next point
+            currentIndex = nextPoint.Index;
+        }
+        if (DistanceToPlayer > resetDistance)
+        {
+            Debug.Log("Return to patrol");
+           ReturnToPatrol();
         }
 
+
+    }
+    protected virtual void ReturnToPatrol()
+    {
+        ChaseCall = false;
+        ToggleCooldown();
 
     }
 

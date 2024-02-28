@@ -8,7 +8,7 @@ public class Animation_body : MonoBehaviour
     private PlayerMovement playerMovement; // Reference to the PlayerMovement script
     private AimMovement aimMovement;
     private SpriteRenderer spriteRenderer;
-    private Animator bodyAnimator;
+    private Animator animator;
     public UnityEvent myevent;
     [SerializeField] private GameObject idleFront; // Assign your idle sprite in the Inspector
     [SerializeField] private GameObject RB_Arm; // Assign your north-east facing sprite in the Inspector
@@ -28,11 +28,29 @@ public class Animation_body : MonoBehaviour
     private Vector2 currentAim;
     private bool OnWall;
 
+    private string currentState;
+    //Animation states
+    //idle
+    const string I_N = "I_N";
+    const string I_S = "I_S";
+    
+    //run
+    const string R_N = "R_N";
+    const string R_NW = "R_NW";
+    const string R_NE = "R_NE";
+    const string R_SW = "R_SW";
+    const string R_SE = "R_SE";
+    const string R_S = "R_S";
+    //roll
+    //FX
+    const string Splat = "Splat";
+
+
     private void Awake()
     {
         playerMovement = GetComponentInParent<PlayerMovement>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        bodyAnimator = GetComponent<Animator>();
+        
         if (playerMovement == null)
         {
             Debug.LogError("PlayerMovement component not found.");
@@ -61,6 +79,7 @@ public class Animation_body : MonoBehaviour
     private void Start()
     {
         GameManager.OnWallChanged += OnWallStatus;
+        animator = GetComponent<Animator>();
     }
     void OnWallStatus(bool OnWall)
     {
@@ -68,6 +87,8 @@ public class Animation_body : MonoBehaviour
         //Debug.Log("AM" + OnWall);
        
     }
+
+   
     private void FixedUpdate()
     {
         float step = speed * Time.deltaTime;
@@ -98,19 +119,11 @@ public class Animation_body : MonoBehaviour
             Vector3 currentAimLocal = _IK.transform.InverseTransformPoint(currentAim);
             _IK.transform.localPosition = Vector2.Lerp(_IK.transform.localPosition, currentAimLocal, step);
         }
-        // Debug logs for debugging purposes
-        // Debug.Log("IK Name: " + _IK.name);
-        //Debug.Log("Current Aim: " + currentAim);
-        Animate();
-    }
+       
 
-
-    private void Animate()
-    {
         if (OnWall == true)
         {
-            bodyAnimator.SetTrigger("Splat");
-            bodyAnimator.SetBool("OnWall", true);
+            ChangeAnimationState(Splat);
             RB_Arm.SetActive(false);
             RF_Arm.SetActive(false);
             LF_Arm.SetActive(false);
@@ -121,13 +134,10 @@ public class Animation_body : MonoBehaviour
         else if (playerMovement != null && !OnWall) // Check playerMovement first
         {
             Vector2 moveVector = playerMovement.moveVector; // Access moveVector from PlayerMovement script
-            idleFront.SetActive(true);
-            // Debug.Log("Move Vector: " + moveVector);
-            bodyAnimator.SetBool("OnWall", false);
-
+            
             if (moveVector.x > 0 && moveVector.y > 0) // Moving up and right (Northeast)
             {
-                bodyAnimator.SetTrigger("NorthEast"); //RB
+                ChangeAnimationState(R_NE); //RB
                 RB_Arm.SetActive(true);
                 RF_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
@@ -138,7 +148,7 @@ public class Animation_body : MonoBehaviour
             }
             else if (moveVector.x > 0) // Moving right
             {
-                bodyAnimator.SetTrigger("NorthEast"); //RB
+                ChangeAnimationState(R_SE); //RB
                 RB_Arm.SetActive(true);
                 RF_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
@@ -149,7 +159,7 @@ public class Animation_body : MonoBehaviour
             }
             else if (moveVector.x > 0 && moveVector.y < 0) // Moving down and right (Southeast)
             {
-                bodyAnimator.SetTrigger("SouthEast"); //RF
+                ChangeAnimationState(R_SE); //RF
                 RF_Arm.SetActive(true);
                 RB_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
@@ -160,7 +170,7 @@ public class Animation_body : MonoBehaviour
             }
             else if (moveVector.x < 0 && moveVector.y < 0) // Moving down and left (Southwest)
             {
-                bodyAnimator.SetTrigger("SouthWest"); //LF
+                ChangeAnimationState(R_SW); //LF
                 RF_Arm.SetActive(false);
                 RB_Arm.SetActive(false);
                 LF_Arm.SetActive(true);
@@ -171,7 +181,7 @@ public class Animation_body : MonoBehaviour
             }
             else if (moveVector.x < 0 && moveVector.y > 0)
             {
-                bodyAnimator.SetTrigger("NorthWest"); //LB
+                ChangeAnimationState(R_NW); //LB
                 RF_Arm.SetActive(false);
                 RB_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
@@ -182,7 +192,7 @@ public class Animation_body : MonoBehaviour
             }
             else if (moveVector.x < 0) // Moving left
             {
-                bodyAnimator.SetTrigger("NorthWest"); //LB
+                ChangeAnimationState(R_NW); //LB
                 RF_Arm.SetActive(false);
                 RB_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
@@ -191,9 +201,9 @@ public class Animation_body : MonoBehaviour
 
                 _IK = IK_LB;
             }
-            else
+            else 
             {
-                bodyAnimator.SetTrigger("IdleSouth");
+                ChangeAnimationState(I_S);
                 idleFront.SetActive(true);
                 RF_Arm.SetActive(false);
                 RB_Arm.SetActive(false);
@@ -207,6 +217,32 @@ public class Animation_body : MonoBehaviour
         {
             Debug.LogError("PlayerMovement script not found!");
             return; // Exit the method early
+        }
+    }
+    void ChangeAnimationState(string newState)
+    {
+        if (currentState == newState)
+        {
+            return;
+        }
+               
+
+        //play animation
+        animator.Play(newState);
+
+        currentState = newState;
+        Debug.Log(newState);
+    }
+    bool isAnimationPlaying(Animator animatorm, string stateName)
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName(stateName) &&
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
