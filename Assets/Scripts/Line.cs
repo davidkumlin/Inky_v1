@@ -7,32 +7,37 @@ public class Line : MonoBehaviour
     [SerializeField] private LineRenderer _renderer;
     [SerializeField] private EdgeCollider2D _collider;
     [SerializeField] private ParticleSystem _particleSystem;
-    [SerializeField] public float lineWidth = 1; // Default line width
+    public float lineWidth = 0.3f; // Default line width
+    
     public static float lineDamage; // Static variable to hold the line width
-
+    
     private List<Vector2> _points = new List<Vector2>();
 
-
+    public bool OnWall { get; private set; } = false;
     void Start()
     {
-        lineWidth = lineDamage;
-        
-        _collider.transform.position -= transform.position;
+        GameManager.OnWallChanged += OnWallStatus;
+       
 
         // Set the initial width of the LineRenderer
         _renderer.startWidth = lineWidth;
         _renderer.endWidth = lineWidth;
+    }
 
-        
-        
+
+    private void OnWallStatus(bool OnWall)
+    {
+        this.OnWall = OnWall;
+
     }
 
     void Update()
     {
-      //  Debug.Log(lineDamage);
+    
+        //  Debug.Log(lineDamage);
     }
 
-    
+
     public void SetPosition(Vector2 pos)
     {
 

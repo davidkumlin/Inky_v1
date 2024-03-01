@@ -14,6 +14,7 @@ public class En_Bee : Enemy
     [SerializeField] Sprite react_chase;
     [SerializeField] Sprite react_confused;
     public Transform unitPos;
+    
 
     protected override void Start()
     {
@@ -47,7 +48,7 @@ public class En_Bee : Enemy
         base.Chase();
         speed = 11;
         ChaseCall = true;
-
+        Debug.Log(ChaseCall);
     }
     protected override void Attack()
     {
@@ -57,7 +58,8 @@ public class En_Bee : Enemy
     protected override void Confused()
     {
         base.Confused();
-        Chasebool = true;
+        Chasebool = false;
+        
     }
     private void UpdateReaction()
     {

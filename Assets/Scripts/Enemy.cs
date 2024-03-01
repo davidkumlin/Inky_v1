@@ -30,7 +30,7 @@ public abstract class Enemy : MonoBehaviour
 
     private bool shouldIgnoreCollisions = false;
 
-    public bool ChaseCall;
+    public static bool ChaseCall { get; set; }
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -86,6 +86,8 @@ public abstract class Enemy : MonoBehaviour
         {
             // If the player is out of range, continue patrolling
             Patrol();
+            ChaseCall = false;
+            Debug.Log(ChaseCall);
         }
     }
 

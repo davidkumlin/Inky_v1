@@ -29,14 +29,26 @@ public class AimMovement : MonoBehaviour
 
     //FX controlls
     private SpriteRenderer spriteRenderer;
+    
     private Animator aimAnimator;
+    private string currentState;
+
+    const string Idle = "Idle";
+    const string OnWall_In = "OnWall_In";
+    const string OnWall_Idle = "OnWall_Idle";
+    const string OnWall_Alert = "OnWall_Alert";
+    const string OnWall_Hide = "OnWall_Hide";
+    const string OnWall_UnHide = "OnWall_UnHide";
+    const string OffWall = "OffWall";
+
+
     [SerializeField] private DrawManager drawManager;// Reference to DrawManager
     public bool IsDrawing { get; private set; } = false; // Property to expose IsDrawing
     public Sprite idleCrosshair;
 
     private PlayerMovement playerMovement; // Reference to PlayerMovement script
     private bool OnWall;
-
+    private bool ChaseCall;
     private List<PaintableObject> paintableObjectsList;
     // New field to store the current PaintableObject the aim is inside
     public PaintableObject currentPaintableObject;
@@ -124,7 +136,8 @@ public class AimMovement : MonoBehaviour
         aimPositionConstraint.constraintActive = false;
 
     }
-
+    private bool StayHidden = false;
+    private bool LastOnWall = false;
     private void Update()
     {
         if (playerMovement != null)
@@ -134,8 +147,9 @@ public class AimMovement : MonoBehaviour
 
             if (OnWall)
             {
+                LastOnWall = true;
                 // If OnWall is true, set the animator trigger
-                aimAnimator.SetTrigger("OnWall");
+                ChangeAnimationState("OnWall_IN");
                 aimAnimator.SetBool("OnWallBool", true);
                 //if distance to the player on the x is further away than 2,aimPositionConstraint.constraintActive = true; 
                 float distanceX = Mathf.Abs(playerMovement.transform.position.x - transform.position.x);
@@ -143,20 +157,47 @@ public class AimMovement : MonoBehaviour
                 // Check if distance is further away than 2 units
                 if (distanceX > 2)
                 {
-                    
+                    //something to lock the movement of the player 
                 }
+                if (Enemy.ChaseCall == true && !isAnimationPlaying(aimAnimator, "OnWall_Alert"))
+                {
+                    ChangeAnimationState("OnWall_Alert");
+                    if (!StayHidden && !isAnimationPlaying(aimAnimator, "OnWall_Hide"))
+                    {
+                        ChangeAnimationState("OnWall_Hide");
+                        if (!StayHidden && !isAnimationPlaying(aimAnimator, "OnWall_Hidden"))
+                        {
+                            ChangeAnimationState("OnWall_Hidden");
+                            StayHidden = true;
+                            if (Enemy.ChaseCall == false && !isAnimationPlaying(aimAnimator, "OnWall_UnHide"))
+                            {
+                                ChangeAnimationState("OnWall_UnHide");
+                                StayHidden = false;
+                            }
+                        }
+                    }
+
+                }
+
+
             }
-            if (OnWall == false)
+            else if (LastOnWall)
             {
-                // If OnWall is true, set the animator trigger
-                aimAnimator.SetTrigger("OnWall");
+                // If OnWall is false, set the animator trigger to Idle
+                ChangeAnimationState("OffWall");
+                LastOnWall = false;
                 aimAnimator.SetBool("OnWallBool", false);
-                
+
+            }
+            else
+            {
+                ChangeAnimationState("Idle");
+                aimAnimator.SetBool("OnWallBool", false);
             }
         }
         // Variable to check if the aim is inside any sprite mask
         //Debug.Log("Am/Update" + aimInsideMask);
-       // Debug.Log(currentPaintableObject);
+        // Debug.Log(currentPaintableObject);
 
     }
     public void SetPlayerMovement(PlayerMovement pm)
@@ -289,5 +330,41 @@ public class AimMovement : MonoBehaviour
             moveVector = value.ReadValue<Vector2>();
         }
     }
+    void ChangeAnimationState(string newState)
+    {
+        if (currentState == newState)
+        {
+            return;
+        }
 
+
+        //play animation
+        aimAnimator.Play(newState);
+        StartCoroutine(ResetAnimatorState());
+        currentState = newState;
+        Debug.Log(newState);
+    }
+    IEnumerator ResetAnimatorState()
+    {
+        // Wait for a short delay
+        yield return new WaitForSeconds(0.1f);
+
+        // Reset animator state
+        aimAnimator.speed = 0;
+        yield return null; // Yield at least one frame to apply the change
+        aimAnimator.speed = 1;
+    }
+    bool isAnimationPlaying(Animator aimAnimator, string stateName)
+    {
+        if (aimAnimator.GetCurrentAnimatorStateInfo(0).IsName(stateName) &&
+            aimAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
+

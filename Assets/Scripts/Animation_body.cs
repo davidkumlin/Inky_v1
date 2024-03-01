@@ -15,12 +15,17 @@ public class Animation_body : MonoBehaviour
     [SerializeField] private GameObject RF_Arm; // Assign your south-east facing sprite in the Inspector
     [SerializeField] private GameObject LF_Arm; // Assign your south-west facing sprite in the Inspector
     [SerializeField] private GameObject LB_Arm; // Assign your north-west facing sprite in the Inspector
+    [SerializeField] private GameObject S_Arm;
+    [SerializeField] private GameObject N_Arm;
+
 
     [SerializeField] private GameObject IK_idle;
     [SerializeField] private GameObject IK_RB;
     [SerializeField] private GameObject IK_RF;
     [SerializeField] private GameObject IK_LF;
     [SerializeField] private GameObject IK_LB;
+    [SerializeField] private GameObject IK_S;
+    [SerializeField] private GameObject IK_N;
 
     private GameObject _IK = null;
     public Vector2 _IK_pos;
@@ -44,6 +49,7 @@ public class Animation_body : MonoBehaviour
     //roll
     //FX
     const string Splat = "Splat";
+    const string In_Body = "In_Body";
 
 
     private void Awake()
@@ -128,13 +134,15 @@ public class Animation_body : MonoBehaviour
             RF_Arm.SetActive(false);
             LF_Arm.SetActive(false);
             LB_Arm.SetActive(false);
+            N_Arm.SetActive(false);
+            S_Arm.SetActive(false);
             idleFront.SetActive(false);
         }
        
         else if (playerMovement != null && !OnWall) // Check playerMovement first
         {
             Vector2 moveVector = playerMovement.moveVector; // Access moveVector from PlayerMovement script
-            
+
             if (moveVector.x > 0 && moveVector.y > 0) // Moving up and right (Northeast)
             {
                 ChangeAnimationState(R_NE); //RB
@@ -142,6 +150,8 @@ public class Animation_body : MonoBehaviour
                 RF_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
                 LB_Arm.SetActive(false);
+                S_Arm.SetActive(false);
+                N_Arm.SetActive(false);
                 idleFront.SetActive(false);
 
                 _IK = IK_RB;
@@ -153,6 +163,8 @@ public class Animation_body : MonoBehaviour
                 RF_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
                 LB_Arm.SetActive(false);
+                S_Arm.SetActive(false);
+                N_Arm.SetActive(false);
                 idleFront.SetActive(false);
 
                 _IK = IK_RB;
@@ -164,6 +176,8 @@ public class Animation_body : MonoBehaviour
                 RB_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
                 LB_Arm.SetActive(false);
+                S_Arm.SetActive(false);
+                N_Arm.SetActive(false);
                 idleFront.SetActive(false);
 
                 _IK = IK_RF;
@@ -175,6 +189,8 @@ public class Animation_body : MonoBehaviour
                 RB_Arm.SetActive(false);
                 LF_Arm.SetActive(true);
                 LB_Arm.SetActive(false);
+                S_Arm.SetActive(false);
+                N_Arm.SetActive(false);
                 idleFront.SetActive(false);
 
                 _IK = IK_LF;
@@ -186,6 +202,8 @@ public class Animation_body : MonoBehaviour
                 RB_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
                 LB_Arm.SetActive(true);
+                S_Arm.SetActive(false);
+                N_Arm.SetActive(false);
                 idleFront.SetActive(false);
 
                 _IK = IK_LB;
@@ -197,11 +215,40 @@ public class Animation_body : MonoBehaviour
                 RB_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
                 LB_Arm.SetActive(true);
+                S_Arm.SetActive(false);
+                N_Arm.SetActive(false);
                 idleFront.SetActive(false);
 
-                _IK = IK_LB;
+                _IK = IK_S;
             }
-            else 
+            else if (moveVector.y < 0) //South
+            {
+                ChangeAnimationState(R_S); //LB
+                RF_Arm.SetActive(false);
+                RB_Arm.SetActive(false);
+                LF_Arm.SetActive(false);
+                LB_Arm.SetActive(false);
+                S_Arm.SetActive(true);
+                N_Arm.SetActive(false);
+
+                idleFront.SetActive(false);
+
+                _IK = IK_S;
+            }
+            else if (moveVector.y > 0) //north
+            {
+                ChangeAnimationState(R_N); //LB
+                RF_Arm.SetActive(false);
+                RB_Arm.SetActive(false);
+                LF_Arm.SetActive(false);
+                LB_Arm.SetActive(false);
+                S_Arm.SetActive(false);
+                N_Arm.SetActive(true);
+                idleFront.SetActive(false);
+
+                _IK = IK_N;
+            }
+            else
             {
                 ChangeAnimationState(I_S);
                 idleFront.SetActive(true);
@@ -209,6 +256,8 @@ public class Animation_body : MonoBehaviour
                 RB_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
                 LB_Arm.SetActive(false);
+                S_Arm.SetActive(false);
+                N_Arm.SetActive(false);
 
                 _IK = IK_idle;
             }
