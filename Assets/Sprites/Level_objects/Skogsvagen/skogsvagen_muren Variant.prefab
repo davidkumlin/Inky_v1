@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6800087401855269391
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1834270551451103552, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_Name
+      value: skogsvagen_muren
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_RootOrder
+      value: 47
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 98.46376
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9.035934
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834270551451103554, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4999338925238279395, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017478984083159393, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_RootOrder
+      value: 47
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017478984083159393, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017478984083159393, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017478984083159393, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017478984083159393, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 95.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017478984083159393, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017478984083159395, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: m_Name
+      value: skogsvagen_muren Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017478984083159396, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: spriteMask
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017478984083159396, guid: d09e184117809054191f1e02a676814a, type: 3}
+      propertyPath: maskTexture
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: d09e184117809054191f1e02a676814a, type: 3}

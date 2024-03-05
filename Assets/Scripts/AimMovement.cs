@@ -52,8 +52,10 @@ public class AimMovement : MonoBehaviour
     private List<PaintableObject> paintableObjectsList;
     // New field to store the current PaintableObject the aim is inside
     public PaintableObject currentPaintableObject;
+    private bool StayHidden = false;
+    private bool LastOnWall = false;
+    private bool AlertMode = false;
 
-   
 
 
 
@@ -123,8 +125,9 @@ public class AimMovement : MonoBehaviour
             aimCollider.enabled = false;
             aimPositionConstraint.constraintActive = false;
            // playerMovement.transform.SetParent(null);
+           
 
-        }
+}
     }
 
     private IEnumerator DisableConstraintWithDelay(float delay)
@@ -136,21 +139,22 @@ public class AimMovement : MonoBehaviour
         aimPositionConstraint.constraintActive = false;
 
     }
-    private bool StayHidden = false;
-    private bool LastOnWall = false;
+    
     private void Update()
     {
+        aimAnimator.SetBool("OnWallBool", OnWall);
+        aimAnimator.SetBool("OnWall", OnWall);
         if (playerMovement != null)
         {
             // Update OnWall based on the value from PlayerMovement
             OnWall = playerMovement.OnWall;
 
-            if (OnWall)
+            if (OnWall && !AlertMode)
             {
                 LastOnWall = true;
                 // If OnWall is true, set the animator trigger
                 ChangeAnimationState("OnWall_IN");
-                aimAnimator.SetBool("OnWallBool", true);
+
                 //if distance to the player on the x is further away than 2,aimPositionConstraint.constraintActive = true; 
                 float distanceX = Mathf.Abs(playerMovement.transform.position.x - transform.position.x);
 
@@ -159,47 +163,57 @@ public class AimMovement : MonoBehaviour
                 {
                     //something to lock the movement of the player 
                 }
-                if (Enemy.ChaseCall == true && !isAnimationPlaying(aimAnimator, "OnWall_Alert"))
+                if (Enemy.ChaseCall == true)
                 {
                     ChangeAnimationState("OnWall_Alert");
-                    if (!StayHidden && !isAnimationPlaying(aimAnimator, "OnWall_Hide"))
+                    AlertMode = true;
                     {
-                        ChangeAnimationState("OnWall_Hide");
-                        if (!StayHidden && !isAnimationPlaying(aimAnimator, "OnWall_Hidden"))
+
+                        if (Enemy.ChaseCall == false)
                         {
-                            ChangeAnimationState("OnWall_Hidden");
-                            StayHidden = true;
-                            if (Enemy.ChaseCall == false && !isAnimationPlaying(aimAnimator, "OnWall_UnHide"))
-                            {
-                                ChangeAnimationState("OnWall_UnHide");
-                                StayHidden = false;
-                            }
+                            ChangeAnimationState("OnWall_UnHide");
+
+                            AlertMode = false;
                         }
                     }
-
                 }
 
-
             }
-            else if (LastOnWall)
-            {
-                // If OnWall is false, set the animator trigger to Idle
-                ChangeAnimationState("OffWall");
-                LastOnWall = false;
-                aimAnimator.SetBool("OnWallBool", false);
 
-            }
-            else
+
+        }
+        else if (OnWall && AlertMode)
+        {
+            LastOnWall = true;
+            // If OnWall is true, set the animator trigger
+            ChangeAnimationState("OnWall_Alert");
+            if (Enemy.ChaseCall == false)
             {
-                ChangeAnimationState("Idle");
-                aimAnimator.SetBool("OnWallBool", false);
+                ChangeAnimationState("OnWall_UnHide");
+
+                AlertMode = false;
             }
         }
-        // Variable to check if the aim is inside any sprite mask
-        //Debug.Log("Am/Update" + aimInsideMask);
-        // Debug.Log(currentPaintableObject);
+        else if (!OnWall && LastOnWall)
+            {
+                
+                ChangeAnimationState("OffWall");
+                LastOnWall = false;
+               
 
+            }
+            else if (!OnWall)
+            {
+                ChangeAnimationState("Idle");
+               
+                
+             }
     }
+    // Variable to check if the aim is inside any sprite mask
+    //Debug.Log("Am/Update" + aimInsideMask);
+    // Debug.Log(currentPaintableObject);
+    
+
     public void SetPlayerMovement(PlayerMovement pm)
     {
         playerMovement = pm;

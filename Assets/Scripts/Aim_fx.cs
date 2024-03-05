@@ -24,9 +24,9 @@ public class Aim_fx : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         ani.SetBool("OnWall", OnWall);
 
-        
     }
 
     private void OnWallStatus(bool OnWall)

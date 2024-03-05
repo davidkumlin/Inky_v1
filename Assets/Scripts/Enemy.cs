@@ -141,8 +141,9 @@ public abstract class Enemy : MonoBehaviour
                 if (!OnWall)
                 {
                     Attack();
+                    Debug.Log("attack!");
                 }
-                
+
             }
             if (OnWall)
             {
@@ -162,6 +163,7 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void Confused()
     {
         speed = 2;
+        ChaseCall = false;
         Chasebool = false;
         Confusedbool = true;
         // Get the next patrol point based on the current index
@@ -189,7 +191,7 @@ public abstract class Enemy : MonoBehaviour
     }
     protected virtual void ReturnToPatrol()
     {
-        ChaseCall = false;
+        
         ToggleCooldown();
 
     }

@@ -90,4 +90,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 1.125
+    functionName: ChangeAnimationState
+    data: OnWall_Hide
+    objectReferenceParameter: {fileID: 11500000, guid: 6ba4937da2d2638489914456c0a256a2, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

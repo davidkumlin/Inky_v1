@@ -8,7 +8,7 @@ public class Animation_body : MonoBehaviour
     private PlayerMovement playerMovement; // Reference to the PlayerMovement script
     private AimMovement aimMovement;
     private SpriteRenderer spriteRenderer;
-    private Animator animator;
+    public Animator animator;
     public UnityEvent myevent;
     [SerializeField] private GameObject idleFront; // Assign your idle sprite in the Inspector
     [SerializeField] private GameObject RB_Arm; // Assign your north-east facing sprite in the Inspector
@@ -32,6 +32,8 @@ public class Animation_body : MonoBehaviour
     private float speed = 3f;
     private Vector2 currentAim;
     private bool OnWall;
+    private bool HasPlayedBodyIn = false;
+
 
     private string currentState;
     //Animation states
@@ -49,7 +51,7 @@ public class Animation_body : MonoBehaviour
     //roll
     //FX
     const string Splat = "Splat";
-    const string In_Body = "In_Body";
+    const string In_body = "In_body";
 
 
     private void Awake()
@@ -86,6 +88,15 @@ public class Animation_body : MonoBehaviour
     {
         GameManager.OnWallChanged += OnWallStatus;
         animator = GetComponent<Animator>();
+        RB_Arm.SetActive(false);
+        RF_Arm.SetActive(false);
+        LF_Arm.SetActive(false);
+        LB_Arm.SetActive(false);
+        N_Arm.SetActive(false);
+        S_Arm.SetActive(false);
+        idleFront.SetActive(false);
+        ChangeAnimationState(In_body);
+        
     }
     void OnWallStatus(bool OnWall)
     {
@@ -97,6 +108,7 @@ public class Animation_body : MonoBehaviour
    
     private void FixedUpdate()
     {
+        
         float step = speed * Time.deltaTime;
         // Debug log to track _IK_pos during runtime
         //Debug.Log("_IK_pos: " + _IK_pos);
@@ -125,148 +137,158 @@ public class Animation_body : MonoBehaviour
             Vector3 currentAimLocal = _IK.transform.InverseTransformPoint(currentAim);
             _IK.transform.localPosition = Vector2.Lerp(_IK.transform.localPosition, currentAimLocal, step);
         }
-       
 
-        if (OnWall == true)
-        {
-            ChangeAnimationState(Splat);
-            RB_Arm.SetActive(false);
-            RF_Arm.SetActive(false);
-            LF_Arm.SetActive(false);
-            LB_Arm.SetActive(false);
-            N_Arm.SetActive(false);
-            S_Arm.SetActive(false);
-            idleFront.SetActive(false);
-        }
-       
-        else if (playerMovement != null && !OnWall) // Check playerMovement first
-        {
-            Vector2 moveVector = playerMovement.moveVector; // Access moveVector from PlayerMovement script
-
-            if (moveVector.x > 0 && moveVector.y > 0) // Moving up and right (Northeast)
+    
+            if (OnWall == true)
             {
-                ChangeAnimationState(R_NE); //RB
-                RB_Arm.SetActive(true);
+                ChangeAnimationState(Splat);
+                RB_Arm.SetActive(false);
                 RF_Arm.SetActive(false);
                 LF_Arm.SetActive(false);
                 LB_Arm.SetActive(false);
-                S_Arm.SetActive(false);
                 N_Arm.SetActive(false);
-                idleFront.SetActive(false);
-
-                _IK = IK_RB;
-            }
-            else if (moveVector.x > 0) // Moving right
-            {
-                ChangeAnimationState(R_SE); //RB
-                RB_Arm.SetActive(true);
-                RF_Arm.SetActive(false);
-                LF_Arm.SetActive(false);
-                LB_Arm.SetActive(false);
                 S_Arm.SetActive(false);
-                N_Arm.SetActive(false);
                 idleFront.SetActive(false);
+                HasPlayedBodyIn = false;
 
-                _IK = IK_RB;
             }
-            else if (moveVector.x > 0 && moveVector.y < 0) // Moving down and right (Southeast)
+            if (!OnWall && !HasPlayedBodyIn)
             {
-                ChangeAnimationState(R_SE); //RF
-                RF_Arm.SetActive(true);
-                RB_Arm.SetActive(false);
-                LF_Arm.SetActive(false);
-                LB_Arm.SetActive(false);
-                S_Arm.SetActive(false);
-                N_Arm.SetActive(false);
-                idleFront.SetActive(false);
+                ChangeAnimationState(In_body);
+                
 
-                _IK = IK_RF;
             }
-            else if (moveVector.x < 0 && moveVector.y < 0) // Moving down and left (Southwest)
+
+            else if (playerMovement != null && !OnWall && HasPlayedBodyIn) // Check playerMovement first
             {
-                ChangeAnimationState(R_SW); //LF
-                RF_Arm.SetActive(false);
-                RB_Arm.SetActive(false);
-                LF_Arm.SetActive(true);
-                LB_Arm.SetActive(false);
-                S_Arm.SetActive(false);
-                N_Arm.SetActive(false);
-                idleFront.SetActive(false);
+                Vector2 moveVector = playerMovement.moveVector; // Access moveVector from PlayerMovement script
 
-                _IK = IK_LF;
-            }
-            else if (moveVector.x < 0 && moveVector.y > 0)
-            {
-                ChangeAnimationState(R_NW); //LB
-                RF_Arm.SetActive(false);
-                RB_Arm.SetActive(false);
-                LF_Arm.SetActive(false);
-                LB_Arm.SetActive(true);
-                S_Arm.SetActive(false);
-                N_Arm.SetActive(false);
-                idleFront.SetActive(false);
+                if (moveVector.x > 0 && moveVector.y > 0) // Moving up and right (Northeast)
+                {
+                    ChangeAnimationState(R_NE); //RB
+                    RB_Arm.SetActive(true);
+                    RF_Arm.SetActive(false);
+                    LF_Arm.SetActive(false);
+                    LB_Arm.SetActive(false);
+                    S_Arm.SetActive(false);
+                    N_Arm.SetActive(false);
+                    idleFront.SetActive(false);
 
-                _IK = IK_LB;
-            }
-            else if (moveVector.x < 0) // Moving left
-            {
-                ChangeAnimationState(R_NW); //LB
-                RF_Arm.SetActive(false);
-                RB_Arm.SetActive(false);
-                LF_Arm.SetActive(false);
-                LB_Arm.SetActive(true);
-                S_Arm.SetActive(false);
-                N_Arm.SetActive(false);
-                idleFront.SetActive(false);
+                    _IK = IK_RB;
+                }
+                else if (moveVector.x > 0) // Moving right
+                {
+                    ChangeAnimationState(R_SE); //RB
+                    RB_Arm.SetActive(true);
+                    RF_Arm.SetActive(false);
+                    LF_Arm.SetActive(false);
+                    LB_Arm.SetActive(false);
+                    S_Arm.SetActive(false);
+                    N_Arm.SetActive(false);
+                    idleFront.SetActive(false);
 
-                _IK = IK_S;
-            }
-            else if (moveVector.y < 0) //South
-            {
-                ChangeAnimationState(R_S); //LB
-                RF_Arm.SetActive(false);
-                RB_Arm.SetActive(false);
-                LF_Arm.SetActive(false);
-                LB_Arm.SetActive(false);
-                S_Arm.SetActive(true);
-                N_Arm.SetActive(false);
+                    _IK = IK_RB;
+                }
+                else if (moveVector.x > 0 && moveVector.y < 0) // Moving down and right (Southeast)
+                {
+                    ChangeAnimationState(R_SE); //RF
+                    RF_Arm.SetActive(true);
+                    RB_Arm.SetActive(false);
+                    LF_Arm.SetActive(false);
+                    LB_Arm.SetActive(false);
+                    S_Arm.SetActive(false);
+                    N_Arm.SetActive(false);
+                    idleFront.SetActive(false);
 
-                idleFront.SetActive(false);
+                    _IK = IK_RF;
+                }
+                else if (moveVector.x < 0 && moveVector.y < 0) // Moving down and left (Southwest)
+                {
+                    ChangeAnimationState(R_SW); //LF
+                    RF_Arm.SetActive(false);
+                    RB_Arm.SetActive(false);
+                    LF_Arm.SetActive(true);
+                    LB_Arm.SetActive(false);
+                    S_Arm.SetActive(false);
+                    N_Arm.SetActive(false);
+                    idleFront.SetActive(false);
 
-                _IK = IK_S;
-            }
-            else if (moveVector.y > 0) //north
-            {
-                ChangeAnimationState(R_N); //LB
-                RF_Arm.SetActive(false);
-                RB_Arm.SetActive(false);
-                LF_Arm.SetActive(false);
-                LB_Arm.SetActive(false);
-                S_Arm.SetActive(false);
-                N_Arm.SetActive(true);
-                idleFront.SetActive(false);
+                    _IK = IK_LF;
+                }
+                else if (moveVector.x < 0 && moveVector.y > 0)
+                {
+                    ChangeAnimationState(R_NW); //LB
+                    RF_Arm.SetActive(false);
+                    RB_Arm.SetActive(false);
+                    LF_Arm.SetActive(false);
+                    LB_Arm.SetActive(true);
+                    S_Arm.SetActive(false);
+                    N_Arm.SetActive(false);
+                    idleFront.SetActive(false);
 
-                _IK = IK_N;
+                    _IK = IK_LB;
+                }
+                else if (moveVector.x < 0) // Moving left
+                {
+                    ChangeAnimationState(R_NW); //LB
+                    RF_Arm.SetActive(false);
+                    RB_Arm.SetActive(false);
+                    LF_Arm.SetActive(false);
+                    LB_Arm.SetActive(true);
+                    S_Arm.SetActive(false);
+                    N_Arm.SetActive(false);
+                    idleFront.SetActive(false);
+
+                    _IK = IK_S;
+                }
+                else if (moveVector.y < 0) //South
+                {
+                    ChangeAnimationState(R_S); //LB
+                    RF_Arm.SetActive(false);
+                    RB_Arm.SetActive(false);
+                    LF_Arm.SetActive(false);
+                    LB_Arm.SetActive(false);
+                    S_Arm.SetActive(true);
+                    N_Arm.SetActive(false);
+
+                    idleFront.SetActive(false);
+
+                    _IK = IK_S;
+                }
+                else if (moveVector.y > 0) //north
+                {
+                    ChangeAnimationState(R_N); //LB
+                    RF_Arm.SetActive(false);
+                    RB_Arm.SetActive(false);
+                    LF_Arm.SetActive(false);
+                    LB_Arm.SetActive(false);
+                    S_Arm.SetActive(false);
+                    N_Arm.SetActive(true);
+                    idleFront.SetActive(false);
+
+                    _IK = IK_N;
+                }
+                else
+                {
+                    ChangeAnimationState(I_S);
+                    idleFront.SetActive(true);
+                    RF_Arm.SetActive(false);
+                    RB_Arm.SetActive(false);
+                    LF_Arm.SetActive(false);
+                    LB_Arm.SetActive(false);
+                    S_Arm.SetActive(false);
+                    N_Arm.SetActive(false);
+
+                    _IK = IK_idle;
+                }
+
             }
             else
             {
-                ChangeAnimationState(I_S);
-                idleFront.SetActive(true);
-                RF_Arm.SetActive(false);
-                RB_Arm.SetActive(false);
-                LF_Arm.SetActive(false);
-                LB_Arm.SetActive(false);
-                S_Arm.SetActive(false);
-                N_Arm.SetActive(false);
-
-                _IK = IK_idle;
+                Debug.LogError("PlayerMovement script not found!");
+                return; // Exit the method early
             }
-        }
-        else
-        {
-            Debug.LogError("PlayerMovement script not found!");
-            return; // Exit the method early
-        }
+        
     }
     void ChangeAnimationState(string newState)
     {
@@ -281,6 +303,13 @@ public class Animation_body : MonoBehaviour
 
         currentState = newState;
         Debug.Log(newState);
+    }
+
+    void In_body_change()
+    {
+
+        HasPlayedBodyIn = true;
+        Debug.Log("inbodychangedHappend");
     }
     bool isAnimationPlaying(Animator animatorm, string stateName)
     {
