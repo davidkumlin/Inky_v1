@@ -87,7 +87,7 @@ public abstract class Enemy : MonoBehaviour
             // If the player is out of range, continue patrolling
             Patrol();
             ChaseCall = false;
-            Debug.Log(ChaseCall);
+            //Debug.Log(ChaseCall);
         }
     }
 
@@ -162,7 +162,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Confused()
     {
-        speed = 2;
+        speed = 4;
         ChaseCall = false;
         Chasebool = false;
         Confusedbool = true;

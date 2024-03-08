@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,7 +13,11 @@ public class PaintableObject : MonoBehaviour
     public Texture2D maskTexture;
     [SerializeField] public Collider2D paintSpace;
     [SerializeField] private float PaintHP;
+    public int originalPaintHP;
+    public UnityEvent OnFullyBombed;
     [SerializeField] public bool fullyBombed = false;
+    public bool pointsAdded = false;
+
     private GameObject self;
 
 
@@ -59,6 +64,7 @@ public class PaintableObject : MonoBehaviour
         // Initialize IsInPaintSpace to false
         IsInPaintSpace = false;
         //Debug.Log("PO-" + IsInPaintSpace);
+        PaintHP = originalPaintHP;
 
     }
 
@@ -74,7 +80,12 @@ public class PaintableObject : MonoBehaviour
         {
             PaintHP = 0; // Ensure HP doesn't go negative
             fullyBombed = true; // Set fullyBombed to true
-            Debug.Log("fullyBombed!");
+            //Debug.Log("fullyBombed!");
+            if (!pointsAdded) // Check if points haven't been added yet
+            {
+                pointsAdded = true; // Set pointsAdded flag to true
+                OnFullyBombed.Invoke(); // Invoke the event to notify HUD
+            }
         }
     }
 

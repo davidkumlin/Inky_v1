@@ -83,7 +83,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.25
+  - time: 0.33333334
     functionName: ChangeAnimationState
     data: Idle
     objectReferenceParameter: {fileID: 11500000, guid: a791ce5a1f8e4dc4ab120325a73637e8, type: 3}

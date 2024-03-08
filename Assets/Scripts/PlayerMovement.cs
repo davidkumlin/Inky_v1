@@ -17,9 +17,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AimMovement aimMovement;
     [SerializeField] public float maxDistance = 5f;
     [SerializeField] private SpriteRenderer playerSpriteRenderer;
-    
 
-    
+    public float hp = 100f;
+    public float maxHp = 100f;
+
+
 
     //For the ON WALL mechanics
     public bool OnWall { get; private set; } = false;
@@ -72,6 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Debug.Log(hp);
         if (paintableObject)
         {
             
@@ -117,13 +120,15 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = moveVector * moveSpeed;
             PlayerPositionConstraint.constraintActive = false;
         }
-        else
+        else //OnWall
         {
             // Only move the player along the Y-axis while on the wall
             rb.velocity = new Vector2(moveVector.x * moveSpeed, 0);
+
+
+            // Reduce health while on the wall
+            hp -= Time.deltaTime; // Decrease health by 1 per second
             
-
-
 
         }
     }

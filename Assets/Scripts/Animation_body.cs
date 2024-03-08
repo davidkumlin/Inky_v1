@@ -283,9 +283,9 @@ public class Animation_body : MonoBehaviour
                 }
 
             }
-            else
+            else if (playerMovement != null && !OnWall)
             {
-                Debug.LogError("PlayerMovement script not found!");
+                //Debug.LogError("PlayerMovement script not found!");
                 return; // Exit the method early
             }
         

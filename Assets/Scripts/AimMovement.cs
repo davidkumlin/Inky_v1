@@ -117,6 +117,7 @@ public class AimMovement : MonoBehaviour
             aimCollider.enabled = true;
             aimPositionConstraint.constraintActive = true;
             StartCoroutine(DisableConstraintWithDelay(0.5f)); // Adjust the delay as needed
+            spriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask; //.VisibleOutsideMask or .None
 
         }
         else
@@ -124,10 +125,11 @@ public class AimMovement : MonoBehaviour
             Collider2D aimCollider = GetComponent<Collider2D>();
             aimCollider.enabled = false;
             aimPositionConstraint.constraintActive = false;
+            spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
            // playerMovement.transform.SetParent(null);
-           
 
-}
+
+        }
     }
 
     private IEnumerator DisableConstraintWithDelay(float delay)

@@ -7,18 +7,24 @@ public class Aim_fx : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Animator ani;
     public bool OnWall { get; private set; } = false;
-
+    private bool hasSubscribed = false;
     private string currentState;
     
     const string BigSplat = "BigSplat";
     const string BigDrips = "BigDrips";
-    
+    const string FullyPainted = "FullyPainted";
+
 
     void Start()
     {
         GameManager.OnWallChanged += OnWallStatus;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        ani = GetComponent<Animator>(); 
+        ani = GetComponent<Animator>();
+        PaintableObject[] paintableObjects = FindObjectsOfType<PaintableObject>();
+        foreach (PaintableObject paintableObject in paintableObjects)
+        {
+            paintableObject.OnFullyBombed.AddListener(Bigshine);
+        }
     }
 
     // Update is called once per frame
@@ -28,7 +34,11 @@ public class Aim_fx : MonoBehaviour
         ani.SetBool("OnWall", OnWall);
 
     }
-
+    void Bigshine()
+    {
+        Debug.Log("plingeling");
+        ani.SetTrigger("FullyPainted");
+    }
     private void OnWallStatus(bool OnWall)
     {
         this.OnWall = OnWall;

@@ -49,6 +49,7 @@ public class En_Bee : Enemy
         speed = 11;
         ChaseCall = true;
         Debug.Log(ChaseCall);
+
     }
     protected override void Attack()
     {
@@ -63,7 +64,9 @@ public class En_Bee : Enemy
     }
     private void UpdateReaction()
     {
+        // Set the reaction sprite
         Sprite fxSprite = null;
+        reactionFX.sprite = fxSprite;
 
         // Assign sprite based on conditions
         if (Chasebool)
@@ -71,11 +74,8 @@ public class En_Bee : Enemy
             fxSprite = react_chase;
             Debug.Log("Updating reaction to chase");
         }
-        else
-        {
-            fxSprite = null; // No reaction sprite if not chasing
-        }
-        if (Confusedbool)
+       
+        else if (Confusedbool)
         {
             fxSprite = react_confused;
             Debug.Log("Updating reaction to confused");
@@ -85,8 +85,7 @@ public class En_Bee : Enemy
             fxSprite = null; // No reaction sprite if not chasing
         }
 
-        // Set the reaction sprite
-        reactionFX.sprite = fxSprite;
+       
     }
 
     private void UpdateSprite()
