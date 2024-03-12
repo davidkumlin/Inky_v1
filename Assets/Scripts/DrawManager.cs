@@ -22,6 +22,17 @@ public class DrawManager : MonoBehaviour
     public bool ActiveSpray { get; private set; } = false;
     public float sDamage;
 
+    //Sound
+    // Define FMOD sound events for spraying
+    public FMODUnity.EventReference sprayStartEvent;
+    public FMODUnity.EventReference sprayStopEvent;
+
+    // Define FMOD sound instances
+    FMOD.Studio.EventInstance sprayStartSound;
+    FMOD.Studio.EventInstance sprayStopSound;
+
+
+
     void Start()
     {
         
@@ -36,11 +47,20 @@ public class DrawManager : MonoBehaviour
         input.Enable();
         input.Player.Spray.started += OnSprayStarted;
         input.Player.Spray.canceled += OnSprayCanceled;
+
+        // Create instances of FMOD sound events
+        sprayStartSound = FMODUnity.RuntimeManager.CreateInstance(sprayStartEvent);
+        sprayStopSound = FMODUnity.RuntimeManager.CreateInstance(sprayStopEvent);
     }
+
+   
 
     private void OnDestroy()
     {
         input.Disable();
+        // Release FMOD sound instances
+        sprayStartSound.release();
+        sprayStopSound.release();
     }
 
     void Update()
@@ -70,12 +90,19 @@ public class DrawManager : MonoBehaviour
                     // Set ActiveSpray to true when spraying starts
                     ActiveSpray = true;
                     SprayDamage();
+                    // Check if the spray start sound is not playing
+                    if (!sprayStartSound.isValid())
+                    {
+                        // Play spray start sound
+                        sprayStartSound.start();
+                    }
                 }
                 else
                 {
                     // If the aim position is outside the colored area of the sprite or outside the bounds, finalize the current line
                     FinalizeCurrentLine();
                     ActiveSpray = false;
+
                 }
             }
             else
@@ -83,6 +110,12 @@ public class DrawManager : MonoBehaviour
                 // If the "Spray" action is not held down, finalize the current line
                 FinalizeCurrentLine();
                 ActiveSpray = false;
+            }
+            // Check if the ActiveSpray state has changed
+            if (!ActiveSpray)
+            {
+                // Stop spray stop sound
+                sprayStopSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             }
         }
     }
@@ -162,4 +195,5 @@ private void OnSprayStarted(InputAction.CallbackContext context)
             currentLine = null;
         }
     }
+
 }

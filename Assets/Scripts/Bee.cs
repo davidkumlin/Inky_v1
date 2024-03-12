@@ -88,7 +88,7 @@ public class Bee : MonoBehaviour
     {
         Vector2 directionToPlayer = playref.transform.position - transform.position;
         DistanceToPlayer = directionToPlayer.magnitude; // Calculate distance to player
-        Debug.Log(DistanceToPlayer); // Log the distance for debugging purposes
+        //Debug.Log(DistanceToPlayer); // Log the distance for debugging purposes
         Debug.DrawRay(transform.position, directionToPlayer.normalized * DistanceToPlayer, Color.red); // Draw a debug ray
        
         // Check if the distance to the player is within the chase distance
