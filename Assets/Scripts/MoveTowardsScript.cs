@@ -5,12 +5,15 @@ using UnityEngine;
 public class MoveTowardsScript : MonoBehaviour
 {
     public Transform target;
-    [SerializeField] private float speed = 1;
-    [SerializeField] private float cap = 1;
-
+    [SerializeField] public float speed = 1;
+    [SerializeField] public float cap = 1;
+    public bool dead = false;
+    bool waitingToDestroy = false;
     private Vector2 velocity;
     void Update()
     {
+        if (!dead)
+        {
         Vector2 delta = transform.position - target.position;
         delta = delta.normalized * speed * Time.deltaTime;
         velocity += delta;
@@ -19,6 +22,20 @@ public class MoveTowardsScript : MonoBehaviour
             velocity = velocity.normalized * cap;
         }
         transform.position += (Vector3)(velocity*Time.deltaTime);
+        }
+        else 
+        {
+            if (!waitingToDestroy)
+            {
+                StartCoroutine(WaitAndDestroy());
+                waitingToDestroy = true;
+            }
+        }
     }
 
+    IEnumerator WaitAndDestroy()
+    {
+        yield return new WaitForSeconds(20f);
+        Destroy(gameObject);
+    }
 }
