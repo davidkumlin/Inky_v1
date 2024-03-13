@@ -107,12 +107,7 @@ public class PlayerMovement : MonoBehaviour
 
         
 
-        if (mainCamera != null)
-        {
-            Vector3 cameraPosition = transform.position + cameraOffset;
-            cameraPosition.z = mainCamera.transform.position.z; // Keep the same z position as the camera
-            mainCamera.transform.position = cameraPosition;
-        }
+       
 
         if (!OnWall)
         {
@@ -130,6 +125,16 @@ public class PlayerMovement : MonoBehaviour
             hp -= Time.deltaTime; // Decrease health by 1 per second
             
 
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (mainCamera != null)
+        {
+            Vector3 cameraPosition = transform.position + cameraOffset;
+            cameraPosition.z = mainCamera.transform.position.z; // Keep the same z position as the camera
+            mainCamera.transform.position = cameraPosition;
         }
     }
 

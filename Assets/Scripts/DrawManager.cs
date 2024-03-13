@@ -22,14 +22,7 @@ public class DrawManager : MonoBehaviour
     public bool ActiveSpray { get; private set; } = false;
     public float sDamage;
 
-    //Sound
-    // Define FMOD sound events for spraying
-    public FMODUnity.EventReference sprayStartEvent;
-    public FMODUnity.EventReference sprayStopEvent;
-
-    // Define FMOD sound instances
-    FMOD.Studio.EventInstance sprayStartSound;
-    FMOD.Studio.EventInstance sprayStopSound;
+  //Sounds
 
 
 
@@ -49,8 +42,7 @@ public class DrawManager : MonoBehaviour
         input.Player.Spray.canceled += OnSprayCanceled;
 
         // Create instances of FMOD sound events
-        sprayStartSound = FMODUnity.RuntimeManager.CreateInstance(sprayStartEvent);
-        sprayStopSound = FMODUnity.RuntimeManager.CreateInstance(sprayStopEvent);
+     
     }
 
    
@@ -59,8 +51,7 @@ public class DrawManager : MonoBehaviour
     {
         input.Disable();
         // Release FMOD sound instances
-        sprayStartSound.release();
-        sprayStopSound.release();
+      
     }
 
     void Update()
@@ -91,11 +82,7 @@ public class DrawManager : MonoBehaviour
                     ActiveSpray = true;
                     SprayDamage();
                     // Check if the spray start sound is not playing
-                    if (!sprayStartSound.isValid())
-                    {
-                        // Play spray start sound
-                        sprayStartSound.start();
-                    }
+                  
                 }
                 else
                 {
@@ -111,12 +98,7 @@ public class DrawManager : MonoBehaviour
                 FinalizeCurrentLine();
                 ActiveSpray = false;
             }
-            // Check if the ActiveSpray state has changed
-            if (!ActiveSpray)
-            {
-                // Stop spray stop sound
-                sprayStopSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            }
+          
         }
     }
 

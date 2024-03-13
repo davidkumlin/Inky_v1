@@ -53,7 +53,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 15364
+  Length: 6864
 --- !u!114 &-7265870726023972568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,6 +105,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 178723
+--- !u!114 &-5864280815108783718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Event/Ui/Click
+  m_EditorClassIdentifier: 
+  Path: event:/Event/Ui/Click
+  Guid:
+    Data1: -252854909
+    Data2: 1172137912
+    Data3: -1566616177
+    Data4: -1690918402
+  Banks:
+  - {fileID: 5407255613312872161}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1606993373779744706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,10 +147,10 @@ MonoBehaviour:
   Path: Assets/Audio/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638430889591983893
+  lastModified: 638458513468445831
   FileSizes:
   - Name: Desktop
-    Value: 1300
+    Value: 1296
   Exists: 1
 --- !u!114 &-1298311284441326283
 MonoBehaviour:
@@ -170,22 +197,21 @@ MonoBehaviour:
   EditorEvents:
   - {fileID: 359570671725809936}
   - {fileID: -8078322044966111424}
-  - {fileID: 7967742367563670727}
   - {fileID: 7683412310163830059}
   - {fileID: 3647001123237037869}
-  - {fileID: 7821683744103691509}
   - {fileID: -7096108793051641910}
   - {fileID: -1298311284441326283}
   - {fileID: -7592092480695995052}
-  - {fileID: 408020931168144794}
-  - {fileID: 4553471929860056615}
   - {fileID: 8475818252824218264}
+  - {fileID: 3502061652608243696}
+  - {fileID: -5864280815108783718}
+  - {fileID: 7545955471697755310}
   EditorParameters: []
   MasterBanks:
   - {fileID: 5407255613312872161}
   StringsBanks:
   - {fileID: -1606993373779744706}
-  cacheTime: 638430889591983893
+  cacheTime: 638458519768855394
   cacheVersion: 131616
 --- !u!114 &359570671725809936
 MonoBehaviour:
@@ -214,7 +240,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 203109
---- !u!114 &408020931168144794
+--- !u!114 &3502061652608243696
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -224,23 +250,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Event/Ui/Click 4
+  m_Name: event:/Event/Enviroment/Train
   m_EditorClassIdentifier: 
-  Path: event:/Event/Ui/Click 4
+  Path: event:/Event/Enviroment/Train
   Guid:
-    Data1: -1017670926
-    Data2: 1320672120
-    Data3: 1454269059
-    Data4: -1652490991
+    Data1: 1870839932
+    Data2: 1206408724
+    Data3: -1302428800
+    Data4: 2070838674
   Banks:
   - {fileID: 5407255613312872161}
-  IsStream: 0
+  IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 767
+  Length: 206674
 --- !u!114 &3647001123237037869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,33 +294,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 15364
---- !u!114 &4553471929860056615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Event/Ui/Click 3
-  m_EditorClassIdentifier: 
-  Path: event:/Event/Ui/Click 3
-  Guid:
-    Data1: -1063712005
-    Data2: 1315317593
-    Data3: 2006965943
-    Data4: -575924639
-  Banks:
-  - {fileID: 5407255613312872161}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 512
 --- !u!114 &5407255613312872161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,11 +309,38 @@ MonoBehaviour:
   Path: Assets/Audio/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638430889591934261
+  lastModified: 638458519768855394
   FileSizes:
   - Name: Desktop
-    Value: 11684832
+    Value: 20062016
   Exists: 1
+--- !u!114 &7545955471697755310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Event/Enemie/Bees/Bees
+  m_EditorClassIdentifier: 
+  Path: event:/Event/Enemie/Bees/Bees
+  Guid:
+    Data1: 358753234
+    Data2: 1248745255
+    Data3: -171998816
+    Data4: -1494200980
+  Banks:
+  - {fileID: 5407255613312872161}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &7683412310163830059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,60 +368,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3364
---- !u!114 &7821683744103691509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Event/Ui/Click 1
-  m_EditorClassIdentifier: 
-  Path: event:/Event/Ui/Click 1
-  Guid:
-    Data1: -252854909
-    Data2: 1172137912
-    Data3: -1566616177
-    Data4: -1690918402
-  Banks:
-  - {fileID: 5407255613312872161}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 433
---- !u!114 &7967742367563670727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Event/Ui/Click 2
-  m_EditorClassIdentifier: 
-  Path: event:/Event/Ui/Click 2
-  Guid:
-    Data1: 1515670839
-    Data2: 1283183307
-    Data3: -327939922
-    Data4: -1900786156
-  Banks:
-  - {fileID: 5407255613312872161}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 500
 --- !u!114 &8475818252824218264
 MonoBehaviour:
   m_ObjectHideFlags: 0

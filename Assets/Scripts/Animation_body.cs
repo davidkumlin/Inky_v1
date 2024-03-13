@@ -302,7 +302,7 @@ public class Animation_body : MonoBehaviour
         animator.Play(newState);
 
         currentState = newState;
-        Debug.Log(newState);
+        //Debug.Log(newState);
     }
 
     void In_body_change()

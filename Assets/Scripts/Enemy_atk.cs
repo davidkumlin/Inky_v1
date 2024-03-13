@@ -33,7 +33,7 @@ public class Enemy_atk : MonoBehaviour
 
     void Slash()
     {
-        Debug.Log("slash");
+      //  Debug.Log("slash");
     }
 
     void Sting()
