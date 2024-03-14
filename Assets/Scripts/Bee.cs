@@ -204,7 +204,7 @@ public class Bee : MonoBehaviour
         if (!triggerdPatrol)
         {
 
-        Debug.Log("Patrolsound");
+        //Debug.Log("Patrolsound");
         soundPlayer.PlaySound(0);
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bee State", 0);
         triggerdPatrol = true;
@@ -214,7 +214,7 @@ public class Bee : MonoBehaviour
     {
         if (!triggerdChase)
         {
-            Debug.Log("Chasesound");
+            //Debug.Log("Chasesound");
             soundPlayer.PlaySound(0);
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bee State", 1);
             triggerdChase = true;
@@ -224,7 +224,7 @@ public class Bee : MonoBehaviour
     {
         if (!triggerdConfused)
         {
-            Debug.Log("Chasesound");
+            //Debug.Log("Chasesound");
             soundPlayer.PlaySound(0);
             FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bee State", 2);
             triggerdConfused = true;

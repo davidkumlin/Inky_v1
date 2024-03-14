@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine.Animations;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -77,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log(hp);
         if (paintableObject)
         {
-            
+
             isInPaintSpace = paintableObject.IsInPaintSpace;
             //Debug.Log("PM body" + isInPaintSpace);
         }
@@ -100,14 +101,14 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 aimInsideMask = false;
-                
+
                 //Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
             }
         }
 
-        
 
-       
+
+
 
         if (!OnWall)
         {
@@ -123,17 +124,43 @@ public class PlayerMovement : MonoBehaviour
 
             // Reduce health while on the wall
             hp -= Time.deltaTime; // Decrease health by 1 per second
-            
+
 
         }
+
+        if (hp < 0)
+        {
+            Restart();
+        }
     }
+        public void Restart()
+        {
+            Time.timeScale = 1f;
+            // Reload the current scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
 
     private void LateUpdate()
     {
         if (mainCamera != null)
         {
-            Vector3 cameraPosition = transform.position + cameraOffset;
-            cameraPosition.z = mainCamera.transform.position.z; // Keep the same z position as the camera
+            Vector3 cameraPosition;
+
+            if (OnWall)
+            {
+                // If the player is on the wall, set the camera position to the aim position
+                cameraPosition = aimMovement.CurrentAim;
+            }
+            else
+            {
+                // If the player is not on the wall, set the camera position to the player's position
+                cameraPosition = transform.position + cameraOffset;
+            }
+
+            // Keep the same z position as the camera
+            cameraPosition.z = mainCamera.transform.position.z;
+
+            // Update the camera position
             mainCamera.transform.position = cameraPosition;
         }
     }

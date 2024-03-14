@@ -313,7 +313,7 @@ public class AimMovement : MonoBehaviour
         if (!triggerdSpray)
         {
 
-            Debug.Log("Spraysound");
+           // Debug.Log("Spraysound");
             soundPlayer.PlaySound(0);
             //FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bee State", 0);
             triggerdSpray = true;

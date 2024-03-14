@@ -11,9 +11,14 @@ public class Enemy_atk : MonoBehaviour
     public float minDamageDistance = 10f; // Minimum distance for minimum damage
     public float maxDamage = 100f; // Maximum damage to deal
     public float minDamage = -10f; // Minimum damage to deal
-    // Start is called before the first frame update
+    private Brorcolli brorC;
+    public bool shouldResetAtk = false;
+
+
     void Start()
     {
+        brorC = FindObjectOfType<Brorcolli>();
+
         GameObject playerObject = GameObject.FindWithTag("Player");
         if (playerObject != null)
         {
@@ -28,12 +33,17 @@ public class Enemy_atk : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void Slash()
     {
-      //  Debug.Log("slash");
+        Debug.Log("slash");
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        float lerpFactor = Mathf.InverseLerp(maxDamageDistance, minDamageDistance, DistanceToPlayer);
+        float damage = Mathf.Lerp(maxDamage, minDamage, lerpFactor);
+        playref.hp -= damage;
     }
 
     void Sting()
@@ -47,4 +57,14 @@ public class Enemy_atk : MonoBehaviour
         playref.hp -= damage;
 
     }
+
+
+    void ResetArm()
+    {
+        if (brorC.inBox == false)
+        {
+        shouldResetAtk = true;
+        }
+    }
+
 }

@@ -7,24 +7,29 @@ public class Brorcolli : MonoBehaviour
     public Rigidbody2D unitRb;
     [SerializeField] Transform player;
     PlayerMovement playref = null;
+    AimMovement aimRef;
     private float DistanceToPlayer; // how far away is the player
     [SerializeField] private float CuttDistance = 5f;
     [SerializeField] private float resetDistance = 15f;
     public bool OnWall { get; private set; } = false;
     public Transform unitPos;
     bool isAtk = false;
-   
+    public Animator body_ani;
     public Animator arm_ani;
     [SerializeField] private GameObject idle_arm;
+    [SerializeField] private GameObject Cut_arm;
+    [SerializeField] GameObject FaceSpray;
     private string currentState;
-    
-
+    private Enemy_atk cutArmScript;
+    public bool inBox = false;
 
     // Start is called before the first frame update
     void Start()
     {
         GameManager.OnWallChanged += OnWallStatus;
-
+        cutArmScript = Cut_arm.GetComponent<Enemy_atk>();
+        Cut_arm.SetActive(false);
+        aimRef = FindObjectOfType<AimMovement>();
         GameObject playerObject = GameObject.FindWithTag("Player");
         if (playerObject != null)
         {
@@ -38,6 +43,7 @@ public class Brorcolli : MonoBehaviour
         {
             Debug.LogError("Player object not found.");
         }
+        
         unitRb = GetComponent<Rigidbody2D>();
         if (unitRb != null)
             Debug.Log(unitRb.name + " Rigidbody2D found");
@@ -51,24 +57,60 @@ public class Brorcolli : MonoBehaviour
 
     }
     // Update is called once per frame
-    void Update()
+   
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Vector2 directionToPlayer = playref.transform.position - transform.position;
-        DistanceToPlayer = directionToPlayer.magnitude; // Calculate distance to player
-        //Debug.Log(DistanceToPlayer); // Log the distance for debugging purposes
-        Debug.DrawRay(transform.position, directionToPlayer.normalized * DistanceToPlayer, Color.red); // Draw a debug ray
-
-        // Check if the distance to the player is within the chase distance
-        if (DistanceToPlayer < CuttDistance)
-        {
-            if (!isAtk)
-            {
-            Attack();
-            }
-        }
+        inBox = true;
+        Attack();
     }
     void Attack()
     {
         idle_arm.SetActive(false);
+        Cut_arm.SetActive(true);
+
     }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        inBox = false;
+        if (cutArmScript.shouldResetAtk == true)
+        {
+            idle_arm.SetActive(true);
+            Cut_arm.SetActive(false);
+
+        }
+    }
+    void Update()
+    {
+        if (aimRef != null && aimRef.IsDrawing)
+        {
+            Vector2 sprayPosition = aimRef.CurrentAim;
+
+            if (FaceSpray != null)
+            {
+                // Get the SpriteRenderer component from the FaceSpray GameObject
+                SpriteRenderer spriteRenderer = FaceSpray.GetComponent<SpriteRenderer>();
+
+                // Check if the SpriteRenderer component is not null
+                if (spriteRenderer != null)
+                {
+                    // Get the bounds of the SpriteRenderer
+                    Bounds bounds = spriteRenderer.bounds;
+
+                    // Check if the spray position is inside the bounds of the FaceSpray
+                    if (bounds.Contains(sprayPosition))
+                    {
+                        // Player is spraying onto the broccoli, so kill it
+                        KillBroccoli();
+                    }
+                }
+            }
+        }
+    }
+
+    private void KillBroccoli()
+    {
+        // Perform any actions needed to kill the broccoli
+        Destroy(gameObject);
+    }
+
 }
