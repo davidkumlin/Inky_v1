@@ -1,59 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8078322044966111424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Event/Player/Spray/Spray Shake
-  m_EditorClassIdentifier: 
-  Path: event:/Event/Player/Spray/Spray Shake
-  Guid:
-    Data1: -853741519
-    Data2: 1313676557
-    Data3: -2066765426
-    Data4: 1770673582
-  Banks:
-  - {fileID: 5407255613312872161}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 1197
---- !u!114 &-7592092480695995052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Event/Player/Spray/Spray1
-  m_EditorClassIdentifier: 
-  Path: event:/Event/Player/Spray/Spray1
-  Guid:
-    Data1: -7286074
-    Data2: 1271247165
-    Data3: 578605721
-    Data4: -688784550
-  Banks:
-  - {fileID: 5407255613312872161}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 6864
 --- !u!114 &-7265870726023972568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,6 +24,34 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-7246244193428137319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Event/Player/Spray/Spray
+  m_EditorClassIdentifier: 
+  Path: event:/Event/Player/Spray/Spray
+  Guid:
+    Data1: 1178316263
+    Data2: 1121741304
+    Data3: 1066072459
+    Data4: -25144197
+  Banks:
+  - {fileID: 5407255613312872161}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 6985206390369648586}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 4000
 --- !u!114 &-7096108793051641910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,10 +121,10 @@ MonoBehaviour:
   Path: Assets/Audio/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638458513468445831
+  lastModified: 638460179401184619
   FileSizes:
   - Name: Desktop
-    Value: 1296
+    Value: 1256
   Exists: 1
 --- !u!114 &-1298311284441326283
 MonoBehaviour:
@@ -179,6 +153,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 251141
+--- !u!114 &-130529265922677022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Spry
+  m_EditorClassIdentifier: 
+  Name: Spry
+  StudioPath: parameter:/Spry
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 3288529129
+    data2: 1232379718
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - Fatt
+  - Med
+  - Smal
+  Exists: 1
+--- !u!114 &-104961592465581641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Bees/Bee State
+  m_EditorClassIdentifier: 
+  Name: Bee State
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 2105305863
+    data2: 2150452900
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - Patrol
+  - Chase
+  - Confused
+  Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,22 +224,21 @@ MonoBehaviour:
   - {fileID: 5407255613312872161}
   EditorEvents:
   - {fileID: 359570671725809936}
-  - {fileID: -8078322044966111424}
-  - {fileID: 7683412310163830059}
-  - {fileID: 3647001123237037869}
   - {fileID: -7096108793051641910}
   - {fileID: -1298311284441326283}
-  - {fileID: -7592092480695995052}
   - {fileID: 8475818252824218264}
   - {fileID: 3502061652608243696}
   - {fileID: -5864280815108783718}
   - {fileID: 7545955471697755310}
-  EditorParameters: []
+  - {fileID: -7246244193428137319}
+  EditorParameters:
+  - {fileID: -130529265922677022}
+  - {fileID: 7761867103442348875}
   MasterBanks:
   - {fileID: 5407255613312872161}
   StringsBanks:
   - {fileID: -1606993373779744706}
-  cacheTime: 638458519768855394
+  cacheTime: 638460179401184619
   cacheVersion: 131616
 --- !u!114 &359570671725809936
 MonoBehaviour:
@@ -267,33 +294,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 206674
---- !u!114 &3647001123237037869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Event/Player/Spray/Spray 2
-  m_EditorClassIdentifier: 
-  Path: event:/Event/Player/Spray/Spray 2
-  Guid:
-    Data1: -1546002589
-    Data2: 1095401611
-    Data3: -232835451
-    Data4: 1022788716
-  Banks:
-  - {fileID: 5407255613312872161}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 15364
 --- !u!114 &5407255613312872161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,10 +309,37 @@ MonoBehaviour:
   Path: Assets/Audio/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638458519768855394
+  lastModified: 638460179401134753
   FileSizes:
   - Name: Desktop
-    Value: 20062016
+    Value: 19755360
+  Exists: 1
+--- !u!114 &6985206390369648586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Spray/Spry
+  m_EditorClassIdentifier: 
+  Name: Spry
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 3288529129
+    data2: 1232379718
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - Fatt
+  - Med
+  - Smal
   Exists: 1
 --- !u!114 &7545955471697755310
 MonoBehaviour:
@@ -328,20 +355,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Event/Enemie/Bees/Bees
   Guid:
-    Data1: 358753234
-    Data2: 1248745255
-    Data3: -171998816
-    Data4: -1494200980
+    Data1: -881499971
+    Data2: 1306979236
+    Data3: -259660619
+    Data4: -510434863
   Banks:
   - {fileID: 5407255613312872161}
-  IsStream: 1
+  IsStream: 0
   Is3D: 1
   IsOneShot: 0
-  Parameters: []
-  MinDistance: 0
+  Parameters:
+  - {fileID: -104961592465581641}
+  MinDistance: 1
   MaxDistance: 20
-  Length: 0
---- !u!114 &7683412310163830059
+  Length: 8000
+--- !u!114 &7761867103442348875
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -350,24 +378,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Event/Player/Spray/Spray 3
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Bee State
   m_EditorClassIdentifier: 
-  Path: event:/Event/Player/Spray/Spray 3
-  Guid:
-    Data1: -660816831
-    Data2: 1299689992
-    Data3: 899577015
-    Data4: -553283011
-  Banks:
-  - {fileID: 5407255613312872161}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 3364
+  Name: Bee State
+  StudioPath: parameter:/Bee State
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 2105305863
+    data2: 2150452900
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - Patrol
+  - Chase
+  - Confused
+  Exists: 1
 --- !u!114 &8475818252824218264
 MonoBehaviour:
   m_ObjectHideFlags: 0

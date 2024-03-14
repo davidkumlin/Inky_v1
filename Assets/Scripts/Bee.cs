@@ -47,11 +47,20 @@ public class Bee : MonoBehaviour
     [SerializeField] private SpriteRenderer reactionFX; // Reaction sprite
     [SerializeField] private Sprite react_chase;
     [SerializeField] private Sprite react_confused;
+
+    private SoundPlayer soundPlayer;
+
     void Start()
     {
         GameManager.OnWallChanged += OnWallStatus;
         orginalSpeed = speed; // Store the original speed
-       
+
+        soundPlayer = GetComponentInChildren<SoundPlayer>();
+        if (soundPlayer == null)
+        {
+            Debug.LogError("SoundPlayer component not found. Make sure it's attached to a child object.");
+        }
+
         GameObject playerObject = GameObject.FindWithTag("Player");
         if (playerObject != null)
         {
@@ -187,8 +196,46 @@ public class Bee : MonoBehaviour
 
 
     }
+    bool triggerdPatrol = false;
+    bool triggerdChase = false;
+    bool triggerdConfused = false;
+    void PatrolSound()
+    { 
+        if (!triggerdPatrol)
+        {
+
+        Debug.Log("Patrolsound");
+        soundPlayer.PlaySound(0);
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bee State", 0);
+        triggerdPatrol = true;
+        }
+    }
+    void ChaseSound()
+    {
+        if (!triggerdChase)
+        {
+            Debug.Log("Chasesound");
+            soundPlayer.PlaySound(0);
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bee State", 1);
+            triggerdChase = true;
+        }
+    }
+    void ConfusedSound()
+    {
+        if (!triggerdConfused)
+        {
+            Debug.Log("Chasesound");
+            soundPlayer.PlaySound(0);
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bee State", 2);
+            triggerdConfused = true;
+        }
+    }
+
+
     void Patrol()
     {
+        PatrolSound();
+      
         Confusedbool = false;
         speed = orginalSpeed;
 
@@ -216,8 +263,11 @@ public class Bee : MonoBehaviour
     }
     void Chase()
     {
+        ChaseSound();
+                
         Debug.Log("BEE chasing!");
-
+        //play the sound but change state to "Chase"
+       
         // Your existing implementation of Chase method
         if (playref != null)
         {
@@ -298,6 +348,9 @@ public class Bee : MonoBehaviour
     
     void Confused()
     {
+        triggerdPatrol = false;
+        triggerdChase = false;
+        
         speed = 4;
         ChaseBool = false;
         Confusedbool = true;

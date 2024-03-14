@@ -56,7 +56,7 @@ public class AimMovement : MonoBehaviour
     private bool LastOnWall = false;
     private bool AlertMode = false;
 
-
+    SoundPlayer soundPlayer;
 
 
 
@@ -71,6 +71,8 @@ public class AimMovement : MonoBehaviour
     }
     private void Start()
     {
+        soundPlayer = GetComponentInChildren<SoundPlayer>();
+
         if (aniBody != null && aniBody._IK_pos != null)
         {
             // Set IK_pos using the local position of _IK
@@ -305,6 +307,18 @@ public class AimMovement : MonoBehaviour
     {
         lastIKPosition = position;
     }
+    bool triggerdSpray = false;
+    void SpraySound()
+    {
+        if (!triggerdSpray)
+        {
+
+            Debug.Log("Spraysound");
+            soundPlayer.PlaySound(0);
+            //FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bee State", 0);
+            triggerdSpray = true;
+        }
+    }
     private void Animate()
     {
         IsDrawing = drawManager.ActiveSpray;
@@ -312,11 +326,14 @@ public class AimMovement : MonoBehaviour
         if (IsDrawing == true)
         {
             aimAnimator.SetTrigger("Draw");
+            SpraySound();
         }
         else
         {
             aimAnimator.SetTrigger("Idle");
             spriteRenderer.sprite = idleCrosshair;
+            triggerdSpray = false;
+            soundPlayer.StopSound(0);
         }
 
     }
