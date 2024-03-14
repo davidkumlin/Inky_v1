@@ -22,6 +22,10 @@ public class Brorcolli : MonoBehaviour
     private string currentState;
     private Enemy_atk cutArmScript;
     public bool inBox = false;
+    [SerializeField] GameObject alivebro;
+
+    const string bror_death = "bror_death";
+    const string Bro_idle = "Bro_idle";
 
     // Start is called before the first frame update
     void Start()
@@ -60,8 +64,11 @@ public class Brorcolli : MonoBehaviour
    
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!OnWall)
+        {
         inBox = true;
         Attack();
+        }
     }
     void Attack()
     {
@@ -109,8 +116,25 @@ public class Brorcolli : MonoBehaviour
 
     private void KillBroccoli()
     {
-        // Perform any actions needed to kill the broccoli
-        Destroy(gameObject);
+        Debug.Log("kill");
+        alivebro.SetActive(false);
+        ChangeAnimationState(bror_death);
+        
+        
+    }
+    void ChangeAnimationState(string newState)
+    {
+        if (currentState == newState)
+        {
+            return;
+        }
+
+
+        //play animation
+        body_ani.Play(newState);
+
+        currentState = newState;
+        //Debug.Log(newState);
     }
 
 }
