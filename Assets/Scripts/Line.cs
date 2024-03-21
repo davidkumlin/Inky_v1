@@ -7,7 +7,7 @@ public class Line : MonoBehaviour
     [SerializeField] private LineRenderer _renderer;
     [SerializeField] private EdgeCollider2D _collider;
     [SerializeField] private ParticleSystem _particleSystem;
-    public float lineWidth = 0.3f; // Default line width
+    public float lineWidth; // Default line width
     
     public static float lineDamage; // Static variable to hold the line width
     

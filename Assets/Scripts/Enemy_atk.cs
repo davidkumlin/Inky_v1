@@ -7,10 +7,10 @@ public class Enemy_atk : MonoBehaviour
     [SerializeField] Transform player;
     PlayerMovement playref = null;
     private float DistanceToPlayer; // how far away is the player
-    public float maxDamageDistance = 5f; // Maximum distance for maximum damage
-    public float minDamageDistance = 10f; // Minimum distance for minimum damage
-    public float maxDamage = 100f; // Maximum damage to deal
-    public float minDamage = -10f; // Minimum damage to deal
+    public float maxDamageDistance; // Maximum distance for maximum damage
+    public float minDamageDistance; // Minimum distance for minimum damage
+    public float maxDamage; // Maximum damage to deal
+    public float minDamage ; // Minimum damage to deal
     private Brorcolli brorC;
     public bool shouldResetAtk = false;
 
@@ -33,17 +33,20 @@ public class Enemy_atk : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //Debug.Log(shouldResetAtk);
     }
 
     void Slash()
     {
         Debug.Log("slash");
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
         float lerpFactor = Mathf.InverseLerp(maxDamageDistance, minDamageDistance, DistanceToPlayer);
         float damage = Mathf.Lerp(maxDamage, minDamage, lerpFactor);
+        if (brorC.inBox)
+        {
         playref.hp -= damage;
+        Debug.Log("Cutt" + damage);
+        }
     }
 
     void Sting()
@@ -56,15 +59,16 @@ public class Enemy_atk : MonoBehaviour
         float damage = Mathf.Lerp(maxDamage, minDamage, lerpFactor);
         playref.hp -= damage;
 
+        Debug.Log("Sting" + damage);
     }
 
 
     void ResetArm()
     {
-        if (brorC.inBox == false)
-        {
+        
+        
         shouldResetAtk = true;
-        }
+        
     }
 
 }

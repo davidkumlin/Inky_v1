@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Yeti : MonoBehaviour
 {
-    private string Yetitalk = "brawwl";
+    private string Yetitalk = "Use Left trigger to hide in the wall or \nin the bush... Press (A) på close";
     [SerializeField] private HUD hud;
 
     private bool hasInteractedwithYeti = false;

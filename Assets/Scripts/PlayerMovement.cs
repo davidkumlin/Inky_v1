@@ -13,11 +13,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Vector3 cameraOffset;
-
+    private Vector3 OnWallCameraOffset = new Vector3(0, 5, 0);
     [SerializeField] private float moveSpeed = 10f;
+    private float superSpeed = 20f;
     [SerializeField] private AimMovement aimMovement;
     [SerializeField] public float maxDistance = 5f;
     [SerializeField] private SpriteRenderer playerSpriteRenderer;
+   
 
     public float hp = 100f;
     public float maxHp = 100f;
@@ -36,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     private bool aimInsideMask = false;
     private bool isInPaintSpace = false;
     private bool canToggleOnWall = true;
+    bool isFacingRight = true;
 
     private void Awake()
     {
@@ -112,14 +115,37 @@ public class PlayerMovement : MonoBehaviour
 
         if (!OnWall)
         {
+            gameObject.layer = LayerMask.NameToLayer("Player");
             // Move the player normally
             rb.velocity = moveVector * moveSpeed;
+
             PlayerPositionConstraint.constraintActive = false;
+
+            if (moveVector.x > 0) // Moving right
+            {
+                isFacingRight = true;
+            }
+            else if (moveVector.x < 0) // Moving left
+            {
+                isFacingRight = false;
+            }
         }
         else //OnWall
         {
+            gameObject.layer = LayerMask.NameToLayer("PlayerOnWall");
             // Only move the player along the Y-axis while on the wall
-            rb.velocity = new Vector2(moveVector.x * moveSpeed, 0);
+            rb.velocity = new Vector2(moveVector.x * moveSpeed * (isFacingRight ? 1 : -1), 0);
+
+
+
+            if (moveVector.x > 0) // Moving right
+            {
+                isFacingRight = true;
+            }
+            else if (moveVector.x < 0) // Moving left
+            {
+                isFacingRight = false;
+            }
 
 
             // Reduce health while on the wall
@@ -127,7 +153,17 @@ public class PlayerMovement : MonoBehaviour
 
 
         }
-
+        
+        if (OnWall && !isInPaintSpace)
+        {
+            InvertMovement();
+            Debug.Log("inverting");
+        }
+        else if (OnWall && isInPaintSpace)
+        {
+            NormMovement();
+            Debug.Log("Re_inverting");
+        }
         if (hp < 0)
         {
             Restart();
@@ -138,7 +174,28 @@ public class PlayerMovement : MonoBehaviour
             Time.timeScale = 1f;
             // Reload the current scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    private bool hasInverted = false;
+    public void InvertMovement()
+    {
+        if (!hasInverted)
+        {
+
+            isFacingRight = !isFacingRight;
+            hasInverted = true;
         }
+
+
+        // Code to reverse movement direction or flip player sprite
+    }
+
+    public void NormMovement()
+    {
+        bool newIsFacingRight = true;
+        isFacingRight = newIsFacingRight;
+        newIsFacingRight = isFacingRight;
+        hasInverted = false;
+    }
 
     private void LateUpdate()
     {
@@ -149,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
             if (OnWall)
             {
                 // If the player is on the wall, set the camera position to the aim position
-                cameraPosition = aimMovement.CurrentAim;
+                cameraPosition = (Vector3)aimMovement.CurrentAim + OnWallCameraOffset;
             }
             else
             {

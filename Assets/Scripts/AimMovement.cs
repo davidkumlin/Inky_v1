@@ -22,7 +22,7 @@ public class AimMovement : MonoBehaviour
     [SerializeField] private float maxDistance = 5f; // Maximum distance the aim can move away from the body
     [SerializeField] public float smoothing = 0.1f; // Smoothing factor
     [SerializeField] public float aimspeed = 5f; // Movement speed
-    public float OnWallSpeed = 1000f;
+    
 
     private Vector2 initialOffset; // Initial offset between player and aim
     PositionConstraint aimPositionConstraint;
@@ -161,11 +161,25 @@ public class AimMovement : MonoBehaviour
 
                 //if distance to the player on the x is further away than 2,aimPositionConstraint.constraintActive = true; 
                 float distanceX = Mathf.Abs(playerMovement.transform.position.x - transform.position.x);
-
+                bool hasInverted = false;
                 // Check if distance is further away than 2 units
-                if (distanceX > 2)
+                if (distanceX > 1)
                 {
-                    //something to lock the movement of the player 
+                    
+                    if (!hasInverted)
+                    {
+                        Debug.Log(distanceX);
+                    playerMovement.InvertMovement();
+                        hasInverted = true;
+                    }
+                }
+                else
+                {
+                    if (hasInverted)
+                    {
+                        hasInverted = false;
+                    }
+
                 }
                 if (Enemy.ChaseCall == true)
                 {
@@ -281,7 +295,7 @@ public class AimMovement : MonoBehaviour
         {
             // If on a wall, calculate movement based on the left stick (Movement)
             aimMoveVector = input.Player.Movement.ReadValue<Vector2>();
-            desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance * smoothing * Time.fixedDeltaTime * OnWallSpeed;
+            desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance * smoothing * Time.fixedDeltaTime * aimspeed;
            // Debug.Log("Calculated Movement based on Left Stick: " + desiredPosition);
         }
         else
@@ -299,6 +313,7 @@ public class AimMovement : MonoBehaviour
         CurrentAim = aimRb.position;
 
 
+
         Animate();
     }
 
@@ -312,11 +327,15 @@ public class AimMovement : MonoBehaviour
     {
         if (!triggerdSpray)
         {
+            if (!OnWall)
+            {
 
            // Debug.Log("Spraysound");
             soundPlayer.PlaySound(0);
             //FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Bee State", 0);
             triggerdSpray = true;
+            }
+
         }
     }
     private void Animate()

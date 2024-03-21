@@ -9,7 +9,8 @@ public class Animation_body : MonoBehaviour
     private AimMovement aimMovement;
     private SpriteRenderer spriteRenderer;
     public Animator animator;
-    public UnityEvent myevent;
+    public UnityEvent<bool> myevent;
+    [Header("arm animations")]
     [SerializeField] private GameObject idleFront; // Assign your idle sprite in the Inspector
     [SerializeField] private GameObject RB_Arm; // Assign your north-east facing sprite in the Inspector
     [SerializeField] private GameObject RF_Arm; // Assign your south-east facing sprite in the Inspector
@@ -17,8 +18,7 @@ public class Animation_body : MonoBehaviour
     [SerializeField] private GameObject LB_Arm; // Assign your north-west facing sprite in the Inspector
     [SerializeField] private GameObject S_Arm;
     [SerializeField] private GameObject N_Arm;
-
-
+    [Space]
     [SerializeField] private GameObject IK_idle;
     [SerializeField] private GameObject IK_RB;
     [SerializeField] private GameObject IK_RF;
@@ -49,6 +49,15 @@ public class Animation_body : MonoBehaviour
     const string R_SE = "R_SE";
     const string R_S = "R_S";
     //roll
+
+    //OnWall
+    const string Inky_IN = "Inky_IN";
+    const string Inky_Onwall_Idle = "Inky_Onwall_Idle";
+    const string Inky_Onwall_Alert = "Inky_Onwall_Alert";
+    const string Inky_Onwall_Hide = "Inky_Onwall_Hide";
+    const string Inky_Onwall_unhide = "Inky_Onwall_unhide";
+    const string OffWall = "OffWall";
+
     //FX
     const string Splat = "Splat";
     const string In_body = "In_body";

@@ -354,6 +354,14 @@ public class Bee : MonoBehaviour
         speed = 4;
         ChaseBool = false;
         Confusedbool = true;
+        if (OnWall)
+        {
+
+        if (patrolpath == null)
+        {
+            Debug.LogError("En_patrolpath component not found on unitPath GameObject.");
+            return;
+        }
         // Get the next patrol point based on the current index
         En_patrolpath.PathPoint nextPoint = patrolpath.GetNextPathPoint(currentIndex);
 
@@ -373,6 +381,20 @@ public class Bee : MonoBehaviour
         {
             Debug.Log("Return to patrol");
             ReturnToPatrol();
+            }
+            if (!OnWall && DistanceToPlayer < ChaseDistance)
+            {
+
+                Confusedbool = false;
+                Chase();
+            }
+            else if (!OnWall && DistanceToPlayer < resetDistance)
+            {
+                ReturnToPatrol();
+            }
+
+
+
         }
 
 

@@ -73,7 +73,7 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Interact"",
+                    ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""73e88414-c3c6-48c7-814a-a59c8e86de29"",
                     ""expectedControlType"": ""Button"",
@@ -297,7 +297,7 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Interact"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -324,7 +324,7 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
         m_Player_MouseAim = m_Player.FindAction("MouseAim", throwIfNotFound: true);
         m_Player_Spray = m_Player.FindAction("Spray", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
-        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_OnWall = m_Player.FindAction("OnWall", throwIfNotFound: true);
     }
 
@@ -390,7 +390,7 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseAim;
     private readonly InputAction m_Player_Spray;
     private readonly InputAction m_Player_Pause;
-    private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_OnWall;
     public struct PlayerActions
     {
@@ -401,7 +401,7 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
         public InputAction @MouseAim => m_Wrapper.m_Player_MouseAim;
         public InputAction @Spray => m_Wrapper.m_Player_Spray;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
-        public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @OnWall => m_Wrapper.m_Player_OnWall;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -427,9 +427,9 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                 @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
-                @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
-                @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
-                @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @OnWall.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnWall;
                 @OnWall.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnWall;
                 @OnWall.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnWall;
@@ -452,9 +452,9 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
-                @Interact.started += instance.OnInteract;
-                @Interact.performed += instance.OnInteract;
-                @Interact.canceled += instance.OnInteract;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
                 @OnWall.started += instance.OnOnWall;
                 @OnWall.performed += instance.OnOnWall;
                 @OnWall.canceled += instance.OnOnWall;
@@ -469,7 +469,7 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
         void OnMouseAim(InputAction.CallbackContext context);
         void OnSpray(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnInteract(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
         void OnOnWall(InputAction.CallbackContext context);
     }
 }

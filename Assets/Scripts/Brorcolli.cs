@@ -66,28 +66,41 @@ public class Brorcolli : MonoBehaviour
     {
         if (!OnWall)
         {
-        inBox = true;
-        Attack();
+            inBox = true;
+            Attack();
         }
+        
     }
     void Attack()
     {
-        idle_arm.SetActive(false);
-        Cut_arm.SetActive(true);
+        if (!OnWall && inBox)
+        {
+            idle_arm.SetActive(false);
+            Cut_arm.SetActive(true);
+        }
+        else
+        {
+            StopAttack();
+        }
 
+    }
+    void StopAttack()
+    {
+        idle_arm.SetActive(true);
+        Cut_arm.SetActive(false);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         inBox = false;
+        Debug.Log(inBox);
         if (cutArmScript.shouldResetAtk == true)
         {
-            idle_arm.SetActive(true);
-            Cut_arm.SetActive(false);
-
+            StopAttack();
         }
     }
     void Update()
     {
+        
         if (aimRef != null && aimRef.IsDrawing)
         {
             Vector2 sprayPosition = aimRef.CurrentAim;
@@ -104,7 +117,7 @@ public class Brorcolli : MonoBehaviour
                     Bounds bounds = spriteRenderer.bounds;
 
                     // Check if the spray position is inside the bounds of the FaceSpray
-                    if (bounds.Contains(sprayPosition))
+                    if (bounds.Contains(sprayPosition) && !OnWall)
                     {
                         // Player is spraying onto the broccoli, so kill it
                         KillBroccoli();
@@ -112,7 +125,8 @@ public class Brorcolli : MonoBehaviour
                 }
             }
         }
-    }
+    
+}
 
     private void KillBroccoli()
     {

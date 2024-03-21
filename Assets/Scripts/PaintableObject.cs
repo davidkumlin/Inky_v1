@@ -91,15 +91,15 @@ public class PaintableObject : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        //Debug.Log("Entered Trigger: " + other.gameObject.name);
+        Debug.Log("Entered Trigger: " + other.gameObject.name);
 
         // Check if the entering collider is either the player or the paintSpace
         if (other.CompareTag("Player") || other == paintSpace)
         {
             // Set IsInPaintSpace to true when the player enters the paintSpace collider
             IsInPaintSpace = true;
-            //Debug.Log("PO-paintspace" + IsInPaintSpace);
-            other.gameObject.GetComponent<PlayerMovement>().paintableObject = this;
+            Debug.Log("PO-paintspace" + IsInPaintSpace);
+            other.gameObject.GetComponent<P_Inky>().paintableObject = this;
             
             
         }
@@ -121,9 +121,6 @@ public class PaintableObject : MonoBehaviour
         }
 
     }
-
-
-
 
     public bool IsAimInsideSpriteMask(Vector2 aimPos)
     {
