@@ -99,8 +99,8 @@ ScriptedImporter:
   rigSpriteImportData:
   - name: Backrunandidle_0001_Frame-11
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.07000678, y: 0.7588735}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -453,8 +453,8 @@ ScriptedImporter:
     uvTransform: {x: -275, y: -121}
   - name: Layer 1
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.24831732, y: 0.40462556}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2

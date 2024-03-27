@@ -99,8 +99,8 @@ ScriptedImporter:
   rigSpriteImportData:
   - name: Lf_hand_right
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.5578347, y: 0.42346662}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -445,8 +445,8 @@ ScriptedImporter:
     uvTransform: {x: -34, y: -143}
   - name: Layer 1
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.90513134, y: 0.7558193}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2

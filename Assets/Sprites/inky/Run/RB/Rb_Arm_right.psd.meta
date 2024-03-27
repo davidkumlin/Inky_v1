@@ -99,12 +99,12 @@ ScriptedImporter:
   rigSpriteImportData:
   - name: Layer 1
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.07280466, y: 0.3711526}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
+      x: 3
       y: 4
       width: 184
       height: 79
@@ -571,13 +571,13 @@ ScriptedImporter:
     uvTransform: {x: -239, y: -278}
   - name: Rb_hand_right
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.26784903, y: 0.19615133}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 91
+      y: 92
       width: 95
       height: 134
     spriteID: 2ee0251f9fa79024a8225521944de17f

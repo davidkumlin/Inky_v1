@@ -10,9 +10,9 @@ public class P_Inky : MonoBehaviour
 
     //P_Stuff
     [SerializeField] private P_Stats pstats;
-    [SerializeField] private P_Wally pwally;
+    //[SerializeField] private P_Wally pwally;
     private inky_animation inkyani;
-    
+    public CapsuleCollider2D inkyColl;
     [SerializeField] public float maxDistance = 5f;
 
     public bool inkyActive;
@@ -23,8 +23,8 @@ public class P_Inky : MonoBehaviour
     //movement
     public bool isFacingRight;
     [SerializeField] private Rigidbody2D inkyRb;
-    [SerializeField] private Rigidbody2D aimRb;
-    private bool OnLadder = false;
+    [SerializeField] public Rigidbody2D aimRb;
+    public bool OnLadder = false;
     [SerializeField] private float acceleration = 5f;
     [SerializeField] private float deceleration = 20f; 
     private Vector2 currentVelocity = Vector2.zero;
@@ -33,7 +33,7 @@ public class P_Inky : MonoBehaviour
     [SerializeField] private float moveSpeed = 10f;
     // Jumping
     [SerializeField] private float jumpForce = 500f;
-    private bool isGrounded;
+    public bool isGrounded;
 
     //aim
     [SerializeField] public float smoothing = 0.1f; // Smoothing factor
@@ -62,12 +62,9 @@ public class P_Inky : MonoBehaviour
     private void Awake()
     {
         input = new CustomInput(); // Instantiate CustomInput
-        {
-            Debug.Log("no input");
-        }
         inkyani = GetComponent<inky_animation>();
+        inkyRb.centerOfMass = Vector2.zero;
     }
-
 
     void Start()
     {
@@ -104,16 +101,13 @@ public class P_Inky : MonoBehaviour
     }
     void Update()
     {
-      
+       
+        
     }
 
     private void FixedUpdate()
     {
-        Move();
-        CheckGrounded();
-
-        whereIsInky = inkyRb.position;
-        //Debug.Log(hp);
+       
         if (paintableObject)
         {
 
@@ -155,28 +149,53 @@ public class P_Inky : MonoBehaviour
 
         if (inkyRb != null && OnWall)
         {
-            // If on a wall, calculate movement based on the left stick (Movement)
-            aimMoveVector = input.Player.Movement.ReadValue<Vector2>();
-            desiredPosition = (Vector2)aimRb.position + aimMoveVector * maxDistance * smoothing * Time.fixedDeltaTime * aimspeed;
-            // Debug.Log("Calculated Movement based on Left Stick: " + desiredPosition);
+            
+            // Disable gravity while on the wall
+            inkyRb.gravityScale = 0f;
+            inkyRb.MovePosition(aimRb.position);
+
+            Vector2 moveVector = input.Player.Movement.ReadValue<Vector2>();
+            Vector2 newPosition = inkyRb.position + moveVector * moveSpeed * Time.fixedDeltaTime;
+            inkyRb.MovePosition(newPosition);
+
+            desiredPosition = inkyRb.position;
+            aimRb.MovePosition(inkyRb.position);
+
+            if (!aimInsideMask)
+            {
+                OnWall = false;
+                GameManager.Instance.OnWall = OnWall;
+                
+            }
+
         }
         else
         {
+            inkyRb.gravityScale = 70f;
             // If outside or not on a wall, use the default movement logic with the right stick (Aim)
             Vector2 playerMoveVector = input.Player.Aim.ReadValue<Vector2>();
             desiredPosition = (Vector2)inkyRb.position + playerMoveVector * maxDistance;
             aimMoveVector = aimRb.transform.localPosition;
-            //Debug.Log("AM" + CurrentAim);
-            // Other code...
+
+            Move();
+            CheckGrounded();
         }
 
-        // Move the aim to the desired position
-        aimRb.MovePosition(Vector2.Lerp(aimRb.position, desiredPosition, smoothing * Time.fixedDeltaTime * aimspeed));
-        CurrentAim = aimRb.position;
+        if (!IsDrawing)
+        {
+           
+            // Move the aim to the desired position
+            aimRb.MovePosition(Vector2.Lerp(aimRb.position, desiredPosition, smoothing * Time.fixedDeltaTime * aimspeed));
+            CurrentAim = aimRb.position;
+        }
+        else
+        {
+           
+        }
 
 
 
-       
+
     }
 
     private void OnWallStatus(bool OnWall)
@@ -196,6 +215,7 @@ public class P_Inky : MonoBehaviour
         input.Player.Jump.performed += OnJumpPerformed;
         input.Player.Aim.performed -= OnAimPerformed;
         input.Player.Aim.canceled -= OnAimCancelled;
+        
     }
 
     private void OnDisable()
@@ -207,6 +227,7 @@ public class P_Inky : MonoBehaviour
         input.Player.Jump.performed -= OnJumpPerformed;
         input.Player.Aim.performed += OnAimPerformed;
         input.Player.Aim.canceled += OnAimCancelled;
+        
     }
 
     private void OnMovementPerformed(InputAction.CallbackContext value)
@@ -222,13 +243,6 @@ public class P_Inky : MonoBehaviour
 
     private void Move()
     {
-        if (!inkyActive || OnWall)
-        {
-            // If not active or on wall, don't move
-            moveVector = Vector2.zero;
-            currentVelocity = Vector2.zero; // Reset current velocity when not moving
-            return;
-        }
 
         Vector2 targetVelocity = Vector2.zero;
 
@@ -269,23 +283,47 @@ public class P_Inky : MonoBehaviour
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext value)
-    {
-        if (isGrounded)
+    { 
+        if (!OnWall)
         {
-            inkyRb.AddForce(Vector2.up * jumpForce);
+
+            if (isGrounded && !inkyani.hasJumped)
+            {
+                inkyani.Jump();
+            }
         }
+    }
+
+    void UpForce()
+    {
+        inkyRb.AddForce(Vector2.up * jumpForce,ForceMode2D.Force);
+        Debug.Log("pinky.Upfoce");
     }
 
     private void CheckGrounded()
     {
 
         isGrounded = IsGrounded();
-    }
+        if (inkyani.hasJumped && isGrounded)
+        {
+            inkyani.Landing();
+        }
 
+        if (isGrounded)
+        {
+            OnGround = true;
+        }
+        if (!isGrounded)
+        {
+            OnGround = false;
+        }
+
+    }
+    public bool OnGround; //for inkyani
     private bool IsGrounded()
     {
         //Debug.Log(isGrounded);
-        LayerMask groundLayer = LayerMask.GetMask("Ground");               
+        LayerMask groundLayer = LayerMask.GetMask("Ground");
         Collider2D[] colliders = Physics2D.OverlapCapsuleAll(
         transform.position,   // Center of the capsule
         GetComponent<CapsuleCollider2D>().size,   // Size of the capsule
@@ -296,6 +334,9 @@ public class P_Inky : MonoBehaviour
 
         // Check if any colliders were found (indicating the player is grounded)
         return colliders.Length > 0;
+        
+        
+
     }
     public float GetAimSpeed()
     {
@@ -324,6 +365,7 @@ public class P_Inky : MonoBehaviour
     {
         aimRb.MovePosition(desiredPosition);
     }
+    
     private void OnAimPerformed(InputAction.CallbackContext value)
     {
         // Read the raw value of the right stick if not on the wall
@@ -350,29 +392,34 @@ public class P_Inky : MonoBehaviour
                 Debug.LogWarning("No PaintableObject scripts found in the scene.");
                 return;
             }
+            
 
-            // Now use isInPaintSpace in your condition
-            if (aimInsideMask && isInPaintSpace)
+            // Check if the player is currently on the wall
+            if (OnWall)
             {
-
-                OnWall = !OnWall;
-                GameManager.Instance.OnWall = OnWall;
-                if (OnWall)
+                           
+                    OnWall = false;
+                    GameManager.Instance.OnWall = OnWall;
+                   
+            }
+            // Player is not on the wall, try to go on the wall
+            else
+            {
+                // Check if the condition to go on the wall is met
+                if (aimInsideMask && isInPaintSpace)
                 {
-                    // Set the player's position to match the aim's X-axis position
-                    Vector3 newPosition = transform.position;
-                    newPosition.x = CurrentAim.x;
-                    transform.position = newPosition;
+                    OnWall = true;
+                    GameManager.Instance.OnWall = OnWall;
 
 
                     aimRb.velocity = Vector2.zero;
                 }
-
-                StartCoroutine(ToggleCooldown());
-                return;
+                else
+                {
+                    Debug.Log("Cannot go on the wall: Aim is not inside the sprite mask of any PaintableObject or not in paint space.");
+                    return;
+                }
             }
-
-            Debug.Log("Cannot set OnWall: Aim is not inside the sprite mask of any PaintableObject.");
         }
     }
 

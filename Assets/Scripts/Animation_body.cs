@@ -10,7 +10,7 @@ public class Animation_body : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public Animator animator;
     public UnityEvent<bool> myevent;
-    [Header("arm animations")]
+    [Header("Arms animations")]
     [SerializeField] private GameObject idleFront; // Assign your idle sprite in the Inspector
     [SerializeField] private GameObject RB_Arm; // Assign your north-east facing sprite in the Inspector
     [SerializeField] private GameObject RF_Arm; // Assign your south-east facing sprite in the Inspector

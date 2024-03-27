@@ -10,8 +10,9 @@ public class DrawManager_2 : MonoBehaviour
     [SerializeField] private GameObject OnWallLinePrefab;
     public const float RESOLUTION = .1f;
     private GameObject currentLine;
-     
+
     private P_Inky pinky;
+    private P_Wally pwally;
     //private PaintableObject paintableObject; // Reference to the PaintableObject script
     private List<PaintableObject> paintableObjects = new List<PaintableObject>(); // List to store all PaintableObject instances
     private CustomInput input;
@@ -23,8 +24,13 @@ public class DrawManager_2 : MonoBehaviour
     public bool OnWall { get; private set; } = false;
     public bool ActiveSpray { get; private set; } = false;
     public float sDamage;
+    //Drip
+    private bool dripCoroutineRunning = false;
 
-  //Sounds
+    [SerializeField] private GameObject dripPrefab;
+    public float minSpawnInterval = 1f; // Minimum time interval between drips
+    public float maxSpawnInterval = 3f; // Maximum time interval between drips
+    //Sounds
 
 
 
@@ -33,8 +39,7 @@ public class DrawManager_2 : MonoBehaviour
         GameManager.OnWallChanged += OnWallStatus;
         
         pinky = FindObjectOfType<P_Inky>();
-        // paintableObject = FindObjectOfType<PaintableObject>(); // Assign the PaintableObject reference
-        // Find all PaintableObject instances in the scene and add them to the list
+       
         PaintableObject[] allPaintableObjects = FindObjectsOfType<PaintableObject>();
         paintableObjects.AddRange(allPaintableObjects);
 
@@ -69,7 +74,7 @@ public class DrawManager_2 : MonoBehaviour
             Vector2 aimPos = pinky.CurrentAim;
 
             bool isInsideAnyObject = paintableObjects.Any(obj => obj != null && obj.IsAimInsideSpriteMask(aimPos));
-            if (isInsideAnyObject && paintableObjects.Any(obj => obj != null && obj.IsInPaintSpace))
+            if (isInsideAnyObject && paintableObjects.Any(obj => obj != null))
             {
                 GameObject linePrefabToUse = OnWallLinePrefab;
 
@@ -123,7 +128,10 @@ public class DrawManager_2 : MonoBehaviour
                     currentLine.GetComponent<Line>().SetPosition(aimPos);
                     // Set ActiveSpray to true when spraying starts
                     ActiveSpray = true;
+                    // Start the drip coroutine only if it's not already running
+                  
                     SprayDamage();
+                    
                     // Check if the spray start sound is not playing
                 }
                 else
@@ -141,7 +149,7 @@ public class DrawManager_2 : MonoBehaviour
             ActiveSpray = false;
         }
     }
-
+   
 
 
     void SprayDamage()
@@ -160,6 +168,11 @@ public class DrawManager_2 : MonoBehaviour
             {
                 // Apply damage to the paintableObject
                 pinky.ActiveWall.TakeDamage(Line.lineDamage);
+                if (!dripCoroutineRunning)
+                {
+                    StartCoroutine(SpawnDrips());
+                    dripCoroutineRunning = true;
+                }
             }
             else
             {
@@ -172,9 +185,27 @@ public class DrawManager_2 : MonoBehaviour
         }
     }
 
+    IEnumerator SpawnDrips()
+    {
+        while (true)
+        {
+            if (ActiveSpray)
+            {
+            Debug.Log("Spawn Drip");
+            // Calculate random spawn interval
+            float spawnInterval = Random.Range(minSpawnInterval, maxSpawnInterval);
 
+            // Spawn a drip at the current position
+            Instantiate(dripPrefab, pinky.CurrentAim, Quaternion.identity);
 
-private void OnSprayStarted(InputAction.CallbackContext context)
+            // Wait for the specified duration before spawning the next drip
+            yield return new WaitForSeconds(spawnInterval);
+
+            }
+        }
+    }
+
+    private void OnSprayStarted(InputAction.CallbackContext context)
     {
         // Ensure there is no existing current line when starting a new one
         if (currentLine != null)

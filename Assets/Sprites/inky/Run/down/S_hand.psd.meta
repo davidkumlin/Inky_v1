@@ -99,8 +99,8 @@ ScriptedImporter:
   rigSpriteImportData:
   - name: Frontfrun_0009_Frame-10
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.6343053, y: 0.3293761}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -414,8 +414,8 @@ ScriptedImporter:
     uvTransform: {x: -36, y: -190}
   - name: Layer 1
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.11012395, y: 0.5076418}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2

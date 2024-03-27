@@ -6,16 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class P_Stats : MonoBehaviour
 {
-   
 
-    
+    [SerializeField] public GameObject inkyObj;
+    [SerializeField] public GameObject WallyObj;
     [SerializeField] private P_Inky pinky;
     private Vector2 inkyPos;
     public bool inkyActive;
     [SerializeField] private P_Wally pwally;
     private Vector2 wallyPos;
     public bool wallyActive;
-    private Vector2 aimPos;
+    public Vector2 aimPos;
     
 
     [SerializeField] private Camera mainCamera;
@@ -53,16 +53,31 @@ public class P_Stats : MonoBehaviour
         
         aimPos = pinky.CurrentAim;
         inkyPos = pinky.whereIsInky;
+        wallyPos = pwally.whereIsWally;
         ActiveUnit();
     }
     
     void ActiveUnit()
     {
-       if (pinky.inkyActive==true)
+        if (!OnWall)
         {
             inkyActive = true;
+            pwally.wallyActive = false;
+            
+
+
         }
-    }
+        else
+        {
+            inkyActive = true;
+            pwally.wallyActive = false;
+           
+            
+        }
+        
+     }
+       
+    
     private void LateUpdate()
     {
         {
