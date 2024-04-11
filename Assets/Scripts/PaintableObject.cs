@@ -12,7 +12,7 @@ public class PaintableObject : MonoBehaviour
     public SpriteMask spriteMask;
     public Texture2D maskTexture;
     [SerializeField] public Collider2D paintSpace;
-    [SerializeField] private float PaintHP;
+    [SerializeField] public float PaintHP;
     public int originalPaintHP;
     public UnityEvent OnFullyBombed;
     [SerializeField] public bool fullyBombed = false;
@@ -91,14 +91,14 @@ public class PaintableObject : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Entered Trigger: " + other.gameObject.name);
+        //Debug.Log("Entered Trigger: " + other.gameObject.name);
 
         // Check if the entering collider is either the player or the paintSpace
         if (other.CompareTag("Player") || other == paintSpace)
         {
             // Set IsInPaintSpace to true when the player enters the paintSpace collider
             IsInPaintSpace = true;
-            Debug.Log("PO-paintspace" + IsInPaintSpace);
+            //Debug.Log("PO-paintspace" + IsInPaintSpace);
             other.gameObject.GetComponent<P_Inky>().paintableObject = this;
             
             

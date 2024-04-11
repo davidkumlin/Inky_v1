@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Enemy_atk : MonoBehaviour
 {
-    [SerializeField] Transform player;
-    PlayerMovement playref = null;
+    [SerializeField] Transform pinkypos;
+    P_Inky pinky = null;
+    P_Stats pstats = null;
     private float DistanceToPlayer; // how far away is the player
     public float maxDamageDistance; // Maximum distance for maximum damage
     public float minDamageDistance; // Minimum distance for minimum damage
@@ -22,8 +23,8 @@ public class Enemy_atk : MonoBehaviour
         GameObject playerObject = GameObject.FindWithTag("Player");
         if (playerObject != null)
         {
-            playref = playerObject.GetComponent<PlayerMovement>();
-            if (playref == null)
+            pinky = playerObject.GetComponent<P_Inky>();
+            if (pinky == null)
             {
                 Debug.LogError("PlayerMovement component not found on the player object.");
             }
@@ -39,12 +40,12 @@ public class Enemy_atk : MonoBehaviour
     void Slash()
     {
         Debug.Log("slash");
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, pinkypos.position);
         float lerpFactor = Mathf.InverseLerp(maxDamageDistance, minDamageDistance, DistanceToPlayer);
         float damage = Mathf.Lerp(maxDamage, minDamage, lerpFactor);
         if (brorC.inBox)
         {
-        playref.hp -= damage;
+        pstats.hp -= damage;
         Debug.Log("Cutt" + damage);
         }
     }
@@ -53,11 +54,11 @@ public class Enemy_atk : MonoBehaviour
     {
         Debug.Log("Stinged!");
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, pinkypos.position);
 
         float lerpFactor = Mathf.InverseLerp(maxDamageDistance, minDamageDistance, DistanceToPlayer);
         float damage = Mathf.Lerp(maxDamage, minDamage, lerpFactor);
-        playref.hp -= damage;
+        pstats.hp -= damage;
 
         Debug.Log("Sting" + damage);
     }

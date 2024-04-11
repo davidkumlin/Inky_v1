@@ -5,8 +5,9 @@ using UnityEngine;
 public class Brorcolli : MonoBehaviour
 {
     public Rigidbody2D unitRb;
-    [SerializeField] Transform player;
-    PlayerMovement playref = null;
+    [SerializeField] Transform pinkypos;
+    P_Stats pstats = null;
+    P_Inky pinky = null;
     AimMovement aimRef;
     private float DistanceToPlayer; // how far away is the player
     [SerializeField] private float CuttDistance = 5f;
@@ -33,12 +34,12 @@ public class Brorcolli : MonoBehaviour
         GameManager.OnWallChanged += OnWallStatus;
         cutArmScript = Cut_arm.GetComponent<Enemy_atk>();
         Cut_arm.SetActive(false);
-        aimRef = FindObjectOfType<AimMovement>();
+        pinky = FindObjectOfType<P_Inky>();
         GameObject playerObject = GameObject.FindWithTag("Player");
         if (playerObject != null)
         {
-            playref = playerObject.GetComponent<PlayerMovement>();
-            if (playref == null)
+            pstats = playerObject.GetComponent<P_Stats>();
+            if (pstats == null)
             {
                 Debug.LogError("PlayerMovement component not found on the player object.");
             }
@@ -101,9 +102,9 @@ public class Brorcolli : MonoBehaviour
     void Update()
     {
         
-        if (aimRef != null && aimRef.IsDrawing)
+        if (pinky.IsDrawing)
         {
-            Vector2 sprayPosition = aimRef.CurrentAim;
+            Vector2 sprayPosition = pinky.CurrentAim;
 
             if (FaceSpray != null)
             {

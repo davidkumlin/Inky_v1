@@ -42,7 +42,7 @@ public class AimMovement : MonoBehaviour
     const string OffWall = "OffWall";
 
 
-    [SerializeField] private DrawManager drawManager;// Reference to DrawManager
+    //[SerializeField] private DrawManager drawManager;// Reference to DrawManager
     public bool IsDrawing { get; private set; } = false; // Property to expose IsDrawing
     public Sprite idleCrosshair;
 
@@ -340,7 +340,7 @@ public class AimMovement : MonoBehaviour
     }
     private void Animate()
     {
-        IsDrawing = drawManager.ActiveSpray;
+       // IsDrawing = drawManager.ActiveSpray;
 
         if (IsDrawing == true)
         {

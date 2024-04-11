@@ -8,13 +8,11 @@ public class P_Stats : MonoBehaviour
 {
 
     [SerializeField] public GameObject inkyObj;
-    [SerializeField] public GameObject WallyObj;
     [SerializeField] private P_Inky pinky;
     private Vector2 inkyPos;
     public bool inkyActive;
-    [SerializeField] private P_Wally pwally;
-    private Vector2 wallyPos;
-    public bool wallyActive;
+    
+   
     public Vector2 aimPos;
     
 
@@ -32,7 +30,7 @@ public class P_Stats : MonoBehaviour
     {
         
          pinky = FindObjectOfType<P_Inky>();
-         pwally = FindObjectOfType<P_Wally>();
+         
         
 
     }
@@ -53,7 +51,7 @@ public class P_Stats : MonoBehaviour
         
         aimPos = pinky.CurrentAim;
         inkyPos = pinky.whereIsInky;
-        wallyPos = pwally.whereIsWally;
+        
         ActiveUnit();
     }
     
@@ -62,7 +60,7 @@ public class P_Stats : MonoBehaviour
         if (!OnWall)
         {
             inkyActive = true;
-            pwally.wallyActive = false;
+            
             
 
 
@@ -70,8 +68,7 @@ public class P_Stats : MonoBehaviour
         else
         {
             inkyActive = true;
-            pwally.wallyActive = false;
-           
+            
             
         }
         

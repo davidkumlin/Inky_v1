@@ -17,7 +17,7 @@ public class P_Inky : MonoBehaviour
 
     public bool inkyActive;
     public Vector2 whereIsInky;
-    public bool wallyActive;
+    
     public Vector2 whereIsWally;
 
     //movement
@@ -50,7 +50,7 @@ public class P_Inky : MonoBehaviour
 
     private List<PaintableObject> paintableObjectsList;
     public PaintableObject paintableObject;
-    public PaintableObject currentPaintableObject;
+    //public PaintableObject currentPaintableObject;
     public PaintableObject ActiveWall;
     private bool aimInsideMask = false;
     private bool canToggleOnWall = true;
@@ -101,8 +101,8 @@ public class P_Inky : MonoBehaviour
     }
     void Update()
     {
-       
-        
+        IsDrawing = drawManager.ActiveSpray;
+
     }
 
     private void FixedUpdate()
@@ -152,7 +152,7 @@ public class P_Inky : MonoBehaviour
             
             // Disable gravity while on the wall
             inkyRb.gravityScale = 0f;
-            inkyRb.MovePosition(aimRb.position);
+            inkyRb.MovePosition(CurrentAim);
 
             Vector2 moveVector = input.Player.Movement.ReadValue<Vector2>();
             Vector2 newPosition = inkyRb.position + moveVector * moveSpeed * Time.fixedDeltaTime;
@@ -190,7 +190,9 @@ public class P_Inky : MonoBehaviour
         }
         else
         {
-           
+            // Move the aim to the desired position
+            aimRb.MovePosition(Vector2.Lerp(aimRb.position, desiredPosition, smoothing * Time.fixedDeltaTime * aimspeed));
+            CurrentAim = aimRb.position;
         }
 
 
@@ -248,12 +250,13 @@ public class P_Inky : MonoBehaviour
 
         if (!OnLadder)
         {
-            // Restrict movement to only the X-axis when not on a ladder
+            
             targetVelocity.x = moveVector.x * moveSpeed;
         }
         else
         {
             // Allow free movement when on a ladder
+            inkyRb.gravityScale = 0f;
             targetVelocity = moveVector * moveSpeed;
         }
 
@@ -297,7 +300,7 @@ public class P_Inky : MonoBehaviour
     void UpForce()
     {
         inkyRb.AddForce(Vector2.up * jumpForce,ForceMode2D.Force);
-        Debug.Log("pinky.Upfoce");
+        //Debug.Log("pinky.Upfoce");
     }
 
     private void CheckGrounded()

@@ -5,11 +5,11 @@ using UnityEngine;
 public class Line : MonoBehaviour
 {
     [SerializeField] private LineRenderer _renderer;
-    [SerializeField] private EdgeCollider2D _collider;
-    [SerializeField] private ParticleSystem _particleSystem;
-    public float lineWidth; // Default line width
     
-    public static float lineDamage; // Static variable to hold the line width
+    [SerializeField] private ParticleSystem _particleSystem;
+    public float lineWidth = 0.3f ; // Default line width
+    
+    public static float lineDamage = 1f; // Static variable to hold the line width
     
     private List<Vector2> _points = new List<Vector2>();
 
@@ -17,11 +17,11 @@ public class Line : MonoBehaviour
     void Start()
     {
         GameManager.OnWallChanged += OnWallStatus;
-       
 
         // Set the initial width of the LineRenderer
         _renderer.startWidth = lineWidth;
         _renderer.endWidth = lineWidth;
+        Debug.Log(lineDamage);
     }
 
 
@@ -34,7 +34,7 @@ public class Line : MonoBehaviour
     void Update()
     {
     
-        //  Debug.Log(lineDamage);
+        //Debug.Log(lineDamage);
     }
 
 
@@ -48,7 +48,7 @@ public class Line : MonoBehaviour
         _renderer.positionCount++;
         _renderer.SetPosition(_renderer.positionCount - 1, pos);
 
-        _collider.points = _points.ToArray();
+        
 
         if (_points.Count % 10 == 0)
         {
@@ -69,6 +69,6 @@ public class Line : MonoBehaviour
     {
         if (_renderer.positionCount == 0) return true;
 
-        return Vector2.Distance(_renderer.GetPosition(_renderer.positionCount - 1), pos) > DrawManager.RESOLUTION;
+        return Vector2.Distance(_renderer.GetPosition(_renderer.positionCount - 1), pos) > DrawManager_2.RESOLUTION;
     }
 }

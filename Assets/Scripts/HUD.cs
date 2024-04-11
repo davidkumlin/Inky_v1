@@ -16,11 +16,13 @@ public class HUD : MonoBehaviour
 
     private int totalPoints = 0;
 
-    private PlayerMovement playerMovement;
+    private P_Stats pstats;
+    private P_Inky pinky;
 
     private void Start()
     {
-        playerMovement = FindObjectOfType<PlayerMovement>();
+        pstats = FindObjectOfType<P_Stats>();
+        pinky = FindObjectOfType<P_Inky>();
         // Find all PaintableObjects in the scene and subscribe to their OnFullyBombed event
         PaintableObject[] paintableObjects = FindObjectsOfType<PaintableObject>();
         foreach (PaintableObject paintableObject in paintableObjects)
@@ -36,26 +38,26 @@ public class HUD : MonoBehaviour
     private void UpdateHealthBar()
     {
         // Update the health bar value based on the player's health
-        if (playerMovement != null)
+        if (pstats != null)
         {
-            float healthPercentage = playerMovement.hp / playerMovement.maxHp;
+            float healthPercentage = pstats.hp / pstats.maxHp;
             healthBar.fillAmount = healthPercentage;
         }
     }
     // Method to add points to the total and update the point meter UI
     private void AddPoints()
     {
+        totalPoints = 0; // Reset total points before recalculating
         PaintableObject[] paintableObjects = FindObjectsOfType<PaintableObject>();
         foreach (PaintableObject paintableObject in paintableObjects)
         {
             if (paintableObject.fullyBombed)
             {
                 totalPoints += paintableObject.originalPaintHP; // Add the original paintHP value
+                
             }
         }
         pointMeterText.text = totalPoints.ToString();
-
-       
     }
 
     //Froggy

@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Inky_testLevel.unity
     guid: 169d7c1048a629041a86fa22b5131f07
+  - enabled: 1
+    path: Assets/Scenes/Inky_testlevel2.unity
+    guid: c1d190869f1b1764c9b43d3ecff85d63
   m_configObjects: {}

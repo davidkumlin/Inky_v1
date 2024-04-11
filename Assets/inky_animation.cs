@@ -98,10 +98,24 @@ public class inky_animation : MonoBehaviour
     private void Update()
     {
         isFacingRight = pinky.isFacingRight;
+        Vector2 moveVector = pinky.moveVector; // Access moveVector from pinky script
     }
 
     public void Jump()
     {
+        Vector2 moveVector = pinky.moveVector; // Access moveVector from pinky script
+       
+        if (moveVector.x > 0)
+        {
+            isFacingRight = true;
+            spriteRenderer.flipX = true;
+        }
+        else if (moveVector.x < 0)
+        {
+            isFacingRight = false;
+            spriteRenderer.flipX = false;
+
+        }
         JumpStarted = true;
         ChangeAnimationState(Jump_up);
         IS_Arm.SetActive(false);
@@ -114,14 +128,7 @@ public class inky_animation : MonoBehaviour
         S_Arm.SetActive(false);
         
         
-        if (!isFacingRight)
-        {
-            spriteRenderer.flipX = true;
-        }
-        else
-        {
-            spriteRenderer.flipX = false;
-        }
+      
     }
 
     public void MidAir()
@@ -175,6 +182,7 @@ public class inky_animation : MonoBehaviour
         }
         else if (hasPlayedSplat && hasPlayedIn)
         {
+           
             ChangeAnimationState(OnWall_Idle);
         }
 
@@ -397,12 +405,12 @@ public class inky_animation : MonoBehaviour
         animator.Play(newState);
 
         currentState = newState;
-        Debug.Log(newState);
+        //Debug.Log(newState);
     }
     void In_body_change()
     {
 
         HasPlayedBodyIn = true;
-        Debug.Log("inbodychangedHappend");
+        //Debug.Log("inbodychangedHappend");
     }
 }

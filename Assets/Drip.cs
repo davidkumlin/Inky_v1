@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Drip : MonoBehaviour
 {
+  
     private Rigidbody rb;
     
     public float destroyDelay = 100f; // Delay before destroying the object
@@ -12,8 +14,9 @@ public class Drip : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         StartCoroutine(TurnOffGravityDelayed());
         StartCoroutine(DestroyAfterDelay());
+        
     }
-
+ 
     IEnumerator TurnOffGravityDelayed()
     {
         float gravityOffDelay = Random.Range(1f, 4f);
