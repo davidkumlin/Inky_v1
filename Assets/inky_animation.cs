@@ -30,6 +30,9 @@ public class inky_animation : MonoBehaviour
     [SerializeField] private GameObject IK_S;
     [SerializeField] private GameObject IK_N;
 
+    [SerializeField] private GameObject jumpDustPrefab;
+    [SerializeField] private Transform groundPos;
+
     private GameObject _IK = null;
     public Vector2 _IK_pos;
     private float speed = 3f;
@@ -105,7 +108,7 @@ public class inky_animation : MonoBehaviour
     public void Jump()
     {
         Vector2 moveVector = pinky.moveVector; // Access moveVector from pinky script
-       
+
         if (moveVector.x > 0)
         {
             isFacingRight = true;
@@ -117,17 +120,20 @@ public class inky_animation : MonoBehaviour
             spriteRenderer.flipX = false;
 
         }
-        JumpStarted = true;
-        ChangeAnimationState(Jump_up);
-        IS_Arm.SetActive(false);
-        NS_Arm.SetActive(false);
-        RB_Arm.SetActive(false);
-        RF_Arm.SetActive(false);
-        LF_Arm.SetActive(false);
-        LB_Arm.SetActive(false);
-        N_Arm.SetActive(false);
-        S_Arm.SetActive(false);
-        
+        if (!JumpStarted)
+        {
+            Instantiate(jumpDustPrefab, groundPos.position, Quaternion.identity);
+            JumpStarted = true;
+            ChangeAnimationState(Jump_up);
+            IS_Arm.SetActive(false);
+            NS_Arm.SetActive(false);
+            RB_Arm.SetActive(false);
+            RF_Arm.SetActive(false);
+            LF_Arm.SetActive(false);
+            LB_Arm.SetActive(false);
+            N_Arm.SetActive(false);
+            S_Arm.SetActive(false);
+        }
         
       
     }
