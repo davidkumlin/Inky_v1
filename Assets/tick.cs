@@ -114,7 +114,7 @@ public class tick : MonoBehaviour
             if (DistanceToPlayer > 50)
             {
                 changeDirection = true;
-                if (changeDirection && DistanceToPlayer > 50)
+                if (changeDirection && DistanceToPlayer > 100)
                 {
                     changeDirection = false;
                 }

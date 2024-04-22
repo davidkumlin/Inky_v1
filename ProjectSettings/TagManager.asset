@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Aim
   - OnWallArea
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -48,4 +49,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3439666391
+    locked: 0
+  - name: FG
+    uniqueID: 1357640583
     locked: 0

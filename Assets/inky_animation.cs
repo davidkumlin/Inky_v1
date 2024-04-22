@@ -73,6 +73,7 @@ public class inky_animation : MonoBehaviour
     const string In_body_paintspace = "In_body_paintspace";
     const string In_body_notpaintspace = "In_body_notpaintspace";
     private bool HasPlayedBodyIn = false;
+    private bool islandingplaying = false;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -139,13 +140,16 @@ public class inky_animation : MonoBehaviour
     }
     public void Landing()
     {
-        if (pinky.isInPaintSpace)
+        
+        if (pinky.isInPaintSpace && !islandingplaying)
         {
             ChangeAnimationState(In_body_paintspace);
+            islandingplaying = true;
         }
-        else if (!pinky.isInPaintSpace)
+        else if (!pinky.isInPaintSpace && !islandingplaying)
         {
             ChangeAnimationState(In_body_notpaintspace);
+            islandingplaying = true;
         }
     }
 
@@ -153,6 +157,7 @@ public class inky_animation : MonoBehaviour
     {
         JumpStarted = false;
         hasJumped = false;
+        islandingplaying = false;
     }
     
     private bool hasPlayedIn = false;
@@ -211,45 +216,45 @@ public class inky_animation : MonoBehaviour
         {
             OnWallAnimations();
         }
-        if (!JumpStarted)
+    if (!JumpStarted)
+    {
+        if (!OnWall)
         {
-            if (!OnWall)
+            //reset Onwall stuff
+            hasPlayedIn = false;
+            hasPlayedSplat = false;
+
+            if (!HasPlayedBodyIn)
             {
-                //reset Onwall stuff
-                hasPlayedIn = false;
-                hasPlayedSplat = false;
-
-                if (!HasPlayedBodyIn)
-                {
-                    ChangeAnimationState(In_body);
-                    IS_Arm.SetActive(false);
-                    NS_Arm.SetActive(false);
-                    RB_Arm.SetActive(false);
-                    RF_Arm.SetActive(false);
-                    LF_Arm.SetActive(false);
-                    LB_Arm.SetActive(false);
-                    N_Arm.SetActive(false);
-                    S_Arm.SetActive(false);
+                ChangeAnimationState(In_body);
+                IS_Arm.SetActive(false);
+                NS_Arm.SetActive(false);
+                RB_Arm.SetActive(false);
+                RF_Arm.SetActive(false);
+                LF_Arm.SetActive(false);
+                LB_Arm.SetActive(false);
+                N_Arm.SetActive(false);
+                S_Arm.SetActive(false);
 
 
-                }
-                /*else if (!isGrounded || !pinky.OnLadder)
-                {
-                    ChangeAnimationState(Jump_air);
-                    IS_Arm.SetActive(false);
-                    NS_Arm.SetActive(false);
-                    RB_Arm.SetActive(false);
-                    RF_Arm.SetActive(false);
-                    LF_Arm.SetActive(false);
-                    LB_Arm.SetActive(false);
-                    N_Arm.SetActive(false);
-                    S_Arm.SetActive(false);
+            }
+            /*else if (!isGrounded || !pinky.OnLadder)
+            {
+                ChangeAnimationState(Jump_air);
+                IS_Arm.SetActive(false);
+                NS_Arm.SetActive(false);
+                RB_Arm.SetActive(false);
+                RF_Arm.SetActive(false);
+                LF_Arm.SetActive(false);
+                LB_Arm.SetActive(false);
+                N_Arm.SetActive(false);
+                S_Arm.SetActive(false);
 
                     
-                }*/
-                else //Movement
+            }*/
+            else //Movement
 
-                {
+            {
                 
                     if (_IK == null)
                     {
@@ -266,133 +271,233 @@ public class inky_animation : MonoBehaviour
                         _IK.transform.localPosition = Vector2.Lerp(_IK.transform.localPosition, currentAimLocal, step);
 
                         Vector2 moveVector = pinky.moveVector; // Access moveVector from pinky script
+
+                        if (!pinky.OnLadder) //OFF LADDER
+                        {
+                            if (pinky.isInPaintSpace)
+                            {
+                                if (moveVector.x > 0) //right
+                                {
+                                    NorthEast();
+                                }
+                                else if (moveVector.x < 0) //left
+                                {
+                                    NorthWest();
+                                }
+                                else //idle
+                                {
+                                    NorthIdle();
+                                }
+                            }
+                            else
+                            {
+                                if (moveVector.x > 0) //right
+                                {
+                                    SouthEast();
+                                }
+                                else if (moveVector.x < 0) //left
+                                {
+                                    SouthWest();
+                                }
+                                else //idle
+                                {
+                                    SouthIdle();
+                                }
+                            }
+                        }
+                        else  // ON LADDER
+                        {
+                            if (pinky.isInPaintSpace)
+                            {
+                                if (moveVector.x > 0 && moveVector.y < 0)  //right+South
+                                {
+                                    SouthEast();
+                                }
+                                else if (moveVector.x < 0 && moveVector.y < 0)  //left+South
+                                {
+                                    SouthWest();
+                                }
+                                else if (moveVector.x > 0 || (moveVector.x > 0 && moveVector.y > 0)) //right || right+North
+                                {
+                                    NorthEast();
+                                }
+                                else if (moveVector.x < 0 || (moveVector.x < 0 && moveVector.y > 0)) //left + || right+North
+                                {
+                                    NorthWest();
+                                }
+                                else if (moveVector.y > 0) //North
+                                {
+                                    North();
+                                }
+                                else if (moveVector.y < 0) //South
+                                {
+                                    South();
+                                }
+                                else //idle
+                                {
+                                    NorthIdle();
+                                }
+                            }
+                            else
+                            {
+                                if (moveVector.x > 0 && moveVector.y < 0) // right+South
+                                {
+                                    SouthEast();
+                                }
+                                else if (moveVector.x < 0 && moveVector.y < 0) // left+South
+                                {
+                                    SouthWest();
+                                }
+                                else if (moveVector.x > 0 || (moveVector.x > 0 && moveVector.y > 0)) //right || right+North
+                                {
+                                    NorthEast();
+                                }
+                                else if (moveVector.x < 0 || (moveVector.x < 0 && moveVector.y > 0)) //left + || right+North
+                                {
+                                    NorthWest();
+                                }
+                                else if (moveVector.y > 0) //North
+                                {
+                                    North();
+                                }
+                                else if (moveVector.y < 0) //South
+                                {
+                                    South();
+                                }
+                                else //idle
+                                {
+                                    SouthIdle();
+                                }
+                            }
+                        }
                         
-                        if (moveVector.x > 0 && pinky.isInPaintSpace) // Moving right
-                        {
 
-                            ChangeAnimationState(R_NE);
-                            IS_Arm.SetActive(false);
-                            NS_Arm.SetActive(false);
-                            RB_Arm.SetActive(true);
-                            RF_Arm.SetActive(false);
-                            LF_Arm.SetActive(false);
-                            LB_Arm.SetActive(false);
-                            N_Arm.SetActive(false);
-                            S_Arm.SetActive(false);
 
-                            _IK = IK_RB;
-                        }
-                        else if (moveVector.x < 0 && pinky.isInPaintSpace) // Moving left
-                        {
 
-                            ChangeAnimationState(R_NW);
-                            IS_Arm.SetActive(false);
-                            NS_Arm.SetActive(false);
-                            RB_Arm.SetActive(false);
-                            RF_Arm.SetActive(false);
-                            LF_Arm.SetActive(false);
-                            LB_Arm.SetActive(true);
-                            N_Arm.SetActive(false);
-                            S_Arm.SetActive(false);
-
-                            _IK = IK_LB;
-
-                        }
-                        if (moveVector.x > 0 && !pinky.isInPaintSpace) // Moving right
-                        {
-
-                            ChangeAnimationState(R_SE);
-                            IS_Arm.SetActive(false);
-                            NS_Arm.SetActive(false);
-                            RB_Arm.SetActive(false);
-                            RF_Arm.SetActive(true);
-                            LF_Arm.SetActive(false);
-                            LB_Arm.SetActive(false);
-                            N_Arm.SetActive(false);
-                            S_Arm.SetActive(false);
-
-                            _IK = IK_RF;
-
-                        }
-                        else if (moveVector.x < 0 && !pinky.isInPaintSpace) // Moving left
-                        {
-
-                            ChangeAnimationState(R_SW);
-                            IS_Arm.SetActive(false);
-                            NS_Arm.SetActive(false);
-                            RB_Arm.SetActive(false);
-                            RF_Arm.SetActive(false);
-                            LF_Arm.SetActive(true);
-                            LB_Arm.SetActive(false);
-                            N_Arm.SetActive(false);
-                            S_Arm.SetActive(false);
-
-                            _IK = IK_LF;
-
-                        }
-                        else if (moveVector.y < 0 && pinky.OnLadder) //South
-                        {
-                            ChangeAnimationState(R_S); //LB
-                            RF_Arm.SetActive(false);
-                            RB_Arm.SetActive(false);
-                            LF_Arm.SetActive(false);
-                            LB_Arm.SetActive(false);
-                            S_Arm.SetActive(true);
-                            N_Arm.SetActive(false);
-
-                            _IK = IK_S;
-                        }
-                        else if (moveVector.y > 0 && pinky.OnLadder) //north
-                        {
-                            ChangeAnimationState(R_N); //LB
-                            RF_Arm.SetActive(false);
-                            RB_Arm.SetActive(false);
-                            LF_Arm.SetActive(false);
-                            LB_Arm.SetActive(false);
-                            S_Arm.SetActive(false);
-                            N_Arm.SetActive(true);
-
-                            _IK = IK_N;
-                        }
-                        else if (moveVector.x == 0 && pinky.isInPaintSpace)
-                        {
-
-                            ChangeAnimationState(I_N);
-                            IS_Arm.SetActive(false);
-                            NS_Arm.SetActive(false);
-                            RB_Arm.SetActive(false);
-                            RF_Arm.SetActive(false);
-                            LF_Arm.SetActive(false);
-                            LB_Arm.SetActive(false);
-                            N_Arm.SetActive(true);
-                            S_Arm.SetActive(false);
-
-                            _IK = IK_N;
-                        }
-                        else if (moveVector.x == 0 && !pinky.isInPaintSpace)
-                        {
-                            ChangeAnimationState(I_S);
-                            IS_Arm.SetActive(false);
-                            NS_Arm.SetActive(false);
-                            RB_Arm.SetActive(false);
-                            RF_Arm.SetActive(false);
-                            LF_Arm.SetActive(false);
-                            LB_Arm.SetActive(false);
-                            N_Arm.SetActive(false);
-                            S_Arm.SetActive(true);
-
-                            _IK = IK_S;
-
-                        }
-
-                    }
-                }
-            }
-           
-           
-        }
     }
-    
+    }
+    }
+           
+           
+    }
+    }
+
+    private void SouthIdle()
+    {
+        ChangeAnimationState(I_S);
+        IS_Arm.SetActive(false);
+        NS_Arm.SetActive(false);
+        RB_Arm.SetActive(false);
+        RF_Arm.SetActive(false);
+        LF_Arm.SetActive(false);
+        LB_Arm.SetActive(false);
+        N_Arm.SetActive(false);
+        S_Arm.SetActive(true);
+
+        _IK = IK_S;
+    }
+
+    private void NorthIdle()
+    {
+        ChangeAnimationState(I_N);
+        IS_Arm.SetActive(false);
+        NS_Arm.SetActive(false);
+        RB_Arm.SetActive(false);
+        RF_Arm.SetActive(false);
+        LF_Arm.SetActive(false);
+        LB_Arm.SetActive(false);
+        N_Arm.SetActive(true);
+        S_Arm.SetActive(false);
+
+        _IK = IK_N;
+    }
+
+    private void North()
+    {
+        ChangeAnimationState(R_N); //LB
+        RF_Arm.SetActive(false);
+        RB_Arm.SetActive(false);
+        LF_Arm.SetActive(false);
+        LB_Arm.SetActive(false);
+        S_Arm.SetActive(false);
+        N_Arm.SetActive(true);
+
+        _IK = IK_N;
+    }
+
+    private void South()
+    {
+        ChangeAnimationState(R_S); //LB
+        RF_Arm.SetActive(false);
+        RB_Arm.SetActive(false);
+        LF_Arm.SetActive(false);
+        LB_Arm.SetActive(false);
+        S_Arm.SetActive(true);
+        N_Arm.SetActive(false);
+
+        _IK = IK_S;
+    }
+
+    private void SouthWest()
+    {
+        ChangeAnimationState(R_SW);
+        IS_Arm.SetActive(false);
+        NS_Arm.SetActive(false);
+        RB_Arm.SetActive(false);
+        RF_Arm.SetActive(false);
+        LF_Arm.SetActive(true);
+        LB_Arm.SetActive(false);
+        N_Arm.SetActive(false);
+        S_Arm.SetActive(false);
+
+        _IK = IK_LF;
+    }
+
+    private void SouthEast()
+    {
+        ChangeAnimationState(R_SE);
+        IS_Arm.SetActive(false);
+        NS_Arm.SetActive(false);
+        RB_Arm.SetActive(false);
+        RF_Arm.SetActive(true);
+        LF_Arm.SetActive(false);
+        LB_Arm.SetActive(false);
+        N_Arm.SetActive(false);
+        S_Arm.SetActive(false);
+
+        _IK = IK_RF;
+    }
+
+    private void NorthWest()
+    {
+        ChangeAnimationState(R_NW);
+        IS_Arm.SetActive(false);
+        NS_Arm.SetActive(false);
+        RB_Arm.SetActive(false);
+        RF_Arm.SetActive(false);
+        LF_Arm.SetActive(false);
+        LB_Arm.SetActive(true);
+        N_Arm.SetActive(false);
+        S_Arm.SetActive(false);
+
+        _IK = IK_LB;
+    }
+
+    private void NorthEast()
+    {
+        ChangeAnimationState(R_NE);
+        IS_Arm.SetActive(false);
+        NS_Arm.SetActive(false);
+        RB_Arm.SetActive(true);
+        RF_Arm.SetActive(false);
+        LF_Arm.SetActive(false);
+        LB_Arm.SetActive(false);
+        N_Arm.SetActive(false);
+        S_Arm.SetActive(false);
+
+        _IK = IK_RB;
+    }
+
     void ChangeAnimationState(string newState)
     {
         if (currentState == newState)

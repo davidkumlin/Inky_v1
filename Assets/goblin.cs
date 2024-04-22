@@ -30,6 +30,7 @@ public class goblin : MonoBehaviour
    private float resettime = 2f;
     private bool isAtk;
     private bool hasAtk;
+    private bool atk = false; 
     public bool OnWall { get; private set; } = false;
     // Start is called before the first frame update
     private void Awake()
@@ -88,18 +89,25 @@ public class goblin : MonoBehaviour
         ChangeAnimationState(goblin_atk);
         Debug.Log("StartATK");
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the collision is with the player
-        if (collision.gameObject.CompareTag("Player"))
+        // Check if the trigger collider overlaps with the player's collider
+        if (other.gameObject.CompareTag("Player"))
         {
+            // Call the Attack function to deal damage to the player
             Attack();
         }
 
     }
     private void Attack()
     {
+        if (atk)
+        {
         pstats.hp -= Damage;
+            atk = true;
+        }
+        
+
     }
     private void atkCheck()
     {
@@ -121,6 +129,7 @@ public class goblin : MonoBehaviour
                 Debug.Log("reset2");
                 hasAtk = false;
                 resettime = 3f;
+                atk = false;
             }
         }
     }

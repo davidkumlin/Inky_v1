@@ -32,7 +32,12 @@ public class P_Inky : MonoBehaviour
     public Vector2 moveVector { get; private set; } = Vector2.zero;
     [SerializeField] private float moveSpeed = 10f;
     // Jumping
-    [SerializeField] private float jumpForce = 500f;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpVelocity;
+    [SerializeField] private float fallMultiplier;
+    [SerializeField] public float gravity;
+    [SerializeField] public float fallingGravityScale;
+    private bool wantToJump = false;
     public bool isGrounded;
 
     //aim
@@ -63,7 +68,7 @@ public class P_Inky : MonoBehaviour
     {
         input = new CustomInput(); // Instantiate CustomInput
         inkyani = GetComponent<inky_animation>();
-        inkyRb.centerOfMass = Vector2.zero;
+        //inkyRb.centerOfMass = Vector2.zero;
     }
 
     void Start()
@@ -72,6 +77,7 @@ public class P_Inky : MonoBehaviour
         GameManager.OnWallChanged += OnWallStatus;
         inkyActive = true;
         startingLocalPosition = aimRb.transform.localPosition;
+        
 
         if (inkyRb == null || aimRb == null)
         {
@@ -102,12 +108,14 @@ public class P_Inky : MonoBehaviour
     void Update()
     {
         IsDrawing = drawManager.ActiveSpray;
+        
+        
 
     }
 
     private void FixedUpdate()
     {
-       
+        
         if (paintableObject)
         {
 
@@ -171,13 +179,22 @@ public class P_Inky : MonoBehaviour
         }
         else
         {
-            inkyRb.gravityScale = 70f;
+            
             // If outside or not on a wall, use the default movement logic with the right stick (Aim)
             Vector2 playerMoveVector = input.Player.Aim.ReadValue<Vector2>();
             desiredPosition = (Vector2)inkyRb.position + playerMoveVector * maxDistance;
             aimMoveVector = aimRb.transform.localPosition;
 
+            if (!wantToJump)
+            {
             Move();
+            }
+            else
+            {
+            Jump();
+            }
+
+           
             CheckGrounded();
         }
 
@@ -248,18 +265,22 @@ public class P_Inky : MonoBehaviour
 
         Vector2 targetVelocity = Vector2.zero;
 
-        if (!OnLadder)
+        if (!OnLadder && !wantToJump)
         {
-            
+
             targetVelocity.x = moveVector.x * moveSpeed;
+            inkyRb.gravityScale = 40f;
+
+
         }
+     
         else
         {
             // Allow free movement when on a ladder
             inkyRb.gravityScale = 0f;
             targetVelocity = moveVector * moveSpeed;
         }
-
+        
         // Apply acceleration
         currentVelocity.x = Mathf.MoveTowards(currentVelocity.x, targetVelocity.x, acceleration * Time.deltaTime);
         currentVelocity.y = Mathf.MoveTowards(currentVelocity.y, targetVelocity.y, acceleration * Time.deltaTime);
@@ -275,6 +296,9 @@ public class P_Inky : MonoBehaviour
             currentVelocity.y = Mathf.MoveTowards(currentVelocity.y, 0f, deceleration * Time.deltaTime);
         }
 
+        
+        
+
         if (moveVector.x > 0) // Moving right
         {
             isFacingRight = true;
@@ -285,23 +309,46 @@ public class P_Inky : MonoBehaviour
         }
     }
 
-    private void OnJumpPerformed(InputAction.CallbackContext value)
-    { 
-        if (!OnWall)
-        {
 
-            if (isGrounded && !inkyani.hasJumped)
+    private void OnJumpPerformed(InputAction.CallbackContext value)
+    {
+        wantToJump = true;
+        Debug.Log(wantToJump);
+    }
+
+    private void Jump()
+    {
+        
+
+        {
+            if (!OnWall)
             {
-                inkyani.Jump();
+
+                if (isGrounded && !inkyani.hasJumped)
+                {
+                    inkyani.Jump();
+                    
+                    inkyRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
+
+                    inkyRb.gravityScale = 10f;
+
+                    inkyRb.velocity = new Vector2(inkyRb.velocity.x, 0f);
+                }
+                    Vector2 targetVelocity = moveVector * moveSpeed;
+                    inkyRb.velocity = new Vector2(targetVelocity.x, inkyRb.velocity.y);
+            }
+            if (OnLadder)
+            {
+                wantToJumpDone();
             }
         }
     }
-
-    void UpForce()
+    void wantToJumpDone() 
     {
-        inkyRb.AddForce(Vector2.up * jumpForce,ForceMode2D.Force);
-        //Debug.Log("pinky.Upfoce");
+        wantToJump = false;
+        Debug.Log(wantToJump);
     }
+
 
     private void CheckGrounded()
     {
@@ -310,6 +357,7 @@ public class P_Inky : MonoBehaviour
         if (inkyani.hasJumped && isGrounded)
         {
             inkyani.Landing();
+            wantToJumpDone();
         }
 
         if (isGrounded)
