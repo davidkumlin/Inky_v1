@@ -15,6 +15,7 @@ public class Brorcolli : MonoBehaviour
     public bool OnWall { get; private set; } = false;
     public Transform unitPos;
     bool isAtk = false;
+    public bool isbrordead = false;
     public Animator body_ani;
     public Animator arm_ani;
     [SerializeField] private GameObject idle_arm;
@@ -35,20 +36,16 @@ public class Brorcolli : MonoBehaviour
         cutArmScript = Cut_arm.GetComponent<Enemy_atk>();
         Cut_arm.SetActive(false);
         pinky = FindObjectOfType<P_Inky>();
-        GameObject playerObject = GameObject.FindWithTag("Player");
-        if (playerObject != null)
+        if (pinky == null)
         {
-            pstats = playerObject.GetComponent<P_Stats>();
-            if (pstats == null)
-            {
-                Debug.LogError("PlayerMovement component not found on the player object.");
-            }
+            Debug.LogError("P_Inky not found");
         }
-        else
+        pstats = FindObjectOfType<P_Stats>();
+        if (pstats == null)
         {
-            Debug.LogError("Player object not found.");
+            Debug.LogError("P_stats not found");
         }
-        
+
         unitRb = GetComponent<Rigidbody2D>();
         if (unitRb != null)
             Debug.Log(unitRb.name + " Rigidbody2D found");
@@ -131,10 +128,10 @@ public class Brorcolli : MonoBehaviour
 
     private void KillBroccoli()
     {
-        Debug.Log("kill");
+        Debug.Log("brorcoli facesprayed");
         alivebro.SetActive(false);
         ChangeAnimationState(bror_death);
-        
+        isbrordead = true;
         
     }
     void ChangeAnimationState(string newState)

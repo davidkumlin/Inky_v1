@@ -19,15 +19,15 @@ public class Enemy_atk : MonoBehaviour
     void Start()
     {
         brorC = FindObjectOfType<Brorcolli>();
-
-        GameObject playerObject = GameObject.FindWithTag("Player");
-        if (playerObject != null)
+        pinky = FindObjectOfType<P_Inky>();
+        if (pinky == null)
         {
-            pinky = playerObject.GetComponent<P_Inky>();
-            if (pinky == null)
-            {
-                Debug.LogError("PlayerMovement component not found on the player object.");
-            }
+            Debug.LogError("P_Inky not found");
+        }
+        pstats = FindObjectOfType<P_Stats>();
+        if (pstats == null)
+        {
+            Debug.LogError("P_stats not found");
         }
     }
 

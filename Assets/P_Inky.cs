@@ -313,7 +313,7 @@ public class P_Inky : MonoBehaviour
     private void OnJumpPerformed(InputAction.CallbackContext value)
     {
         wantToJump = true;
-        Debug.Log(wantToJump);
+       // Debug.Log(wantToJump);
     }
 
     private void Jump()
@@ -346,7 +346,7 @@ public class P_Inky : MonoBehaviour
     void wantToJumpDone() 
     {
         wantToJump = false;
-        Debug.Log(wantToJump);
+        //Debug.Log(wantToJump);
     }
 
 
