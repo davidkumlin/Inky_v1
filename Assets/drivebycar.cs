@@ -48,10 +48,12 @@ private void runCar()
     {
         if (skjutvaggen.brordead)
         {
+            if (!shootaz)
             gunny.SetActive(true);
 
+
         }
-        
+
         // Calculate movement vector
         float horizontalMovement = speed;
         if (carstarted)
@@ -69,7 +71,7 @@ private void runCar()
             Debug.Log("pang pang");
 
             gunny.SetActive(false);
-
+            shootaz = true;
             shootinggunny.SetActive(true);
             speed = -8f;
         }
