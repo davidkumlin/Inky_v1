@@ -57,7 +57,7 @@ public class P_Inky : MonoBehaviour
     public PaintableObject paintableObject;
     //public PaintableObject currentPaintableObject;
     public PaintableObject ActiveWall;
-    private bool aimInsideMask = false;
+    public bool aimInsideMask = false;
     private bool canToggleOnWall = true;
     public bool isInPaintSpace = false;
     public bool OnWall { get; private set; } = false;

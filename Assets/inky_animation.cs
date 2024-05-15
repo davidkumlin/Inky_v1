@@ -23,19 +23,19 @@ public class inky_animation : MonoBehaviour
     [Header("IK_targets")]
     [SerializeField] private GameObject IK_IS;
     [SerializeField] private GameObject IK_NS;
-    [SerializeField] private GameObject IK_RB;
+    [SerializeField] public GameObject IK_RB;
     [SerializeField] private GameObject IK_RF;
     [SerializeField] private GameObject IK_LF;
-    [SerializeField] private GameObject IK_LB;
+    [SerializeField] public GameObject IK_LB;
     [SerializeField] private GameObject IK_S;
-    [SerializeField] private GameObject IK_N;
+    [SerializeField] public GameObject IK_N;
 
     [SerializeField] private GameObject jumpDustPrefab;
     [SerializeField] private Transform groundPos;
 
-    private GameObject _IK = null;
+    public GameObject _IK = null;
     public Vector2 _IK_pos;
-    private float speed = 3f;
+    private float speed = 10f;
     private Vector2 currentAim;
 
     //animation

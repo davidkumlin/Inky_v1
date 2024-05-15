@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class yodasoda : MonoBehaviour
 {
-    [SerializeField] PlayerMovement playerMovement; // Reference to the PlayerMovement script
+    [SerializeField] P_Stats pstats; // Reference to the PlayerMovement script
     private SpriteRenderer spriteRenderer;
     public Animator animator;
     private string currentState;
     const string yodasoda_idle = "yodasoda_idle";
     const string Out = "Out";
+    [SerializeField] private float Healpoints;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerMovement = FindObjectOfType<PlayerMovement>(); // Find the PlayerMovement component in the scene
+        pstats = FindObjectOfType<P_Stats>(); // Find the PlayerMovement component in the scene
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
 
-        if (playerMovement == null)
+        if (pstats == null)
         {
             Debug.LogError("PlayerMovement component not found");
         }
@@ -32,9 +33,9 @@ public class yodasoda : MonoBehaviour
     void Gulped()
     {
         Debug.Log("gulp!");
-        if (playerMovement != null)
+        if (pstats != null)
         {
-            playerMovement.hp += 10f;
+            pstats.hp += Healpoints;
         }
         Destroy(gameObject); // Destroy the GameObject containing this script
     }

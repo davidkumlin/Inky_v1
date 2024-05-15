@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,34 +9,84 @@ public class Spray : MonoBehaviour
     private inky_animation inkyani;
 
     [SerializeField] private Transform NorthHand;
-    [SerializeField] private Transform WesthHand;
+    [SerializeField] private Transform WestHand;
     [SerializeField] private Transform EastHand;
 
     [SerializeField] private Transform aimpos;
 
-    [SerializeField] private ParticleSystem sprayfx;
+    [SerializeField] private LineRenderer sprayBeam;
 
-
+    private Transform ActiveHand;
 
     // Start is called before the first frame update
     void Start()
     {
-        pinky = GetComponent<P_Inky>();
-        inkyani = GetComponent<inky_animation>();
+        pinky = FindObjectOfType<P_Inky>();
+        if(pinky == null)
+        {
+            Debug.Log("pinky not found bitch");
+        }
+        inkyani = FindObjectOfType<inky_animation>();
         // Set the initial position of the spray emitter to NorthHand
-        
+
     }
 
 
 
-// Update is called once per frame
-void Update()
+    // Update is called once per frame
+    void Update()
     {
-        sprayfx.transform.position = NorthHand.position;
-        // Calculate the direction towards the aimpos
-        Vector3 direction = (aimpos.position - aimpos.position).normalized;
+        WhatHand();
 
-        // Rotate the emitter to point towards aimpos
-        sprayfx.transform.rotation = Quaternion.LookRotation(direction);
+        if (pinky.IsDrawing && pinky.aimInsideMask)
+        {
+            Debug.Log("pssch");
+            sprayBeam.enabled = true;
+           // sprayBeam.transform.position = ActiveHand.position;
+            // Calculate the direction towards the aimpos
+            //Vector3 direction = (aimpos.position - ActiveHand.position).normalized;
+
+
+            sprayBeam.SetPosition(0, ActiveHand.position);
+            sprayBeam.SetPosition(1, aimpos.position);
+        }
+        else
+        {
+            // Disable the LineRenderer when not drawing
+            sprayBeam.enabled = false;
+        }
+
     }
+
+    private void WhatHand()
+    {
+        if (inkyani != null)
+        {
+            // Access the _IK variable from the inky_animation script
+            GameObject activeIK = inkyani._IK;
+
+            if (activeIK == inkyani.IK_N)
+            {
+                ActiveHand = NorthHand;
+            }
+            else if (activeIK == inkyani.IK_RB)
+            {
+                ActiveHand = EastHand;
+            }
+            else if (activeIK == inkyani.IK_LB)
+            {
+                ActiveHand = WestHand;
+            }
+            else
+            {
+                ActiveHand = null;
+                Debug.Log("No active hand detected.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Inky animation script reference not set.");
+        }
+    }
+
 }

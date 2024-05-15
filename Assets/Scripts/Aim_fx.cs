@@ -9,14 +9,25 @@ public class Aim_fx : MonoBehaviour
     public bool OnWall { get; private set; } = false;
     private bool hasSubscribed = false;
     private string currentState;
-    
+    private P_Inky pinky;
     const string BigSplat = "BigSplat";
+    const string Painting = "Painting";
     const string BigDrips = "BigDrips";
     const string FullyPainted = "FullyPainted";
-
+    private inky_animation inkyani;
 
     void Start()
     {
+        inkyani = FindObjectOfType<inky_animation>();
+        if (inkyani == null)
+        {
+            Debug.LogError("inkyani component not found");
+        }
+        pinky = FindObjectOfType<P_Inky>();
+        if (pinky == null)
+        {
+            Debug.LogError("pINKY component not found");
+        }
         GameManager.OnWallChanged += OnWallStatus;
         spriteRenderer = GetComponent<SpriteRenderer>();
         ani = GetComponent<Animator>();
@@ -32,7 +43,17 @@ public class Aim_fx : MonoBehaviour
     {
 
         ani.SetBool("OnWall", OnWall);
-
+       
+        if (pinky.IsDrawing && pinky.aimInsideMask)
+        {
+            ani.SetBool("Spray", true);
+            Debug.Log("spraytime fx");
+        }
+        else
+        {
+            ani.SetBool("Spray", false);
+            
+        }
     }
     void Bigshine()
     {
