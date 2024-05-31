@@ -47,6 +47,7 @@ public class Enemy_atk : MonoBehaviour
         {
         pstats.hp -= damage;
         Debug.Log("Cutt" + damage);
+            pstats.Damage();
         }
     }
 
@@ -59,6 +60,7 @@ public class Enemy_atk : MonoBehaviour
         float lerpFactor = Mathf.InverseLerp(maxDamageDistance, minDamageDistance, DistanceToPlayer);
         float damage = Mathf.Lerp(maxDamage, minDamage, lerpFactor);
         pstats.hp -= damage;
+        pstats.Damage();
 
         Debug.Log("Sting" + damage);
     }

@@ -9,6 +9,7 @@ public class P_Stats : MonoBehaviour
 
     [SerializeField] public GameObject inkyObj;
     [SerializeField] private P_Inky pinky;
+    [SerializeField] private inky_animation inkyAni;
     private Vector2 inkyPos;
     public bool inkyActive;
     
@@ -30,7 +31,7 @@ public class P_Stats : MonoBehaviour
     {
         
          pinky = FindObjectOfType<P_Inky>();
-         
+         inkyAni = FindObjectOfType<inky_animation>();
         
 
     }
@@ -54,7 +55,29 @@ public class P_Stats : MonoBehaviour
         
         ActiveUnit();
     }
-    
+
+    public void Damage()
+    {
+        Debug.Log("Damage");
+        if (inkyAni.takinDamage == false)
+        {
+        inkyAni.takinDamage = true;
+
+            if (hp <= 0)
+            {
+                inkyAni.dying = true;
+                pinky.moveSpeed = 0;
+            }
+
+        }
+    }
+
+    public void ResetLevel()
+    {
+        // Reset the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     void ActiveUnit()
     {
         if (!OnWall)

@@ -148,6 +148,7 @@ public class tick : MonoBehaviour
     {
         ChangeAnimationState(tick_atk);
         pstats.hp -= Damage;
+        pstats.Damage();
     }
 
     private void Jump()

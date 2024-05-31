@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Printa : MonoBehaviour
 {
-    private string initialDialogText = "Be whatchful ahead of the Beez...\nPress (A)";
-    private string subsequentDialogText = "...and other villains in the area!\nPress(A) to close";
+    private string initialDialogText = "Be whatchful ahead of the Beez...";
+    private string subsequentDialogText = "...and other villains in the area!";
     [SerializeField] private HUD hud;
     private bool hasMetPrinta = false;
     private bool hasInteractedwithPrinta = false;
@@ -25,12 +25,7 @@ public class Printa : MonoBehaviour
         interactAction.Disable();
     }
 
-    private void Awake()
-    {
-        // Get a reference to the interact action from the input system
-        interactAction = new InputAction(binding: "<Gamepad>/buttonSouth"); // Change this binding to match your interact button
-        interactAction.performed += ctx => OnInteract(ctx);
-    }
+   
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -41,25 +36,32 @@ public class Printa : MonoBehaviour
             hud.ShowDialogue(initialDialogText);
             hasMetPrinta = true;
             Checkpoint();
+            StartCoroutine(ShowSubsequentDialogueAfterDelay());
         }
     }
 
-    private void OnInteract(InputAction.CallbackContext context)
+    private IEnumerator ShowSubsequentDialogueAfterDelay()
     {
+        yield return new WaitForSeconds(2f); // Wait for 2 seconds
+
         if (!hasInteractedwithPrinta && hasMetPrinta)
         {
             Debug.Log("printa2");// Update dialogue text for subsequent interactions
             hud.ShowDialogue(subsequentDialogText);
             hud.ShowPrinta();
             hasInteractedwithPrinta = true; // Set hasInteracted to true to prevent further interactions
-        }
-        else if (hasInteractedwithPrinta && hasMetPrinta)
-        {
-            // Close dialogue
-            CloseDialogue();
-        }
-    }
+            StartCoroutine(CloseDialogueAfterDelay());
 
+        }
+       
+    }
+    private IEnumerator CloseDialogueAfterDelay()
+    {
+        yield return new WaitForSeconds(2f); // Wait for 2 seconds
+
+
+        CloseDialogue();
+    }
     // Method to close dialogue and hide Froggy image
     private void CloseDialogue()
     {

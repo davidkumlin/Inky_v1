@@ -62,12 +62,14 @@ public class Brorcolli : MonoBehaviour
    
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!OnWall)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            inBox = true;
-            Attack();
+            if (!OnWall)
+            {
+                inBox = true;
+                Attack();
+            }
         }
-        
     }
     void Attack()
     {

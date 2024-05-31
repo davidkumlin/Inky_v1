@@ -47,7 +47,7 @@ public class Aim_fx : MonoBehaviour
         if (pinky.IsDrawing && pinky.aimInsideMask)
         {
             ani.SetBool("Spray", true);
-            Debug.Log("spraytime fx");
+            //Debug.Log("spraytime fx");
         }
         else
         {

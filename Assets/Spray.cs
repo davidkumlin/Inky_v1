@@ -38,7 +38,7 @@ public class Spray : MonoBehaviour
     {
         WhatHand();
 
-        if (pinky.IsDrawing && pinky.aimInsideMask)
+        if (pinky.IsDrawing && pinky.aimInsideMask &&!pinky.OnWall)
         {
             Debug.Log("pssch");
             sprayBeam.enabled = true;
@@ -46,15 +46,23 @@ public class Spray : MonoBehaviour
             // Calculate the direction towards the aimpos
             //Vector3 direction = (aimpos.position - ActiveHand.position).normalized;
 
-
-            sprayBeam.SetPosition(0, ActiveHand.position);
-            sprayBeam.SetPosition(1, aimpos.position);
+            if (ActiveHand != null)
+            {
+                sprayBeam.SetPosition(0, ActiveHand.position);
+                sprayBeam.SetPosition(1, aimpos.position);
+            }
+            
         }
-        else
+        else if (pinky.OnWall)
         {
             // Disable the LineRenderer when not drawing
             sprayBeam.enabled = false;
         }
+        else
+        {
+            sprayBeam.enabled = false;
+        }
+
 
     }
 

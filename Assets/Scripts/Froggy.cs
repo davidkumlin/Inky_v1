@@ -5,32 +5,16 @@ using UnityEngine.InputSystem;
 
 public class Froggy : MonoBehaviour
 {
-    private string initialDialogText = "JAAMAAAN! Youré Inky right?\nPress (A)";
-    private string subsequentDialogText = "Use Right Stick to aim and Right Trigger\n to Spray the wall! Press(A) to close";
+    private string initialDialogText = "JAAMAAAN!";
+    private string subsequentDialogText = "Ivé never seen a liquidman before!\n Spray that wall! ";
     [SerializeField] private HUD hud;
-
+    
     private bool hasInteractedwithFroggy = false;
     private bool hasMetFroggy = false;
-    private InputAction interactAction;
+    public bool readyToMeetSnaek = false;
 
-    private void OnEnable()
-    {
-        // Enable the interact action
-        interactAction.Enable();
-    }
 
-    private void OnDisable()
-    {
-        // Disable the interact action
-        interactAction.Disable();
-    }
-
-    private void Awake()
-    {
-        // Get a reference to the interact action from the input system
-        interactAction = new InputAction(binding: "<Gamepad>/buttonSouth"); // Change this binding to match your interact button
-        interactAction.performed += ctx => OnInteract(ctx);
-    }
+ 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -40,19 +24,29 @@ public class Froggy : MonoBehaviour
             hud.ShowFroggy();
             hud.ShowDialogue(initialDialogText);
             hasMetFroggy = true;
+            // Start the coroutine to wait for 2 seconds before showing the subsequent dialogue
+            StartCoroutine(ShowSubsequentDialogueAfterDelay());
         }
     }
-
-    private void OnInteract(InputAction.CallbackContext context)
+    private IEnumerator ShowSubsequentDialogueAfterDelay()
     {
+        yield return new WaitForSeconds(2f); // Wait for 2 seconds
+
         if (!hasInteractedwithFroggy && hasMetFroggy)
         {
             // Update dialogue text for subsequent interactions
             hud.ShowDialogue(subsequentDialogText);
             hud.ShowFroggy();
             hasInteractedwithFroggy = true; // Set hasInteracted to true to prevent further interactions
+            StartCoroutine(CloseDialogueAfterDelay());
         }
-        else if (hasInteractedwithFroggy && hasMetFroggy)
+        
+    }
+    private IEnumerator CloseDialogueAfterDelay()
+    {
+        yield return new WaitForSeconds(2f); // Wait for 2 seconds
+
+        if (hasInteractedwithFroggy && hasMetFroggy)
         {
             // Close dialogue
             CloseDialogue();
@@ -64,6 +58,6 @@ public class Froggy : MonoBehaviour
     {
         hud.HideFroggy();
         hud.HideDialogue();
-        
+        readyToMeetSnaek = true;
     }
 }

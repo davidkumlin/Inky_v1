@@ -46,9 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1805787267634719971}
-  _collider: {fileID: 0}
   _particleSystem: {fileID: 5836339947121350392, guid: e0884e38da5123a4b90fb04ef90c2dcd, type: 3}
   lineWidth: 1
+  onwallprefab: 1
+  maxWidth: 1.05
+  minWidth: 0.95
+  duration: 1
 --- !u!120 &1805787267634719971
 LineRenderer:
   serializedVersion: 2
@@ -99,21 +102,21 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
+        time: 0.075145654
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0.25844947
+        outSlope: -0.25844947
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 1
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 0, g: 0, b: 0, a: 1}
+      key1: {r: 0, g: 0, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -121,8 +124,8 @@ LineRenderer:
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 65535
-      ctime2: 0
+      ctime1: 4241
+      ctime2: 65535
       ctime3: 0
       ctime4: 0
       ctime5: 0
@@ -136,13 +139,13 @@ LineRenderer:
       atime5: 0
       atime6: 0
       atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
+      m_Mode: 1
+      m_NumColorKeys: 3
       m_NumAlphaKeys: 2
     numCornerVertices: 50
     numCapVertices: 50
     alignment: 0
-    textureMode: 0
+    textureMode: 2
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0

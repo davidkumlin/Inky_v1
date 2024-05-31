@@ -12,6 +12,7 @@ public class HUD : MonoBehaviour
     [SerializeField] public Image froggy;
     [SerializeField] public Image Yeti;
     [SerializeField] public Image Printa;
+    [SerializeField] public Image Snaek;
     [SerializeField] public TextMeshProUGUI dialogueText;
 
     private int totalPoints = 0;
@@ -70,6 +71,18 @@ public class HUD : MonoBehaviour
     public void HideFroggy()
     {
         froggy.gameObject.SetActive(false);
+        Inky.gameObject.SetActive(false);
+    }
+    //SNaek
+    public void ShowSnaek()
+    {
+        Snaek.gameObject.SetActive(true);
+        Inky.gameObject.SetActive(true);
+    }
+
+    public void HideSnaek()
+    {
+        Snaek.gameObject.SetActive(false);
         Inky.gameObject.SetActive(false);
     }
     //Yeti

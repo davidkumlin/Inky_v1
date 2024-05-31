@@ -47,7 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1805787267634719971}
   _particleSystem: {fileID: 5836339947121350392, guid: e0884e38da5123a4b90fb04ef90c2dcd, type: 3}
-  lineWidth: 0.3
+  lineWidth: 0.5
+  onwallprefab: 0
+  maxWidth: 0.4
+  minWidth: 0.25
+  duration: 1
 --- !u!120 &1805787267634719971
 LineRenderer:
   serializedVersion: 2
@@ -69,7 +73,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 626d225c0f7f4924ea1c31e47f6332a6, type: 2}
+  - {fileID: 2100000, guid: 054b165cc7414d0458c0c84ab328bc0f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -141,7 +145,7 @@ LineRenderer:
     numCornerVertices: 10
     numCapVertices: 20
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0

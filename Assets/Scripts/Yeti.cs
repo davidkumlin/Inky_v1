@@ -5,31 +5,14 @@ using UnityEngine.InputSystem;
 
 public class Yeti : MonoBehaviour
 {
-    private string Yetitalk = "Use Left trigger to hide in the wall or \nin the bush... Press (A) på close";
+    private string Yetitalk = "Herrow friend, whatch out some nasty creeps around here";
     [SerializeField] private HUD hud;
 
     private bool hasInteractedwithYeti = false;
     private bool hasMetYeti = false;
-    private InputAction interactAction;
+    //private InputAction interactAction;
 
-    private void OnEnable()
-    {
-        // Enable the interact action
-        interactAction.Enable();
-    }
-
-    private void OnDisable()
-    {
-        // Disable the interact action
-        interactAction.Disable();
-    }
-
-    private void Awake()
-    {
-        // Get a reference to the interact action from the input system
-        interactAction = new InputAction(binding: "<Gamepad>/buttonSouth"); // Change this binding to match your interact button
-        interactAction.performed += ctx => OnInteract(ctx);
-    }
+   
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -42,15 +25,15 @@ public class Yeti : MonoBehaviour
             hasMetYeti = true;
         }
     }
-
-    private void OnInteract(InputAction.CallbackContext context)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (!hasInteractedwithYeti && hasMetYeti)
         {
-                        
+
             CloseDialogue();
         }
     }
+ 
 
     // Method to close dialogue and hide image
     private void CloseDialogue()

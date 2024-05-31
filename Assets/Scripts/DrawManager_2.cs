@@ -88,7 +88,7 @@ public class DrawManager_2 : MonoBehaviour
                     // Update the position of the current line
                     currentLine.GetComponent<Line>().SetPosition(aimPos);
                     // Set ActiveSpray to true when spraying starts
-                    ActiveSpray = true;
+                    ActiveSpray = false;
                     SprayDamage();
                     // Check if the spray start sound is not playing
                 }

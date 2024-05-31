@@ -24,34 +24,6 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &-7246244193428137319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Event/Player/Spray/Spray
-  m_EditorClassIdentifier: 
-  Path: event:/Event/Player/Spray/Spray
-  Guid:
-    Data1: 1178316263
-    Data2: 1121741304
-    Data3: 1066072459
-    Data4: -25144197
-  Banks:
-  - {fileID: 5407255613312872161}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 0
-  Parameters:
-  - {fileID: 6985206390369648586}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 4000
 --- !u!114 &-7096108793051641910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +78,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4271328553022132688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Event/Player/Spray/Spry
+  m_EditorClassIdentifier: 
+  Path: event:/Event/Player/Spray/Spry
+  Guid:
+    Data1: 128105124
+    Data2: 1180863737
+    Data3: -1511482725
+    Data4: 1305098389
+  Banks:
+  - {fileID: 5407255613312872161}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5875
 --- !u!114 &-1606993373779744706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +120,7 @@ MonoBehaviour:
   Path: Assets/Audio/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638460179401184619
+  lastModified: 638527572286274994
   FileSizes:
   - Name: Desktop
     Value: 1256
@@ -230,7 +229,7 @@ MonoBehaviour:
   - {fileID: 3502061652608243696}
   - {fileID: -5864280815108783718}
   - {fileID: 7545955471697755310}
-  - {fileID: -7246244193428137319}
+  - {fileID: -4271328553022132688}
   EditorParameters:
   - {fileID: -130529265922677022}
   - {fileID: 7761867103442348875}
@@ -238,7 +237,7 @@ MonoBehaviour:
   - {fileID: 5407255613312872161}
   StringsBanks:
   - {fileID: -1606993373779744706}
-  cacheTime: 638460179401184619
+  cacheTime: 638527572286274994
   cacheVersion: 131616
 --- !u!114 &359570671725809936
 MonoBehaviour:
@@ -309,37 +308,10 @@ MonoBehaviour:
   Path: Assets/Audio/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638460179401134753
+  lastModified: 638527572286215382
   FileSizes:
   - Name: Desktop
-    Value: 19755360
-  Exists: 1
---- !u!114 &6985206390369648586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/Spray/Spry
-  m_EditorClassIdentifier: 
-  Name: Spry
-  StudioPath: 
-  Min: 0
-  Max: 2
-  Default: 0
-  ID:
-    data1: 3288529129
-    data2: 1232379718
-  Type: 2
-  IsGlobal: 1
-  Labels:
-  - Fatt
-  - Med
-  - Smal
+    Value: 19720512
   Exists: 1
 --- !u!114 &7545955471697755310
 MonoBehaviour:

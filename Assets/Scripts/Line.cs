@@ -14,6 +14,14 @@ public class Line : MonoBehaviour
     private List<Vector2> _points = new List<Vector2>();
 
     public bool OnWall { get; private set; } = false;
+
+    [SerializeField] public bool onwallprefab;
+
+    [SerializeField] private float maxWidth = 0.4f;
+    [SerializeField] private float minWidth = 0.25f;
+    [SerializeField] private float duration = 1.0f;
+
+    private float timeElapsed = 0f;
     void Start()
     {
         GameManager.OnWallChanged += OnWallStatus;
@@ -33,10 +41,25 @@ public class Line : MonoBehaviour
 
     void Update()
     {
-    
-        //Debug.Log(lineDamage);
-    }
+        if (onwallprefab)
+        {
+            UpdateLineWidth();
+            //Debug.Log(lineDamage);
+        }
 
+    }
+    private void UpdateLineWidth()
+    {
+        // Update the elapsed time
+        timeElapsed += Time.deltaTime;
+
+        // Calculate the new width using Mathf.Lerp
+        float newWidth = Mathf.Lerp(maxWidth, minWidth, Mathf.PingPong(timeElapsed / duration, 1.0f));
+
+        // Set the new width of the LineRenderer
+        _renderer.startWidth = newWidth;
+        _renderer.endWidth = newWidth;
+    }
 
     public void SetPosition(Vector2 pos)
     {

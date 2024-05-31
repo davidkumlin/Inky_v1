@@ -28,9 +28,10 @@ public class P_Inky : MonoBehaviour
     [SerializeField] private float acceleration = 5f;
     [SerializeField] private float deceleration = 20f; 
     private Vector2 currentVelocity = Vector2.zero;
+    public float damageForce = 1000f;
 
     public Vector2 moveVector { get; private set; } = Vector2.zero;
-    [SerializeField] private float moveSpeed = 10f;
+    [SerializeField] public float moveSpeed = 10f;
     // Jumping
     [SerializeField] private float jumpForce;
     [SerializeField] private float jumpVelocity;
@@ -159,8 +160,9 @@ public class P_Inky : MonoBehaviour
         {
             
             // Disable gravity while on the wall
-            inkyRb.gravityScale = 0f;
+            inkyRb.gravityScale = 1f;
             inkyRb.MovePosition(CurrentAim);
+
 
             Vector2 moveVector = input.Player.Movement.ReadValue<Vector2>();
             Vector2 newPosition = inkyRb.position + moveVector * moveSpeed * Time.fixedDeltaTime;
@@ -191,7 +193,10 @@ public class P_Inky : MonoBehaviour
             }
             else
             {
-            Jump();
+                if (inkyani.dying == false)
+                {
+                     Jump();
+                }
             }
 
            
@@ -471,6 +476,30 @@ public class P_Inky : MonoBehaviour
                     return;
                 }
             }
+        }
+    }
+
+    // This method should be called when the player takes damage
+    public void TakeDamage(Vector2 hitPoint)
+    {
+        // Calculate the direction from the hit point to the player
+        Vector2 direction = (inkyRb.position - hitPoint).normalized;
+
+        // Apply a force in the opposite direction
+        inkyRb.AddForce(direction * damageForce, ForceMode2D.Impulse);
+
+        // You can add additional logic here for handling damage (e.g., reducing health)
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            // Get the point of contact
+            ContactPoint2D contact = collision.GetContact(0);
+
+            // Call the TakeDamage method with the point of contact
+            TakeDamage(contact.point);
         }
     }
 

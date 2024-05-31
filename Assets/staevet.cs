@@ -68,6 +68,7 @@ public class staevet : MonoBehaviour
     {
        
         pstats.hp -= Damage;
+        pstats.Damage();
     }
 
 }

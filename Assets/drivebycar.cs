@@ -68,12 +68,15 @@ private void runCar()
     {
         if (collision.CompareTag("Player") && skjutvaggen.brordead)
         {
+
             Debug.Log("pang pang");
 
             gunny.SetActive(false);
             shootaz = true;
             shootinggunny.SetActive(true);
             speed = -8f;
+            pstats.hp -= Damage;
+            pstats.Damage();
         }
     }
 

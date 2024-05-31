@@ -105,6 +105,7 @@ public class goblin : MonoBehaviour
         {
         pstats.hp -= Damage;
             atk = true;
+            pstats.Damage();
         }
         
 

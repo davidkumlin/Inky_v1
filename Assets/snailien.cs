@@ -47,8 +47,21 @@ public class snailien : MonoBehaviour
         }
 
     }
+    private bool hasAtk = false;
     private void Attack()
     {
+        if (!hasAtk)
+        {
+
         pstats.hp -= Damage;
+        pstats.Damage();
+            ToggleCooldown();
+        }
+    }
+    private IEnumerator ToggleCooldown()
+    {
+        
+        yield return new WaitForSeconds(0.5f);
+        hasAtk = false;
     }
 }
