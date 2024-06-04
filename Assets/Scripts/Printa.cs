@@ -11,19 +11,7 @@ public class Printa : MonoBehaviour
     private bool hasMetPrinta = false;
     private bool hasInteractedwithPrinta = false;
 
-    private InputAction interactAction;
-
-    private void OnEnable()
-    {
-        // Enable the interact action
-        interactAction.Enable();
-    }
-
-    private void OnDisable()
-    {
-        // Disable the interact action
-        interactAction.Disable();
-    }
+   
 
    
 
