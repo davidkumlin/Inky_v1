@@ -41,7 +41,7 @@ public class HUD : MonoBehaviour
         // Update the health bar value based on the player's health
         if (pstats != null)
         {
-            float healthPercentage = pstats.hp / pstats.maxHp;
+            float healthPercentage = P_Stats.hp / pstats.maxHp;
             healthBar.fillAmount = healthPercentage;
         }
     }

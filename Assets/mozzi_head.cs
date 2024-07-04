@@ -72,8 +72,8 @@ public class mozzi_head : MonoBehaviour
     void ATK()
     {
        
-        pstats.hp -= Damage;
-        pstats.Damage();
+        
+        pstats.Damage(Damage);
     }
 
 

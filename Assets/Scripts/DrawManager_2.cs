@@ -151,7 +151,7 @@ public class DrawManager_2 : MonoBehaviour
     void SprayDamage()
     {
         Line.lineDamage = sDamage;
-       Debug.Log(sDamage);
+       //Debug.Log(sDamage);
        
         if (pinky != null)
         {
@@ -164,7 +164,7 @@ public class DrawManager_2 : MonoBehaviour
             {
                 // Apply damage to the paintableObject
                 pinky.ActiveWall.TakeDamage(Line.lineDamage);
-                
+                paintableObject.AddLine(currentLine.GetComponent<Line>());
             }
             else
             {

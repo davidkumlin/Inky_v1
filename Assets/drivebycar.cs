@@ -16,7 +16,7 @@ public class drivebycar : MonoBehaviour
     private float speed = -6f;
 
     public Rigidbody2D unitRb;
-    private float Damage = 100f;
+    private float Damage = 120f;
     public bool OnWall { get; private set; } = false;
     // Start is called before the first frame update
     void Start()
@@ -75,8 +75,7 @@ private void runCar()
             shootaz = true;
             shootinggunny.SetActive(true);
             speed = -8f;
-            pstats.hp -= Damage;
-            pstats.Damage();
+            pstats.Damage(Damage);
         }
     }
 

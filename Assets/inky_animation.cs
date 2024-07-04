@@ -105,7 +105,7 @@ public class inky_animation : MonoBehaviour
     {
         GameManager.OnWallChanged += OnWallStatus;
         wallyLine = GetComponent<TrailRenderer>();
-        
+        takinDamage = false;
     }
     void OnWallStatus(bool OnWall)
     {
@@ -121,7 +121,7 @@ public class inky_animation : MonoBehaviour
     {
         isFacingRight = pinky.isFacingRight;
         Vector2 moveVector = pinky.moveVector; // Access moveVector from pinky script
-        Debug.Log(isFacingRight);
+        
         if (spriteRenderer != null)
         {
             spriteflipper();
@@ -282,6 +282,7 @@ public class inky_animation : MonoBehaviour
     }
     void FixedUpdate()
     {
+        
         isGrounded = pinky.OnGround;
         float step = speed * Time.deltaTime;
         if (!takinDamage)
@@ -457,6 +458,7 @@ public class inky_animation : MonoBehaviour
         }
         else if (takinDamage)
         {
+            Debug.Log("dying " + dying );
             // set up the animationa for damage and death-.
             if (!dying)
             {
@@ -477,6 +479,9 @@ public class inky_animation : MonoBehaviour
     }
     void resetGame()
     {
+        dying = false;
+        takinDamage = false;
+        Debug.Log("inky ani reset game");
         pstats.ResetLevel();
     }
     private void SouthIdle()

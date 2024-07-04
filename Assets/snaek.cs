@@ -10,6 +10,7 @@ public class snaek : MonoBehaviour
     private PaintableObject wallPaintableObject;
     private Animator tailAnimator;
     private bool doTheThis = false;
+    private bool bombed =false;
     private Vector3 targetPosition;
     private Froggy froggy;
     private BoxCollider2D triggerbox;
@@ -34,6 +35,8 @@ public class snaek : MonoBehaviour
     }
     void Update()
     {
+        if (!bombed)
+        { 
         // Check if the wall has been fully bombed
         if (wallPaintableObject != null && wallPaintableObject.fullyBombed)
         {
@@ -47,11 +50,12 @@ public class snaek : MonoBehaviour
                 tail.SetActive(true);
 
                 // Play the animation on the tail GameObject
-                tailAnimator.Play("snaek_tail_0");
+                tailAnimator.Play("snaek_tail");
 
                 // Move the SnaekHead to the target position over 2 seconds
                 StartCoroutine(MoveSnaekHead(targetPosition, 3f));
             }
+        }
         }
     }
 
@@ -114,6 +118,7 @@ public class snaek : MonoBehaviour
     {
         hud.HideSnaek();
         hud.HideDialogue();
+        bombed = true;
 
     }
 }

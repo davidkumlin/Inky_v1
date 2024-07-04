@@ -19,7 +19,7 @@ public class PaintableObject : MonoBehaviour
     public bool pointsAdded = false;
 
     private GameObject self;
-
+    public List<Line> SprayedLines { get; private set; } = new List<Line>();
 
 
 
@@ -68,7 +68,10 @@ public class PaintableObject : MonoBehaviour
 
     }
 
-
+    public void AddLine(Line line)
+    {
+        SprayedLines.Add(line);
+    }
 
 
 

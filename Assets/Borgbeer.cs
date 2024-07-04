@@ -36,7 +36,7 @@ public class Borgbeer : MonoBehaviour
         Debug.Log("gulp!");
         if (pstats != null)
         {
-            pstats.hp += Healpoints;
+            P_Stats.hp += Healpoints;
         }
         
     }

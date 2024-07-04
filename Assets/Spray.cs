@@ -40,7 +40,7 @@ public class Spray : MonoBehaviour
 
         if (pinky.IsDrawing && pinky.aimInsideMask &&!pinky.OnWall)
         {
-            Debug.Log("pssch");
+           // Debug.Log("pssch");
             sprayBeam.enabled = true;
            // sprayBeam.transform.position = ActiveHand.position;
             // Calculate the direction towards the aimpos
@@ -88,7 +88,7 @@ public class Spray : MonoBehaviour
             else
             {
                 ActiveHand = null;
-                Debug.Log("No active hand detected.");
+               // Debug.Log("No active hand detected.");
             }
         }
         else

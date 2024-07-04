@@ -142,7 +142,7 @@ public class Animation_basic : MonoBehaviour
     }
     private void Attack()
     {
-        pstats.hp -= Damage;
+        P_Stats.hp -= Damage;
     }
 
     private void Jump()

@@ -44,8 +44,7 @@ public class pokey : MonoBehaviour
         if (!hasAtk)
         {
 
-            pstats.hp -= Damage;
-            pstats.Damage();
+            pstats.Damage(Damage);
             ToggleCooldown();
         }
     }

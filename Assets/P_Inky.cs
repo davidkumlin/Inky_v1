@@ -116,17 +116,14 @@ public class P_Inky : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
         if (paintableObject)
         {
-
             isInPaintSpace = paintableObject.IsInPaintSpace;
-            //Debug.Log("PM body" + isInPaintSpace);
+            // Debug.Log("PM body" + isInPaintSpace);
         }
         else
         {
             isInPaintSpace = false;
-
         }
 
         foreach (PaintableObject po in paintableObjectsList)
@@ -134,54 +131,52 @@ public class P_Inky : MonoBehaviour
             if (po.IsAimInsideSpriteMask(CurrentAim))
             {
                 aimInsideMask = true;
-                //Debug.Log("PM-Aim is inside sprite mask of " + po.gameObject.name);
+                // Debug.Log("PM-Aim is inside sprite mask of " + po.gameObject.name);
                 ActiveWall = po;
-                //Debug.Log(ActiveWall + po.name);
+                // Debug.Log(ActiveWall + po.name);
                 break;
             }
             else
             {
                 aimInsideMask = false;
-
-                //Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
+                // Debug.Log("AM-Aim is NOT inside sprite mask of " + po.gameObject.name);
             }
         }
+
         if (inkyRb == null || aimRb == null)
         {
             return;
         }
 
         Vector2 desiredPosition;
-
-
         Vector2 aimMoveVector = Vector2.zero; // Define aimMoveVector outside of the if-else blocks
 
-        if (inkyRb != null && OnWall)
+        if (OnWall)
         {
-            
             // Disable gravity while on the wall
-            inkyRb.gravityScale = 1f;
-            inkyRb.MovePosition(CurrentAim);
-
+            inkyRb.gravityScale = 0f;
 
             Vector2 moveVector = input.Player.Movement.ReadValue<Vector2>();
             Vector2 newPosition = inkyRb.position + moveVector * moveSpeed * Time.fixedDeltaTime;
-            inkyRb.MovePosition(newPosition);
+
+            // Check if the new position is on a sprayed line
+            if (IsPositionOnSprayedLine(newPosition))
+            {
+                inkyRb.MovePosition(newPosition);
+                aimRb.MovePosition(newPosition);
+                CurrentAim = newPosition;
+            }
 
             desiredPosition = inkyRb.position;
-            aimRb.MovePosition(inkyRb.position);
 
             if (!aimInsideMask)
             {
                 OnWall = false;
                 GameManager.Instance.OnWall = OnWall;
-                
             }
-
         }
         else
         {
-            
             // If outside or not on a wall, use the default movement logic with the right stick (Aim)
             Vector2 playerMoveVector = input.Player.Aim.ReadValue<Vector2>();
             desiredPosition = (Vector2)inkyRb.position + playerMoveVector * maxDistance;
@@ -189,23 +184,21 @@ public class P_Inky : MonoBehaviour
 
             if (!wantToJump)
             {
-            Move();
+                Move();
             }
             else
             {
                 if (inkyani.dying == false)
                 {
-                     Jump();
+                    Jump();
                 }
             }
 
-           
             CheckGrounded();
         }
 
         if (!IsDrawing)
         {
-           
             // Move the aim to the desired position
             aimRb.MovePosition(Vector2.Lerp(aimRb.position, desiredPosition, smoothing * Time.fixedDeltaTime * aimspeed));
             CurrentAim = aimRb.position;
@@ -216,13 +209,29 @@ public class P_Inky : MonoBehaviour
             aimRb.MovePosition(Vector2.Lerp(aimRb.position, desiredPosition, smoothing * Time.fixedDeltaTime * aimspeed));
             CurrentAim = aimRb.position;
         }
-
-
-
-
     }
 
-    private void OnWallStatus(bool OnWall)
+
+
+    private bool IsPositionOnSprayedLine(Vector2 pos)
+    {
+        if (ActiveWall == null) return false;
+
+        foreach (Line line in ActiveWall.SprayedLines)
+        {
+            foreach (Vector2 point in line.SprayedPoints)
+            {
+                if (Vector2.Distance(point, pos) <= DrawManager_2.RESOLUTION)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+private void OnWallStatus(bool OnWall)
     {
         this.OnWall = OnWall;
         //Debug.Log("P_inky" + OnWall);
@@ -448,17 +457,13 @@ public class P_Inky : MonoBehaviour
                 Debug.LogWarning("No PaintableObject scripts found in the scene.");
                 return;
             }
-            
 
             // Check if the player is currently on the wall
             if (OnWall)
             {
-                           
-                    OnWall = false;
-                    GameManager.Instance.OnWall = OnWall;
-                   
+                OnWall = false;
+                GameManager.Instance.OnWall = OnWall;
             }
-            // Player is not on the wall, try to go on the wall
             else
             {
                 // Check if the condition to go on the wall is met
@@ -467,8 +472,11 @@ public class P_Inky : MonoBehaviour
                     OnWall = true;
                     GameManager.Instance.OnWall = OnWall;
 
-
                     aimRb.velocity = Vector2.zero;
+
+                    // Set Inky's position to the aim position
+                    inkyRb.position = aimRb.position;
+                    CurrentAim = aimRb.position;
                 }
                 else
                 {
@@ -478,6 +486,7 @@ public class P_Inky : MonoBehaviour
             }
         }
     }
+
 
     // This method should be called when the player takes damage
     public void TakeDamage(Vector2 hitPoint)

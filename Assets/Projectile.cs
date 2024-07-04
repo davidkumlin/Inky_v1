@@ -42,8 +42,7 @@ public class Projectile : MonoBehaviour
     }
     void Attack()
     {
-        pstats.hp -= Damage;
-        pstats.Damage();
+        pstats.Damage(Damage);
        
     }
     void Destroy()

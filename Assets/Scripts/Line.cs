@@ -5,7 +5,9 @@ using UnityEngine;
 public class Line : MonoBehaviour
 {
     [SerializeField] private LineRenderer _renderer;
-    
+
+    public List<Vector2> SprayedPoints { get; private set; } = new List<Vector2>();
+
     [SerializeField] private ParticleSystem _particleSystem;
     public float lineWidth = 0.3f ; // Default line width
     
@@ -67,6 +69,7 @@ public class Line : MonoBehaviour
         if (!CanAppend(pos)) return;
 
         _points.Add(pos);
+        SprayedPoints.Add(pos);
 
         _renderer.positionCount++;
         _renderer.SetPosition(_renderer.positionCount - 1, pos);

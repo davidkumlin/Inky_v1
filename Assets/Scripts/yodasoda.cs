@@ -35,7 +35,7 @@ public class yodasoda : MonoBehaviour
         Debug.Log("gulp!");
         if (pstats != null)
         {
-            pstats.hp += Healpoints;
+            P_Stats.hp += Healpoints;
         }
         Destroy(gameObject); // Destroy the GameObject containing this script
     }

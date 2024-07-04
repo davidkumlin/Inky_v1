@@ -53,8 +53,8 @@ public class snailien : MonoBehaviour
         if (!hasAtk)
         {
 
-        pstats.hp -= Damage;
-        pstats.Damage();
+        
+        pstats.Damage(Damage);
             ToggleCooldown();
         }
     }

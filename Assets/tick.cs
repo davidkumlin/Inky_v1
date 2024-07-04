@@ -147,8 +147,7 @@ public class tick : MonoBehaviour
     private void Attack()
     {
         ChangeAnimationState(tick_atk);
-        pstats.hp -= Damage;
-        pstats.Damage();
+        pstats.Damage(Damage);
     }
 
     private void Jump()
