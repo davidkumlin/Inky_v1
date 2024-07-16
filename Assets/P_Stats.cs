@@ -66,13 +66,22 @@ public class P_Stats : MonoBehaviour
     private void OnWallStatus(bool OnWall)
     {
         this.OnWall = OnWall;
+        
+    }
+
+    void isInkyDead()
+    {
+        if (hp <= 0)
+        {
+            inkyAni.playDeath();
+        }
     }
 
     void Update()
     {
         aimPos = pinky.CurrentAim;
         inkyPos = pinky.whereIsInky;
-
+        isInkyDead();
         ActiveUnit();
     }
 

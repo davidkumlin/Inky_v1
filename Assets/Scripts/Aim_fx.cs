@@ -147,20 +147,20 @@ public class Aim_fx : MonoBehaviour
             }
         }
 
-        // Update the crosshair sprite using animator parameters
-        if (isOverPaintableObject)
+        // Prioritize cross_OW over cross_PO
+        if (isOverSprayedLine)
+        {
+            ani.SetBool("IsOverPaintableObject", false);
+            ani.SetBool("IsOverSprayedLine", true);
+            ani.SetBool("IsIdle", false);
+            Debug.Log("Crosshair set to cross_OW.");
+        }
+        else if (isOverPaintableObject)
         {
             ani.SetBool("IsOverPaintableObject", true);
             ani.SetBool("IsOverSprayedLine", false);
             ani.SetBool("IsIdle", false);
             Debug.Log("Crosshair set to cross_PO.");
-        }
-        else if (isOverSprayedLine)
-        {
-            ani.SetBool("IsOverPaintableObject", true);
-            ani.SetBool("IsOverSprayedLine", true);
-            ani.SetBool("IsIdle", false);
-            Debug.Log("Crosshair set to cross_OW.");
         }
         else
         {
@@ -170,4 +170,5 @@ public class Aim_fx : MonoBehaviour
             Debug.Log("Crosshair set to cross_idle.");
         }
     }
+
 }

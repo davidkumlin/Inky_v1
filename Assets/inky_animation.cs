@@ -282,8 +282,9 @@ public class inky_animation : MonoBehaviour
     }
     void FixedUpdate()
     {
-        
         isGrounded = pinky.OnGround;
+
+        
         float step = speed * Time.deltaTime;
         if (!takinDamage)
         {
@@ -374,9 +375,28 @@ public class inky_animation : MonoBehaviour
                                     {
                                         SouthWest();
                                     }
-                                    else //idle
+                                    else //idle or falling
                                     {
+                                        if (!pinky.OnGround && !OnWall && !pinky.OnLadder)
+                                        {
+                                            Debug.Log("floattime");
+                                            pinky.falling();
+                                            JumpStarted = true;
+                                            ChangeAnimationState(Jump_up);
+                                            IS_Arm.SetActive(false);
+                                            NS_Arm.SetActive(false);
+                                            RB_Arm.SetActive(false);
+                                            RF_Arm.SetActive(false);
+                                            LF_Arm.SetActive(false);
+                                            LB_Arm.SetActive(false);
+                                            N_Arm.SetActive(false);
+                                            S_Arm.SetActive(false);
+                                        }
+                                        else
+                                        {
                                         SouthIdle();
+
+                                        }
                                     }
                                 }
                             }
@@ -458,19 +478,39 @@ public class inky_animation : MonoBehaviour
         }
         else if (takinDamage)
         {
-            Debug.Log("dying " + dying );
+            Debug.Log("dying " + dying);
             // set up the animationa for damage and death-.
             if (!dying)
             {
-            ChangeAnimationState(damage);
-                
+                ChangeAnimationState(damage);
+                IS_Arm.SetActive(false);
+                NS_Arm.SetActive(false);
+                RB_Arm.SetActive(false);
+                RF_Arm.SetActive(false);
+                LF_Arm.SetActive(false);
+                LB_Arm.SetActive(false);
+                N_Arm.SetActive(false);
+                S_Arm.SetActive(false);
 
             }
             else
             {
-                ChangeAnimationState(death);
+                playDeath();
             }
         }
+    }
+
+    public void playDeath()
+    {
+        ChangeAnimationState(death);
+        IS_Arm.SetActive(false);
+        NS_Arm.SetActive(false);
+        RB_Arm.SetActive(false);
+        RF_Arm.SetActive(false);
+        LF_Arm.SetActive(false);
+        LB_Arm.SetActive(false);
+        N_Arm.SetActive(false);
+        S_Arm.SetActive(false);
     }
     void resetDamage()
     {

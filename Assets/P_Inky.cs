@@ -14,6 +14,7 @@ public class P_Inky : MonoBehaviour
     private inky_animation inkyani;
     public CapsuleCollider2D inkyColl;
     [SerializeField] public float maxDistance = 5f;
+    [SerializeField] public Transform groundPos; // Reference to groundPos
 
     public bool inkyActive;
     public Vector2 whereIsInky;
@@ -22,7 +23,7 @@ public class P_Inky : MonoBehaviour
 
     //movement
     public bool isFacingRight;
-    [SerializeField] private Rigidbody2D inkyRb;
+    [SerializeField] public Rigidbody2D inkyRb;
     [SerializeField] public Rigidbody2D aimRb;
     public bool OnLadder = false;
     [SerializeField] private float acceleration = 5f;
@@ -62,6 +63,8 @@ public class P_Inky : MonoBehaviour
     private bool canToggleOnWall = true;
     public bool isInPaintSpace = false;
     public bool OnWall { get; private set; } = false;
+
+    private DynamicGroundCollider[] dynamicGroundColliders;
 
     // Start is called before the first frame update
 
@@ -105,12 +108,17 @@ public class P_Inky : MonoBehaviour
 
         // Set the last valid position initially to the aim's starting position
         lastValidPosition = aimRb.position;
+        dynamicGroundColliders = FindObjectsOfType<DynamicGroundCollider>();
+        if (dynamicGroundColliders == null)
+        {
+            Debug.Log("no dynamics ground colliders");
+        }
     }
     void Update()
     {
         IsDrawing = drawManager.ActiveSpray;
-        
-        
+        HandleDynamicGroundColliders();
+
 
     }
 
@@ -157,7 +165,7 @@ public class P_Inky : MonoBehaviour
             inkyRb.gravityScale = 0f;
 
             Vector2 moveVector = input.Player.Movement.ReadValue<Vector2>();
-            Vector2 newPosition = inkyRb.position + moveVector * moveSpeed * Time.fixedDeltaTime;
+            Vector2 newPosition = Vector2.Lerp(inkyRb.position, inkyRb.position + moveVector * moveSpeed * Time.fixedDeltaTime, smoothing);
 
             // Check if the new position is on a sprayed line
             if (IsPositionOnSprayedLine(newPosition))
@@ -173,6 +181,7 @@ public class P_Inky : MonoBehaviour
             {
                 OnWall = false;
                 GameManager.Instance.OnWall = OnWall;
+                wantToJump = true; // Enable jumping when exiting OnWall
             }
         }
         else
@@ -188,7 +197,7 @@ public class P_Inky : MonoBehaviour
             }
             else
             {
-                if (inkyani.dying == false)
+                if (!inkyani.dying)
                 {
                     Jump();
                 }
@@ -357,6 +366,16 @@ private void OnWallStatus(bool OnWall)
             }
         }
     }
+
+    public void falling()
+    {
+        inkyRb.AddForce(Vector2.down * jumpForce, ForceMode2D.Force);
+
+        inkyRb.gravityScale = 40f;
+
+        Vector2 targetVelocity = moveVector * moveSpeed;
+        inkyRb.velocity = new Vector2(targetVelocity.x, inkyRb.velocity.y);
+    }
     void wantToJumpDone() 
     {
         wantToJump = false;
@@ -463,11 +482,12 @@ private void OnWallStatus(bool OnWall)
             {
                 OnWall = false;
                 GameManager.Instance.OnWall = OnWall;
+                wantToJump = true; // Enable jumping when exiting OnWall
             }
             else
             {
                 // Check if the condition to go on the wall is met
-                if (aimInsideMask && isInPaintSpace)
+                if (aimInsideMask && isInPaintSpace && IsPositionOnSprayedLine(aimRb.position))
                 {
                     OnWall = true;
                     GameManager.Instance.OnWall = OnWall;
@@ -517,6 +537,25 @@ private void OnWallStatus(bool OnWall)
         canToggleOnWall = false;
         yield return new WaitForSeconds(1f);
         canToggleOnWall = true;
+    }
+    private void HandleDynamicGroundColliders()
+    {
+        foreach (var collider in dynamicGroundColliders)
+        {
+            if (input.Player.Movement.ReadValue<Vector2>().y < 0)
+            {
+                collider.SetActive(false);
+            }
+            else if (groundPos.position.y > collider.transform.position.y)
+            {
+                collider.SetActive(true);
+            }
+            else if (inkyRb.position.y < collider.transform.position.y)
+            {
+                collider.SetActive(false);
+            }
+
+        }
     }
 }
 
