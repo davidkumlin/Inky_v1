@@ -11,7 +11,7 @@ public class yodasoda : MonoBehaviour
     const string yodasoda_idle = "yodasoda_idle";
     const string Out = "Out";
     [SerializeField] private float Healpoints;
-
+    public bool Kloak = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +37,7 @@ public class yodasoda : MonoBehaviour
         {
             P_Stats.hp += Healpoints;
         }
+        Kloak = true;
         Destroy(gameObject); // Destroy the GameObject containing this script
     }
 
