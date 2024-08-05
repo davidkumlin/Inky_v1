@@ -5,7 +5,7 @@ using UnityEngine;
 public class Line : MonoBehaviour
 {
     [SerializeField] private LineRenderer _renderer;
-
+    private Color lineColor;
     public List<Vector2> SprayedPoints { get; private set; } = new List<Vector2>();
 
     [SerializeField] private ParticleSystem _particleSystem;
@@ -32,6 +32,27 @@ public class Line : MonoBehaviour
         _renderer.startWidth = lineWidth;
         _renderer.endWidth = lineWidth;
         Debug.Log(lineDamage);
+
+        // Get the current color from the ColorManager and set it
+        var colorManager = FindObjectOfType<ColorManager>();
+        if (colorManager != null)
+        {
+            lineColor = colorManager.GetCurrentColor();
+            _renderer.startColor = lineColor;
+            _renderer.endColor = lineColor;
+
+            // Set the initial color of the particle system
+            if (_particleSystem != null)
+            {
+                var mainModule = _particleSystem.main;
+                mainModule.startColor = new ParticleSystem.MinMaxGradient(lineColor);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("ColorManager not found in the scene.");
+        }
+
     }
 
 

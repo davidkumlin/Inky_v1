@@ -3956,7 +3956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d829110ca04dafc44aba997987d75622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: 
+  sceneName: Inky_lvl4_parken
 --- !u!1 &877371316
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5321554244962099409}
   - component: {fileID: 1668099102525022668}
   - component: {fileID: 4526770158423902426}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: trail-drips
   m_TagString: Untagged
   m_Icon: {fileID: 0}

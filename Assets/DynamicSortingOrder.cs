@@ -4,8 +4,8 @@ public class DynamicSortingOrder : MonoBehaviour
 {
     [SerializeField] private Transform playerTransform;
     [SerializeField] private int sortingOrderAbove = -5;
-    [SerializeField] private int sortingOrderBelow = 1;
     [SerializeField] private string sortingLayerAbove = "FG";
+    [SerializeField] private int sortingOrderBelow = 1;
     [SerializeField] private string sortingLayerBelow = "Default";
     [SerializeField] private Transform referencePoint;
 

@@ -73,7 +73,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1947570509
   m_SortingLayer: 1
-  m_SortingOrder: -5
+  m_SortingOrder: 0
   m_Time: 100
   m_Parameters:
     serializedVersion: 3
@@ -95,8 +95,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 1}
-      key1: {r: 0, g: 0, b: 0, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -209,8 +209,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1947570509
   m_SortingLayer: 1
-  m_SortingOrder: -5
-  m_Sprite: {fileID: 69467031, guid: 61f2797931a06e54999ae41452306401, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 2e5eb2521ea6fbe49ab6da7b695dd47b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -249,4 +249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfaa3846f96cc0044a0f57e67a1879bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  range1: 1
+  range2: 4
   destroyDelay: 100
