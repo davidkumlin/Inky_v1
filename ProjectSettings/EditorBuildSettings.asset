@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Inky_lvl3_residentet.unity
     guid: 4d655b1af1165524ea56065657d2688d
+  - enabled: 1
+    path: Assets/Scenes/Inky_lvl5_kloaken.unity
+    guid: 4199ae37969061e45b5217efdfc21aa0
   m_configObjects: {}

@@ -995,11 +995,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7221020487405985688, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.001559792
+      value: 0.0015597916
       objectReference: {fileID: 0}
     - target: {fileID: -7221020487405985688, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.006918688
+      value: -0.0069186864
       objectReference: {fileID: 0}
     - target: {fileID: -7221020487405985688, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1035,7 +1035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4257508509235537429, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9861391
+      value: 0.98613906
       objectReference: {fileID: 0}
     - target: {fileID: 4257508509235537429, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1043,7 +1043,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4257508509235537429, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.007450658
+      value: 0.0074506574
       objectReference: {fileID: 0}
     - target: {fileID: 4257508509235537429, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1071,15 +1071,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9011568590138638252, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.0020169104
+      value: -0.002016911
       objectReference: {fileID: 0}
     - target: {fileID: 9011568590138638252, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0014290242
+      value: 0.0014290233
       objectReference: {fileID: 0}
     - target: {fileID: 9011568590138638252, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.47544733
+      value: 0.4754473
       objectReference: {fileID: 0}
     - target: {fileID: 9011568590138638252, guid: 727fd9eff4b1b754a9d7cfe95512ba19, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3956,7 +3956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d829110ca04dafc44aba997987d75622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Inky_lvl4_parken
+  sceneName: "Inky_lvl5_kloaken\xDF"
 --- !u!1 &877371316
 GameObject:
   m_ObjectHideFlags: 0
@@ -6007,7 +6007,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3892488219321422952, guid: 4c464d29af81998438997195d58b63c8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8460919
+      value: 0.84609205
       objectReference: {fileID: 0}
     - target: {fileID: 3892488219321422952, guid: 4c464d29af81998438997195d58b63c8, type: 3}
       propertyPath: m_LocalRotation.x
@@ -6015,7 +6015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3892488219321422952, guid: 4c464d29af81998438997195d58b63c8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.0047440836
+      value: -0.004744084
       objectReference: {fileID: 0}
     - target: {fileID: 3892488219321422952, guid: 4c464d29af81998438997195d58b63c8, type: 3}
       propertyPath: m_LocalRotation.z
