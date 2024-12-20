@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ColorManager : MonoBehaviour
 {
+
     [SerializeField] private Color color1 = Color.white;
     [SerializeField] private Color color2 = Color.black;
     private Color currentColor;

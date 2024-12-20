@@ -89,6 +89,15 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Color"",
+                    ""type"": ""Button"",
+                    ""id"": ""10f10d0e-d6c6-484b-9edb-34486ddf0603"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -311,6 +320,28 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                     ""action"": ""OnWall"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3fb46084-5702-4788-9513-d60433f151e8"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Color"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad784f98-e2b2-44c2-87fd-4b2010003f54"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Color"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -326,6 +357,7 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_OnWall = m_Player.FindAction("OnWall", throwIfNotFound: true);
+        m_Player_Color = m_Player.FindAction("Color", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -392,6 +424,7 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_OnWall;
+    private readonly InputAction m_Player_Color;
     public struct PlayerActions
     {
         private @CustomInput m_Wrapper;
@@ -403,6 +436,7 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @OnWall => m_Wrapper.m_Player_OnWall;
+        public InputAction @Color => m_Wrapper.m_Player_Color;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -433,6 +467,9 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                 @OnWall.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnWall;
                 @OnWall.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnWall;
                 @OnWall.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnWall;
+                @Color.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColor;
+                @Color.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColor;
+                @Color.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColor;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -458,6 +495,9 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
                 @OnWall.started += instance.OnOnWall;
                 @OnWall.performed += instance.OnOnWall;
                 @OnWall.canceled += instance.OnOnWall;
+                @Color.started += instance.OnColor;
+                @Color.performed += instance.OnColor;
+                @Color.canceled += instance.OnColor;
             }
         }
     }
@@ -471,5 +511,6 @@ public partial class @CustomInput : IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnOnWall(InputAction.CallbackContext context);
+        void OnColor(InputAction.CallbackContext context);
     }
 }

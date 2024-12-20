@@ -1603,8 +1603,8 @@ MonoBehaviour:
   spriteMask: {fileID: 377360914}
   maskTexture: {fileID: 2800000, guid: c52eab9203cd35a4a8a8a72148a9bd58, type: 3}
   paintSpace: {fileID: 377360913}
-  PaintHP: 600
-  originalPaintHP: 600
+  PaintHP: 100
+  originalPaintHP: 100
   OnFullyBombed:
     m_PersistentCalls:
       m_Calls:
